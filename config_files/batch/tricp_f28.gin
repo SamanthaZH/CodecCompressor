@@ -1,0 +1,21 @@
+main.train_split = 'trainval'
+main.num_workers = 16
+main.model_name = 'Tri-MipRF'
+main.batch_size = 28 # this is not the actual batch_size, but the prefetch size
+
+RayDataset.base_path = './pig'
+RayDataset.scene = 'pig_f28'
+RayDataset.scene_type = 'nerf_synthetic'
+
+
+Trainer.base_exp_dir = './log_pig/'
+Trainer.exp_name = None
+Trainer.eval_step = 50000
+Trainer.log_step = 1000
+Trainer.max_steps = 50001
+Trainer.target_sample_batch_size = 262144
+Trainer.is_first_frame = False
+
+TriMipEncoding.include_cp = True
+TriMipEncoding.comb = 5
+TriMipEncoding.feature_dim_factor = 1

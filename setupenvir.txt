@@ -1,0 +1,14 @@
+#set up enve
+source tricp/bin/activate
+module avail cuda
+module load cuda/11.3.0_465.19.01
+
+
+
+# command output 
+python sscripts.py > worker1_3.txt 2>&1
+
+
+## test_model
+change model path 
+change loaded path in 'trainer.trainer  line 256, load model name'

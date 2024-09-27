@@ -1,0 +1,26 @@
+main.train_split = 'trainval'
+main.num_workers = 1
+main.model_name = 'Tri-MipRF'
+main.batch_size = 28 # this is not the actual batch_size, but the prefetch size
+main.saved_model_dir = '2024-09-02_13-58-07' # make sure it belongs to the correct scene
+# the actual path is RayDataset.scene_type/RayDataset.scene/main.model_name/main.saved_model_dir
+# e.g., nerf_synthetic/worker_f4/Tri-MipRF/2024-09-02_13-58-07
+
+RayDataset.base_path = './Worker'
+RayDataset.scene = 'worker_f4'
+RayDataset.scene_type = 'nerf_synthetic'
+
+
+Trainer.base_exp_dir = './log_worker/fd1'
+Trainer.exp_name = None
+Trainer.eval_step = 50000
+Trainer.log_step = 1000
+Trainer.max_steps = 50001
+Trainer.target_sample_batch_size = 262144
+Trainer.is_first_frame = False
+
+TriMipEncoding.include_cp = True
+TriMipEncoding.comb = 5
+TriMipEncoding.feature_dim_factor = 1
+
+
