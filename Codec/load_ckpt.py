@@ -36,29 +36,29 @@ def loading(root_dir,name):
 
 def batch_loading(root,scene):
     saved_files = collections.defaultdict(list)
-    root = 'log/fd1_worker/worker_f'
+    #root = 'log/fd1_worker/worker_f'
     for idx in range(2,scene+1):
         root_pth = root + str(idx) +'/Tri-MipRF/'
         for file in os.listdir(root_pth):
-          ckpt = mp.load_model(root_pth+file+'/')
-          print('-------------', f"worker_f{idx}",'-------------')
-          #print(ckpt['model'].keys())
-          
-        os.makedirs(root_pth+"para_folder/", exist_ok = True)
-        
-        plane_list = ['field.encoding.x','field.encoding.y','field.encoding.z']
-        for name_sub in plane_list:
+          if os.path.exists(root_pth+file+'/model.ckpt'):
+              print('-------------', f"scene_f{idx}",'-------------')
+              ckpt = mp.load_model(root_pth+file+'/') 
+              plane_list = ['field.encoding.x','field.encoding.y','field.encoding.z']
+              for name_sub in plane_list:
                 # Replace '.' in parameter names with '-'
                 nm2 = str(name_sub).replace(".", "-")
                 param_path = root_pth + "para_folder/" + nm2 + ".npy"
                 
-                print(ckpt["model"][name_sub].cpu().numpy().shape)
+                print(name_sub,':', ckpt["model"][name_sub].cpu().numpy().shape)
                 # Save the parameter as a .npy file in the created directory
                 #with open(param_path, 'wb') as ff:
                   #  np.save(ff, ckpt["model"][name_sub].cpu().numpy())
                 
                 # Append the saved file path to the list
-                saved_files.append(param_path)
+                #saved_files.append(param_path)
+          else:
+              print('model.ckpt does not exist.')
+              continue
 
     print("Saved-npy parameters ")
 
