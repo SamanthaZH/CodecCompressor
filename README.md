@@ -1,3 +1,4 @@
+# Codec Folder contains all compression code, including patch vector to video and recovery
 
 # Data Preparation
 Take our generated lego dataset as example, put `rename.py` under the lego directory
