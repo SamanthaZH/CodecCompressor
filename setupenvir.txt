@@ -1,14 +1,24 @@
-#set up enve
+##set up enve
 source tricp/bin/activate
-module avail cuda
 module load cuda/11.3.0_465.19.01
 
+module avail cuda
 
-
-# command output 
+## command output 
 python sscripts.py > worker1_3.txt 2>&1
 
 
 ## test_model
 change model path 
 change loaded path in 'trainer.trainer  line 256, load model name'
+
+#dynerf dataset
+
+
+@Agrechka and @yashnsn I found a solution if you guys still need it: go to your .cache directory, delete the lock file for your cpp extension (it is likely under the directory ~/.cache/torch_extensions/something), and you should be able to run it again.
+
+If you can't find your cache directory, you can run python -m pdb your_program.py and break at your .../lib/python3.X/site-packages/torch/utils/cpp_extension.py line 1179 (specifically the line containing "baton = FileBaton(os.path.join(build_directory, 'lock'))") and then print "build_directory". That should be the cache directory for your programs.
+ 
+#ffmpeg command
+
+ffmpeg -y -f rawvideo -s 512x1 -r 30 -pix_fmt yuv444p -i "concat:yuv_f0.yuv|yuv_f1.yuv|yuv_f2.yuv|yuv_f3.yuv|yuv_f4.yuv|yuv_f5.yuv|yuv_f6.yuv|yuv_f7.yuv|yuv_f8.yuv|yuv_f9.yuv|yuv_f10.yuv|yuv_f11.yuv|yuv_f12.yuv|yuv_f13.yuv|yuv_f14.yuv|yuv_f15.yuv|yuv_f16.yuv|yuv_f17.yuv|yuv_f18.yuv|yuv_f19.yuv|yuv_f20.yuv|yuv_f21.yuv|yuv_f22.yuv|yuv_f23.yuv|yuv_f24.yuv|yuv_f25.yuv|yuv_f26.yuv|yuv_f27.yuv|yuv_f28.yuv|yuv_f29.yuv|yuv_f30.yuv|yuv_f31.yuv|yuv_f32.yuv|yuv_f33.yuv|yuv_f34.yuv|yuv_f35.yuv|yuv_f36.yuv|yuv_f37.yuv|yuv_f38.yuv|yuv_f39.yuv|yuv_f40.yuv|yuv_f41.yuv|yuv_f42.yuv|yuv_f43.yuv|yuv_f44.yuv|yuv_f45.yuv|yuv_f46.yuv|yuv_f47.yuv" -c:v libx264 -crf 0 -g 48 yuv_video_output.mp4
