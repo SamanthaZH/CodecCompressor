@@ -21,13 +21,11 @@ def toframes(input_file, output_dir):
      # Run FFmpeg command
      subprocess.run(ffmpeg_command, check=True)
      
-def toPlanes(root_path,qp,frame, fd=1):
-     yuvs = root_path + 'yuv_frames/frames_'+str(qp)+'/yuv_f'+str(frame)+'.yuv'
+def toPlanes(root_path,qp,frame):
+     print(frame)
+     yuvs = root_path + '/yuv_frames/frames_'+str(qp)+'/yuv_f'+str(frame)+'.yuv'
      #print(yuvs)
-     if fd == 1:
-          frames = yuvio.imread(yuvs,512,16,'yuv444p')
-     elif fd == 3:
-         frames = yuvio.imread(yuvs,512,48,'yuv444p')
+     frames = yuvio.imread(yuvs,512,16,'yuv444p')
      
      return frames
 
@@ -65,7 +63,7 @@ def recover_original_data(grey, normal):
 
 def backtoplane(root_path,qp,s, dataset):
      grey = toPlanes(root_path,qp,str(s-2))
-     with open(root_path+'yuv_frames/min_max.pkl', 'rb') as file:
+     with open(root_path+'/yuv_frames/min_max.pkl', 'rb') as file:
           data = pickle.load(file)
      #print(data)
      min_max = data[dataset+'_f'+str(s)]
@@ -74,8 +72,7 @@ def backtoplane(root_path,qp,s, dataset):
      recovered = recover_original_data(grey,min_max)
 
      return recovered
-
-     
+   
 
 def repalce(root_path, root,scene, qp,dataset):
      for idx in range(2,scene+1):
@@ -85,7 +82,7 @@ def repalce(root_path, root,scene, qp,dataset):
                ph = root_pth+file+'/'
                ckpt = torch.load(ph+'model.ckpt',map_location=torch.device('cpu'))
                
-               planes = backtoplane(root_path,qp,idx,dataset)
+               planes = backtoplane(root+str(idx),qp,idx,dataset)
 
                arr = ['field.encoding.x','field.encoding.y','field.encoding.z']
                ckpt['model'][arr[0]] = torch.from_numpy(planes[arr[0]])
@@ -93,6 +90,7 @@ def repalce(root_path, root,scene, qp,dataset):
                ckpt['model'][arr[2]] = torch.from_numpy(planes[arr[2]])
 
                torch.save(ckpt,ph+'ckpt'+str(qp)+'.ckpt')
+               print("----------update ckpt saved to " +ph+'ckpt'+str(qp)+'.ckpt' )
 
 
 

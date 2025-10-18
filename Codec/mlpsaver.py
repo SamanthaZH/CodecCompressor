@@ -58,7 +58,7 @@ def yuv(base,head, root_pth,idx):
      yuvio.imwrite(dst+'mlp_f'+str(idx)+'.yuv', frame_444)
 
 
-def concat_yuv_to_video(yuv_files, output_video, qp,fd, resolution = '216x256', frame_rate=30, pixel_format='yuv444p'):
+def concat_yuv_to_video(yuv_files, output_video,fd=1, resolution = '216x256', frame_rate=30, pixel_format='yuv444p'):
     
     # Create the input string for concatenation
     concat_input = "concat:" + "|".join(yuv_files)
@@ -75,7 +75,7 @@ def concat_yuv_to_video(yuv_files, output_video, qp,fd, resolution = '216x256', 
         "-pix_fmt", pixel_format,  # Pixel format
         "-i", concat_input,  # Concatenated input files
         "-c:v", "libx264",  # Video codec
-        "-qp", str(qp),  # Lossless compression
+        "-qp", "0",  # Lossless compression
         "-g", "48",  # Group of pictures
         output_video  # Output video file
     ]
@@ -85,7 +85,7 @@ def concat_yuv_to_video(yuv_files, output_video, qp,fd, resolution = '216x256', 
     print(f"Video saved as {output_video}")
 
 
-def batch_mlp(root, scene, root_path, dataset):
+def batch_mlp(root, scene, root_path, qp,dataset):
 
      dic_mlp =  collections.defaultdict(list)
      for idx in range(2,scene+1):
@@ -93,22 +93,23 @@ def batch_mlp(root, scene, root_path, dataset):
           for file in os.listdir(root_pth):
                print(root_pth+file+'/')
                ph = root_pth+file+'/'
-               checkpoint, _ = load_model_planes(root_pth+file+'/','model.ckpt')
+               checkpoint=  torch.load(ph+'ckpt'+str(qp)+'.ckpt',map_location=torch.device('cpu'))
                mlp_base = checkpoint['model']['field.mlp_base.params'].cpu().numpy()
                mlp_head = checkpoint['model']['field.mlp_head.params'].cpu().numpy()
                
                norm_mlp, base,head = compress_mlp(mlp_base, mlp_head)
-               print(norm_mlp)
+               #print(norm_mlp)
                dic_mlp['%s_%s'%(dataset, str(idx))] = norm_mlp
 
                yuv(base,head,root_path,idx)
+               
                '''
                mlp_back_base, mlp_back_head = reverse(dic_mlp['frame_%s'%str(idx)])
                checkpoint['model']['field.mlp_base.params'] = torch.from_numpy(mlp_back_base)
                checkpoint['model']['field.mlp_head.params'] = torch.from_numpy(mlp_back_head)
                torch.save(checkpoint,ph+'new_mlp.ckpt')
                '''
-     print(dic_mlp)   
-     os.makedirs(root_path+"/yuv_mlp", exist_ok=True)
-     with open(root_path+"/yuv_mlp/mlp.pkl","wb") as f:
+     #print(dic_mlp)   
+     os.makedirs(root + str(idx) +"/yuv_mlp", exist_ok=True)
+     with open(root + str(idx) +"/yuv_mlp/mlp.pkl","wb") as f:
           pickle.dump(dic_mlp, f)

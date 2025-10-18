@@ -3,7 +3,7 @@ import numpy as np
 import torch
 
 
-def toframes(input_file, output_dir):
+def toFrames(input_file, output_dir):
      os.makedirs(output_dir, exist_ok=True)
 
      # FFmpeg command to generate files with sequential numbering
@@ -15,14 +15,17 @@ def toframes(input_file, output_dir):
           "-pix_fmt", "yuv444p",
           "-f", "segment",
           "-segment_time", "0.01",
-          os.path.join(output_dir, "mlp_f%d.yuv")
+          os.path.join(output_dir, "mlp_out_f0.yuv")
      ]
 
      # Run FFmpeg command
      subprocess.run(ffmpeg_command, check=True)
      
 def toMLP(root_path,qp,frame, fd=1):
-     yuvs = root_path + '/yuv_mlp/mlp_'+str(qp)+'/mlp_f'+str(frame)+'.yuv'
+     #yuvs = root_path + '/yuv_mlp/mlp_'+str(qp)+'/mlp_f'+str(frame)+'.yuv'
+     #yuvs = root_path + '/yuv_mlp/mlp_f'+str(frame)+'.yuv'
+     toFrames(root_path + '/yuv_mlp/mlp_video_output.mp4',root_path + '/yuv_mlp/')
+     yuvs = root_path + '/yuv_mlp/mlp_out_f0.yuv'
      print(yuvs)
      if fd == 1:
           frames = yuvio.imread(yuvs,256,216,'yuv444p')
@@ -53,9 +56,7 @@ def recover_original_data(grey, normal):
           data_norm = data_norm.reshape(-1)
 
         # Reverse the normalization process
-
         original_data = data_norm * (max_value - min_value) + min_value
-
 
         # Ensure the recovered data retains the original shape
         recovered_data[field_name] = original_data
@@ -64,8 +65,9 @@ def recover_original_data(grey, normal):
     return recovered_data
 
 def backtomlp(root_path,qp,s, dataset):
-     grey = toMLP(root_path,qp,str(s-2))
-     with open(root_path+'yuv_mlp/mlp.pkl', 'rb') as file:
+     #grey = toMLP(root_path,qp,str(s-2))
+     grey = toMLP(root_path,qp,str(s))
+     with open(root_path+'/yuv_mlp/mlp.pkl', 'rb') as file:
           data = pickle.load(file)
      print(data)
      min_max = data[dataset+'_'+str(s)]
@@ -76,20 +78,21 @@ def backtomlp(root_path,qp,s, dataset):
      return recovered
 
      
-def repalce(root_path, root,scene, qp,dataset):
+def replace(root_path, root,scene, qp,dataset):
      for idx in range(2,scene+1):
           root_pth = root + str(idx) +'/Tri-MipRF/'
           for file in os.listdir(root_pth):
                print(root_pth+file+'/')
                ph = root_pth+file+'/'
-               ckpt = torch.load(ph+'model.ckpt',map_location=torch.device('cpu'))
+               #ckpt = torch.load(ph+'model.ckpt',map_location=torch.device('cpu'))
+               ckpt = torch.load(ph+'ckpt'+str(qp)+'.ckpt',map_location=torch.device('cpu'))
                
                #planes = backtomlp(root+str(idx),qp,idx,dataset)
-               mlp = backtomlp(root_path,qp,idx,dataset)
+               mlp = backtomlp(root+str(idx),qp,idx,dataset)
 
                arr = ['field.mlp_base.params','field.mlp_head.params']
                ckpt['model'][arr[0]] = torch.from_numpy(mlp['base'])
                ckpt['model'][arr[1]] = torch.from_numpy(mlp['head'])
                
-
+               print(ph+'mlp'+str(qp)+'.ckpt')
                torch.save(ckpt,ph+'mlp'+str(qp)+'.ckpt')
