@@ -15,7 +15,7 @@ class TriMipRF(nn.Module):
     def __init__(
         self,
         n_levels: int = 8,
-        plane_size: int = 512,
+        plane_size: int = 512, #1536, #512
         feature_dim: int = 16,
         geo_feat_dim: int = 15,
         net_depth_base: int = 2,

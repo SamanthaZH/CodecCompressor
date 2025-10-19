@@ -40,9 +40,7 @@ class TriMipEncoding(nn.Module):
             self.f_l = 3
         else:
             # load from cpk
-            #self.fm = torch.load("./log2/nerf_synthetic/lego_f1/Tri-MipRF/model_w_ds/fm.ckpt")
-            self.fm = torch.load("./log_worker/nerf_synthetic/worker_f1/Tri-MipRF/model_w_ds/fm.ckpt")
-            #self.fm = torch.load("./log2/amily/nerf_synthetic/amily_f1/Tri-MipRF/model_w_ds/fm.ckpt")  # amily dataset
+            self.fm = torch.load("./cut/fd1/nerf_synthetic/cut_f1/Tri-MipRF/model_w_ds/fm.ckpt")
 
             self.register_parameter(
                 "x",
