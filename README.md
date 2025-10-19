@@ -3,7 +3,9 @@ Check compression, in codec.py
 'python codec.py'
 
 Check the result
-run 'python test_model.py --ginc config_files/blender/test_only_f5.gin' It will auto run all compressed, the model named "ckpt#.ckpt" is Feature compression only, the model named "mlp#.chpt" is compressed both feature vector and MLP.
+run 'python test_model.py --ginc config_files/blender/test_only_f5.gin' 
+It will auto run all compressed, the model named "ckpt#.ckpt" is Feature compression only, the model named "mlp#.chpt" is compressed both feature vector and MLP.
+Change dataset name and model dir before run it
 
 The Sample result of cut_steak:
 ```
