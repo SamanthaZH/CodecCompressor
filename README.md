@@ -143,7 +143,7 @@ run 'python test_model.py --ginc config_files/blender/test_only_f5.gin'
 It will auto run all compressed, the model named "ckpt#.ckpt" is Feature compression only, the model named "mlp#.chpt" is compressed both feature vector and MLP.
 Change dataset name and model dir before run it
 
-The Sample result of cut_steak:
+The Sample result of cut_steak: (The result are for multiple scene compression) 
 ```
                         qp0              qp10             qp20              qp30           qp40 
 feature_only
@@ -179,7 +179,8 @@ Approximate 2.43KB if not include occ(8 MB), binary, feature_planes and mlp
 ```                                                                         
 Note: Shared occupancy for all scenes, binary removed(does not affect result)
 Note: compressed result difference, but noT too much like cut_steak is 20.06, sear is 19.09, coffee is 19.47
-
+model link: https://drive.google.com/file/d/1ar6iyGNlsJzQzCi38nRpcHz7HLfo1lG7/view?usp=sharing
+contains "single scene" - for just single scene compression, " multiple scene" is for compressing multiple scenes together. 
 
 
 
