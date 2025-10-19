@@ -3,7 +3,10 @@ import numpy as np
 import torch
 
 
-def toframes(input_file, output_dir):
+def toframes(input_file, output_dir,fd):
+     resolution = '16x512'
+     if fd == 3:
+          resolution = "48x512"
      os.makedirs(output_dir, exist_ok=True)
 
      # FFmpeg command to generate files with sequential numbering
@@ -11,7 +14,7 @@ def toframes(input_file, output_dir):
           "ffmpeg",
           "-y",
           "-i", input_file,
-          "-s", "16x512",
+          "-s", resolution,
           "-pix_fmt", "yuv444p",
           "-f", "segment",
           "-segment_time", "0.01",
@@ -21,11 +24,13 @@ def toframes(input_file, output_dir):
      # Run FFmpeg command
      subprocess.run(ffmpeg_command, check=True)
      
-def toPlanes(root_path,qp,frame):
-     print(frame)
+def toPlanes(root_path,qp,frame,fd):
+     #print(frame)
      yuvs = root_path + '/yuv_frames/frames_'+str(qp)+'/yuv_f'+str(frame)+'.yuv'
-     #print(yuvs)
+     print(frame, yuvs)
      frames = yuvio.imread(yuvs,512,16,'yuv444p')
+     if fd == 3:
+          frames = yuvio.imread(yuvs,512,48,'yuv444p')
      
      return frames
 
@@ -43,11 +48,11 @@ def recover_original_data(grey, normal):
         
         # Convert grayscale data back to normalized values
         if field_name[-1] == 'x':
-          data_norm = grey.y.astype(np.float32) / 255.0  # Shape (1, 16, 512, 1)
+          data_norm = grey.y.astype(np.float32) / 255.0  
         elif field_name[-1] == 'y':
-          data_norm = grey.u.astype(np.float32) / 255.0  # Shape (1, 16, 512, 1)
+          data_norm = grey.u.astype(np.float32) / 255.0  
         elif field_name[-1] == 'z':
-          data_norm = grey.v.astype(np.float32) / 255.0  # Shape (1, 16, 512, 1)
+          data_norm = grey.v.astype(np.float32) / 255.0  
         #print(grey.y, grey.u, grey.v)
 
         # Reverse the normalization process
@@ -61,8 +66,10 @@ def recover_original_data(grey, normal):
 
     return recovered_data
 
-def backtoplane(root_path,qp,s, dataset):
-     grey = toPlanes(root_path,qp,str(s-2))
+def backtoplane(root,root_path,qp,s, dataset,fd):
+     #grey = toPlanes(root_path,qp,str(s-1),fd)
+     print(root_path)
+     grey = toPlanes(root_path,qp,0,fd) # for test one scene
      with open(root_path+'/yuv_frames/min_max.pkl', 'rb') as file:
           data = pickle.load(file)
      #print(data)
@@ -73,16 +80,15 @@ def backtoplane(root_path,qp,s, dataset):
 
      return recovered
    
-
-def repalce(root_path, root,scene, qp,dataset):
-     for idx in range(2,scene+1):
+def repalce(root_path, root,scene, qp,dataset,fd,start):
+     for idx in range(start,scene+1):
           root_pth = root + str(idx) +'/Tri-MipRF/'
           for file in os.listdir(root_pth):
                print(root_pth+file+'/')
                ph = root_pth+file+'/'
                ckpt = torch.load(ph+'model.ckpt',map_location=torch.device('cpu'))
                
-               planes = backtoplane(root+str(idx),qp,idx,dataset)
+               planes = backtoplane(root+str(idx),root_path,qp,idx,dataset,fd)
 
                arr = ['field.encoding.x','field.encoding.y','field.encoding.z']
                ckpt['model'][arr[0]] = torch.from_numpy(planes[arr[0]])

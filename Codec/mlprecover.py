@@ -3,7 +3,9 @@ import numpy as np
 import torch
 
 
-def toFrames(input_file, output_dir):
+def toFrames(input_file, output_dir,fd):
+     resolution = "216x256"
+
      os.makedirs(output_dir, exist_ok=True)
 
      # FFmpeg command to generate files with sequential numbering
@@ -11,30 +13,28 @@ def toFrames(input_file, output_dir):
           "ffmpeg",
           "-y",
           "-i", input_file,
-          "-s", "216x256",
+          "-s", resolution,
           "-pix_fmt", "yuv444p",
-          "-f", "segment",
-          "-segment_time", "0.01",
-          os.path.join(output_dir, "mlp_out_f0.yuv")
+          "-vsync", "0", 
+          "-f", "rawvideo",
+          
+          os.path.join(output_dir,"mlp_out.yuv")
      ]
 
      # Run FFmpeg command
      subprocess.run(ffmpeg_command, check=True)
      
-def toMLP(root_path,qp,frame, fd=1):
+def toMLP(root_path,qp,frame, fd):
      #yuvs = root_path + '/yuv_mlp/mlp_'+str(qp)+'/mlp_f'+str(frame)+'.yuv'
      #yuvs = root_path + '/yuv_mlp/mlp_f'+str(frame)+'.yuv'
-     toFrames(root_path + '/yuv_mlp/mlp_video_output.mp4',root_path + '/yuv_mlp/')
-     yuvs = root_path + '/yuv_mlp/mlp_out_f0.yuv'
+     toFrames(root_path + '/yuv_mlp/mlp_video_output.mp4',root_path+'/yuv_mlp/',fd)
+     yuvs = root_path + '/yuv_mlp/mlp_out.yuv'
      print(yuvs)
-     if fd == 1:
-          frames = yuvio.imread(yuvs,256,216,'yuv444p')
-     elif fd == 3:
-         frames = yuvio.imread(yuvs,512,48,'yuv444p')
+     frames = yuvio.imread(yuvs,256,216,'yuv444p')
      
      return frames
 
-def recover_original_data(grey, normal):
+def recover_original_data(grey, normal, fd):
     recovered_data = collections.OrderedDict()
     
     arr = ['base', 'head']
@@ -49,8 +49,11 @@ def recover_original_data(grey, normal):
         # Convert grayscale data back to normalized values
         if field_name == 'base':
           data_norm = grey.y.astype(np.float32) / 255.0  
-          data_norm = (data_norm.flatten())[:26624]
-          
+          if fd == 1:
+               data_norm = (data_norm.flatten())[:26624]
+          elif fd == 3:
+               data_norm = (data_norm.flatten())[:30720]
+
         elif field_name == 'head':
           data_norm = grey.u.astype(np.float32) / 255.0
           data_norm = data_norm.reshape(-1)
@@ -64,21 +67,21 @@ def recover_original_data(grey, normal):
 
     return recovered_data
 
-def backtomlp(root_path,qp,s, dataset):
+def backtomlp(root_path,qp,s, dataset,fd):
      #grey = toMLP(root_path,qp,str(s-2))
-     grey = toMLP(root_path,qp,str(s))
+     grey = toMLP(root_path,qp,str(s),fd)
      with open(root_path+'/yuv_mlp/mlp.pkl', 'rb') as file:
           data = pickle.load(file)
      print(data)
      min_max = data[dataset+'_'+str(s)]
      print(min_max)
      print('mlp_f'+str(s-2), dataset+'_f'+str(s))
-     recovered = recover_original_data(grey,min_max)
+     recovered = recover_original_data(grey,min_max,fd)
 
      return recovered
 
      
-def replace(root_path, root,scene, qp,dataset):
+def replace(root_path, root,scene, qp,dataset,fd):
      for idx in range(2,scene+1):
           root_pth = root + str(idx) +'/Tri-MipRF/'
           for file in os.listdir(root_pth):
@@ -88,7 +91,7 @@ def replace(root_path, root,scene, qp,dataset):
                ckpt = torch.load(ph+'ckpt'+str(qp)+'.ckpt',map_location=torch.device('cpu'))
                
                #planes = backtomlp(root+str(idx),qp,idx,dataset)
-               mlp = backtomlp(root+str(idx),qp,idx,dataset)
+               mlp = backtomlp(root+str(idx),qp,idx,dataset,fd)
 
                arr = ['field.mlp_base.params','field.mlp_head.params']
                ckpt['model'][arr[0]] = torch.from_numpy(mlp['base'])

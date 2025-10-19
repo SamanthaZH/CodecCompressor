@@ -37,9 +37,9 @@ def grayscale(data,ph, name):
      arr = ['field.encoding.x','field.encoding.y','field.encoding.z']
      for arr_name in arr:
           
-          print("--------------"+arr_name+"-----------------")
+          #print("--------------"+arr_name+"-----------------")
           #normalize data
-          print(data[arr_name].squeeze().shape)
+          #print(data[arr_name].squeeze().shape)
           data_min = data[arr_name].min(axis=(1,2))#, keepdims=True)
           data_max = data[arr_name].max(axis=(1,2))#, keepdims=True)
           data_norm = (data[arr_name] - data_min)/(data_max - data_min)
@@ -72,44 +72,46 @@ def grayscale(data,ph, name):
 def yuv(greyscale, dst,idx):
 
      os.makedirs(dst,exist_ok=True)
-     print(dst)
+     #print(dst)
      arr = ['field.encoding.x','field.encoding.y','field.encoding.z']
      y = greyscale[arr[0]]
      u = greyscale[arr[1]]
      v = greyscale[arr[2]]
 
      frame_444 = yuvio.frame((y, u, v), "yuv444p")
-     print(dst+'yuv_f'+str(idx)+'.yuv')
+     print(f"scene_f{idx}: {dst}yuv_f{idx}.yuv")
 
      yuvio.imwrite(dst+'yuv_f'+str(idx)+'.yuv', frame_444)
      
      
-def batch_process(root, scene, root_path, dataset):
+def batch_process(root, scene, root_path, dataset,start):
      print('--> start generate frames of ' + dataset)
      #os.makedirs(ph+"/max_min/",exist_ok=True)
      min_max = collections.OrderedDict()
      
-     for idx in range(2,scene+1):
+     for idx in range(start,scene+1):
           root_pth = root + str(idx) +'/Tri-MipRF/'
           for file in os.listdir(root_pth):
                print(root_pth+file+'/')
                ph = root_pth+file+'/'
                planes = load_model_planes(root_pth+file+'/')
                min_max[dataset+'_f'+str(idx)], grey= grayscale(planes,ph,dataset+'_f'+str(idx))
-               dst = root + str(idx) + '/yuv_frames/'
+               dst = root_path + '/yuv_frames/compf/'
                yuv(grey,dst,idx)
 
-     with open(root + str(idx)+"/yuv_frames/min_max.pkl","wb") as f:
+     with open(root_path+"/yuv_frames/min_max.pkl","wb") as f:
           pickle.dump(min_max, f)
      
 
-def concat_yuv_to_video(yuv_files, output_video, qp,resolution = '16x512', frame_rate=30, pixel_format='yuv444p'):
-    
+def concat_yuv_to_video(yuv_files, output_video, qp,fd, frame_rate=30, pixel_format='yuv444p'):
+     resolution = '16x512'
+     if fd == 3:
+          resolution = '48x512'
     # Create the input string for concatenation
-    concat_input = "concat:" + "|".join(yuv_files)
+     concat_input = "concat:" + "|".join(yuv_files)
 
     # Construct the FFmpeg command
-    ffmpeg_command = [
+     ffmpeg_command = [
         "ffmpeg",
         "-y",  # Overwrite output files without asking
         "-f", "rawvideo",
@@ -121,8 +123,8 @@ def concat_yuv_to_video(yuv_files, output_video, qp,resolution = '16x512', frame
         "-qp", str(qp),  # Lossless compression
         "-g", "48",  # Group of pictures
         output_video  # Output video file
-    ]
+     ]
 
-    # Run the FFmpeg command
-    subprocess.run(ffmpeg_command, check=True)
-    print(f"Video saved as {output_video}")
+     # Run the FFmpeg command
+     subprocess.run(ffmpeg_command, check=True)
+     print(f"Video saved as {output_video}")

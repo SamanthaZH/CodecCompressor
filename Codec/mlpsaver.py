@@ -9,29 +9,33 @@ def nomalization(matrix):
      data_max = matrix.max(axis=0)
      data_norm = (matrix-data_min)/(data_max-data_min)
      data_grey = np.round((data_norm *255).squeeze()).astype(np.uint8)
-     print(data_norm)
+     #print(data_norm)
      return data_grey, data_min, data_max
 
-def compress_mlp(mlp_base, mlp_head):
-    print(mlp_base.shape, mlp_head.shape)
-    mlp_minmax = {}
-    grey_base, min_base, maxi_base = nomalization(mlp_base)
-    grey_head, min_head, maxi_head = nomalization(mlp_head)
-    print("norm", grey_base, grey_head)
-    #mlp_dic['mlp_base'] = grey_base
-    #mlp_dic['mlp_head'] = grey_head
-    grey_base = np.pad(grey_base, (0, 216*256 - 26624), constant_values=0)
-    base_2d = grey_base.reshape(216,256)
-    head_2d = grey_head.reshape(216,256)
-    #base = (base_2d.flatten())[:26624]
-    #head = head_2d.reshape(-1)
-    #print(base_2d, base)
-    #print(head_2d, head)
-    mlp_minmax['min_base'] = min_base
-    mlp_minmax['maxi_base'] = maxi_base
-    mlp_minmax['min_head'] = min_head
-    mlp_minmax['maxi_head'] = maxi_head
-    return mlp_minmax, base_2d, head_2d
+def compress_mlp(mlp_base, mlp_head,fd):
+     print(mlp_base.shape, mlp_head.shape)
+     mlp_minmax = {}
+     grey_base, min_base, maxi_base = nomalization(mlp_base)
+     grey_head, min_head, maxi_head = nomalization(mlp_head)
+     #print("norm", grey_base, grey_head)
+     #mlp_dic['mlp_base'] = grey_base
+     #mlp_dic['mlp_head'] = grey_head
+     if fd == 1:
+          grey_base = np.pad(grey_base, (0, 216*256 - 26624), constant_values=0)
+     if fd == 3:
+          print(grey_base.shape, grey_head.shape)
+          grey_base = np.pad(grey_base, (0, 216*256 - 30720), constant_values=0)
+     base_2d = grey_base.reshape(216,256)
+     head_2d = grey_head.reshape(216,256)
+     #base = (base_2d.flatten())[:26624]
+     #head = head_2d.reshape(-1)
+     #print(base_2d, base)
+     #print(head_2d, head)
+     mlp_minmax['min_base'] = min_base
+     mlp_minmax['maxi_base'] = maxi_base
+     mlp_minmax['min_head'] = min_head
+     mlp_minmax['maxi_head'] = maxi_head
+     return mlp_minmax, base_2d, head_2d
 
 def reverse(mlp_dic):
      base_min, base_max = mlp_dic['min_base'], mlp_dic['maxi_base']
@@ -43,9 +47,9 @@ def reverse(mlp_dic):
      mlp_head = head*(head_max - head_min)+head_min
      return mlp_base, mlp_head
 
-def yuv(base,head, root_pth,idx):
+def yuv(base,head, root,idx,dataset,fd):
 
-     dst = root_pth + 'yuv_mlp/'
+     dst = root + str(idx) + '/yuv_mlp/'
      os.makedirs(dst,exist_ok=True)
      print(dst)
      y = base
@@ -58,15 +62,14 @@ def yuv(base,head, root_pth,idx):
      yuvio.imwrite(dst+'mlp_f'+str(idx)+'.yuv', frame_444)
 
 
-def concat_yuv_to_video(yuv_files, output_video,fd=1, resolution = '216x256', frame_rate=30, pixel_format='yuv444p'):
+def concat_yuv_to_video(yuv_files, output_video,fd, frame_rate=30, pixel_format='yuv444p'):
     
-    # Create the input string for concatenation
-    concat_input = "concat:" + "|".join(yuv_files)
-    if fd == 3:
-         resolution == '216x256'
+     # Create the input string for concatenation
+     concat_input = "concat:" + "|".join(yuv_files)
+     resolution = '216x256'
 
-    # Construct the FFmpeg command
-    ffmpeg_command = [
+     # Construct the FFmpeg command
+     ffmpeg_command = [
         "ffmpeg",
         "-y",  # Overwrite output files without asking
         "-f", "rawvideo",
@@ -78,15 +81,14 @@ def concat_yuv_to_video(yuv_files, output_video,fd=1, resolution = '216x256', fr
         "-qp", "0",  # Lossless compression
         "-g", "48",  # Group of pictures
         output_video  # Output video file
-    ]
+     ]
 
-    # Run the FFmpeg command
-    subprocess.run(ffmpeg_command, check=True)
-    print(f"Video saved as {output_video}")
+     # Run the FFmpeg command
+     subprocess.run(ffmpeg_command, check=True)
+     print(f"Video saved as {output_video}")
 
 
-def batch_mlp(root, scene, root_path, qp,dataset):
-
+def batch_mlp(root, scene, root_path, qp,dataset,fd):
      dic_mlp =  collections.defaultdict(list)
      for idx in range(2,scene+1):
           root_pth = root + str(idx) +'/Tri-MipRF/'
@@ -94,14 +96,16 @@ def batch_mlp(root, scene, root_path, qp,dataset):
                print(root_pth+file+'/')
                ph = root_pth+file+'/'
                checkpoint=  torch.load(ph+'ckpt'+str(qp)+'.ckpt',map_location=torch.device('cpu'))
+               #for name, tensor in checkpoint['model'].items():
+                    #print(f"{name}:", f"{tensor.size()}")
                mlp_base = checkpoint['model']['field.mlp_base.params'].cpu().numpy()
                mlp_head = checkpoint['model']['field.mlp_head.params'].cpu().numpy()
                
-               norm_mlp, base,head = compress_mlp(mlp_base, mlp_head)
+               norm_mlp, base,head = compress_mlp(mlp_base, mlp_head,fd)
                #print(norm_mlp)
                dic_mlp['%s_%s'%(dataset, str(idx))] = norm_mlp
 
-               yuv(base,head,root_path,idx)
+               yuv(base,head,root,idx,dataset,fd)
                
                '''
                mlp_back_base, mlp_back_head = reverse(dic_mlp['frame_%s'%str(idx)])
@@ -110,6 +114,6 @@ def batch_mlp(root, scene, root_path, qp,dataset):
                torch.save(checkpoint,ph+'new_mlp.ckpt')
                '''
      #print(dic_mlp)   
-     os.makedirs(root + str(idx) +"/yuv_mlp", exist_ok=True)
+     
      with open(root + str(idx) +"/yuv_mlp/mlp.pkl","wb") as f:
           pickle.dump(dic_mlp, f)
