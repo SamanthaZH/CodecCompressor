@@ -6,21 +6,23 @@ Check the result
 run 'python test_model.py --ginc config_files/blender/test_only_f5.gin' It will auto run all compressed, the model named "ckpt#.ckpt" is Feature compression only, the model named "mlp#.chpt" is compressed both feature vector and MLP.
 
 The Sample result of cut_steak:
-                         qp0             qp10            qp20             qp30          qp40 
+```
+                        qp0             qp10            qp20             qp30          qp40 
 feature_only
-FD1:       f2     27.6388	0.9589	27.6266	0.9589	26.9128	0.9582	24.5163	0.9555	 18.669	0.9511
-           f3     27.985	0.9588	27.8272	0.9586	27.1293	0.9574	23.8661	0.9546	 12.569	0.942
-FD3:              30.7436	0.9711	30.6358	0.971	  29.8469	0.9701	12.8522	0.9448	 8.19	  0.9338	
-                  30.9104	0.971	  30.7771	0.9708	29.1763	0.9589	14.2161	0.9463	 8.6474	0.9333
+FD1:       f2     27.6388	0.9589   27.6266	0.9589  26.9128	0.9582	24.5163	0.9555	 18.669	0.9511
+           f3     27.985	0.9588	 27.8272	0.9586	27.1293	0.9574	23.8661	0.9546	 12.569	0.942
+FD3:              30.7436	0.9711	 30.6358	0.971	  29.8469	0.9701	12.8522	0.9448	 8.19	  0.9338	
+                  30.9104	0.971	   30.7771	0.9708	29.1763	0.9589	14.2161	0.9463	 8.6474	0.9333
                   
 feature&mlp  
 FD1:              27.0126	0.9585	26.9222	0.9584	26.4088	0.958	  24.2634	0.9555	 18.5187	0.9513
                   25.2947	0.9578	25.5554	0.9577	24.9602	0.9566	23.4309	0.954	   12.6449	0.9414
 FD3:              28.424	0.9698	28.4557	0.9698	27.7249	0.9693	12.1206	0.9435	 7.672	  0.9328
                   30.5049	0.9704	30.4146	0.9703	29.0037	0.9683	14.403	0.9477	 8.8251	  0.9349
+```
 
-
-Example model size per scene: 
+Example model size per scene:
+```
 FD1: 10.41MB    
 compresed feature plane + normpare_fp + compressed mlp + normpare_mlp =  20.06KB + 375B + 67.56KB + 270B
                                                                          16.44KB
@@ -33,7 +35,7 @@ compresed feature plane + normpare_fp + compressed mlp + normpare_mlp =  55.47KB
                                                                          27.66KB
                                                                          14.19KB
                                                                          6.16KB
-                                                                         
+```                                                                         
 Note: Shared occupancy for all scenes, binary removed(does not affect result)
 Note: compressed result difference, but noT too much like cut_steak is 20.06, sear is 19.09, coffee is 19.47
 
