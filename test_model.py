@@ -42,9 +42,13 @@ def main(
     logger.info("==> Init trainer ...")
     trainer = Trainer(model, None, eval_loader=test_loader, test_chunk_size = 8192*4, num_rays = 8192*4)
     if "eval" in stages:
-        logger.info('==> evaluate start')
-        trainer.load_ckpt()
-        trainer.eval(save_results=True, rendering_channels=["rgb", "depth"])
+        for name in ['ckpt','mlp']:
+            for idx in ['0','10','20','30','40']:
+                nm = name + idx +'.ckpt'
+                print("===> current ckpt: " + nm)
+                trainer.load_ckpt_test(nm)
+                print('==> trainer_ckpt:',trainer.load_ckpt_test(nm))
+                trainer.eval(save_results=True, rendering_channels=["rgb", "depth"])
 
 
 if __name__ == "__main__":
