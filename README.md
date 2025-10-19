@@ -1,49 +1,3 @@
-# Codec Folder contains all compression code, including patch vector to video and recovery
-Check compression, in codec.py
-'python codec.py'
-
-Check the result
-run 'python test_model.py --ginc config_files/blender/test_only_f5.gin' 
-It will auto run all compressed, the model named "ckpt#.ckpt" is Feature compression only, the model named "mlp#.chpt" is compressed both feature vector and MLP.
-Change dataset name and model dir before run it
-
-The Sample result of cut_steak:
-```
-                        qp0              qp10             qp20              qp30           qp40 
-feature_only
-FD1:       f2     27.6388	0.9589   27.6266	0.9589   26.9128	0.9582	 24.5163	0.9555	  18.669	0.9511
-           f3     27.985	0.9588	 27.8272	0.9586	 27.1293	0.9574	 23.8661	0.9546	  12.569	0.9420
-FD3:              30.7436	0.9711	 30.6358	0.9710	  29.8469	0.9701	 12.8522	0.9448	  8.1900	0.9338	
-                  30.9104	0.9710	 30.7771	0.9708	 29.1763	0.9589	 14.2161	0.9463	  8.6474	0.9333
-                  
-feature&mlp  
-FD1:              27.0126	0.9585	 26.9222	0.9584	 26.4088	0.9580	 24.2634	0.9555	  18.5187	0.9513
-                  25.2947	0.9578	 25.5554	0.9577	 24.9602	0.9566	 23.4309	0.9540	  12.6449	0.9414
-FD3:              28.4240	0.9698	 28.4557	0.9698	 27.7249	0.9693	 12.1206	0.9435	  7.6720  0.9328
-                  30.5049	0.9704	 30.4146	0.9703	 29.0037	0.9683	 14.403	  0.9477	  8.8251	0.9349
-```
-
-Example model size per scene:
-```
-FD1: 10.41MB                                                              single scene                              two scene
-compresed feature plane + normpare_fp + compressed mlp + normpare_mlp =  20.06KB + 375B + 67.56KB + 270B         33.82KB + 620B
-                                                                         16.44KB                                 25.28KB
-                                                                         9.78KB                                  15.40KB
-                                                                         5.62KB                                  8.80KB
-                                                                         3.65KB                                  4.99KB
-
-FD3: 10.61MB
-compresed feature plane + normpare_fp + compressed mlp + normpare_mlp =  55.47KB + 375B + 72.87KB + 270B        100.34KB + 620B
-                                                                         46.05KB                                80.65KB
-                                                                         27.66KB                                48.08KB
-                                                                         14.19KB                                24.62KB 
-                                                                         6.16KB                                 9.35KB
-
-Approximate 2.43KB if not include occ(8 MB), binary, feature_planes and mlp
-```                                                                         
-Note: Shared occupancy for all scenes, binary removed(does not affect result)
-Note: compressed result difference, but noT too much like cut_steak is 20.06, sear is 19.09, coffee is 19.47
-
 # Data Preparation
 Take our generated lego dataset as example, put `rename.py` under the lego directory
 ```
@@ -178,3 +132,55 @@ ray_sample: 512(codepoint: neural_field/model/trimipRF.py line19)
 ray_sample: 1024
 - comb3/50k: 34.25/10.4MB
 - comb4/50k: OOM
+
+# For checking
+Codec Folder contains all compression code, including patch vector to video and recovery
+Check compression, in codec.py
+'python codec.py'
+
+Check the result
+run 'python test_model.py --ginc config_files/blender/test_only_f5.gin' 
+It will auto run all compressed, the model named "ckpt#.ckpt" is Feature compression only, the model named "mlp#.chpt" is compressed both feature vector and MLP.
+Change dataset name and model dir before run it
+
+The Sample result of cut_steak:
+```
+                        qp0              qp10             qp20              qp30           qp40 
+feature_only
+FD1:       f2     27.6388	0.9589   27.6266	0.9589   26.9128	0.9582	 24.5163	0.9555	  18.669	0.9511
+           f3     27.985	0.9588	 27.8272	0.9586	 27.1293	0.9574	 23.8661	0.9546	  12.569	0.9420
+FD3:              30.7436	0.9711	 30.6358	0.9710	  29.8469	0.9701	 12.8522	0.9448	  8.1900	0.9338	
+                  30.9104	0.9710	 30.7771	0.9708	 29.1763	0.9589	 14.2161	0.9463	  8.6474	0.9333
+                  
+feature&mlp  
+FD1:              27.0126	0.9585	 26.9222	0.9584	 26.4088	0.9580	 24.2634	0.9555	  18.5187	0.9513
+                  25.2947	0.9578	 25.5554	0.9577	 24.9602	0.9566	 23.4309	0.9540	  12.6449	0.9414
+FD3:              28.4240	0.9698	 28.4557	0.9698	 27.7249	0.9693	 12.1206	0.9435	  7.6720  0.9328
+                  30.5049	0.9704	 30.4146	0.9703	 29.0037	0.9683	 14.403	  0.9477	  8.8251	0.9349
+```
+
+Example model size per scene:
+```
+FD1: 10.41MB                                                              single scene                              two scene
+compresed feature plane + normpare_fp + compressed mlp + normpare_mlp =  20.06KB + 375B + 67.56KB + 270B         33.82KB + 620B
+                                                                         16.44KB                                 25.28KB
+                                                                         9.78KB                                  15.40KB
+                                                                         5.62KB                                  8.80KB
+                                                                         3.65KB                                  4.99KB
+
+FD3: 10.61MB
+compresed feature plane + normpare_fp + compressed mlp + normpare_mlp =  55.47KB + 375B + 72.87KB + 270B        100.34KB + 620B
+                                                                         46.05KB                                80.65KB
+                                                                         27.66KB                                48.08KB
+                                                                         14.19KB                                24.62KB 
+                                                                         6.16KB                                 9.35KB
+
+Approximate 2.43KB if not include occ(8 MB), binary, feature_planes and mlp
+```                                                                         
+Note: Shared occupancy for all scenes, binary removed(does not affect result)
+Note: compressed result difference, but noT too much like cut_steak is 20.06, sear is 19.09, coffee is 19.47
+
+
+
+
+
