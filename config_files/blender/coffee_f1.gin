@@ -3,12 +3,12 @@ main.num_workers = 16
 main.model_name = 'Tri-MipRF'
 main.batch_size = 28 # this is not the actual batch_size, but the prefetch size
 
-RayDataset.base_path = './nerf_synthetic'
-RayDataset.scene = 'lego_f1'
+RayDataset.base_path = './f1_data'
+RayDataset.scene = 'cook_f1'
 RayDataset.scene_type = 'nerf_synthetic'
 
 
-Trainer.base_exp_dir = './log2'
+Trainer.base_exp_dir = './cook/fd1/'
 Trainer.exp_name = None
 Trainer.eval_step = 50000
 Trainer.log_step = 1000

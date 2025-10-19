@@ -2,20 +2,19 @@ main.train_split = 'trainval'
 main.num_workers = 1
 main.model_name = 'Tri-MipRF'
 main.batch_size = 28 # this is not the actual batch_size, but the prefetch size
-main.saved_model_dir = '2025-10-17_17-54-30' # make sure it belongs to the correct scene
+main.saved_model_dir = '2024-09-12_15-26-31' # make sure it belongs to the correct scene
 # the actual path is RayDataset.scene_type/RayDataset.scene/main.model_name/main.saved_model_dir
 # e.g., nerf_synthetic/lego_f5/Tri-MipRF/2024-07-10_15-32-51
 
-RayDataset.base_path = './f1_data'
-RayDataset.scene = 'coffee_f0'
-RayDataset.scene_type = 'nerf_synthetic'
+RayDataset.base_path = './nerf_synthetic'
+RayDataset.scene = 'coffee_f2'
+RayDataset.scene_type = 'dynerf'
 
-
-Trainer.base_exp_dir = './coffee/fd1/'
+Trainer.base_exp_dir = './log2'
 Trainer.exp_name = None
 Trainer.eval_step = 50000
 Trainer.log_step = 1000
 Trainer.max_steps = 50001
-Trainer.target_sample_batch_size = 262144
+Trainer.target_sample_batch_size = 200
 Trainer.is_first_frame = True
 

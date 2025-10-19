@@ -4,7 +4,7 @@ main.model_name = 'Tri-MipRF'
 main.batch_size = 28 # this is not the actual batch_size, but the prefetch size
 
 RayDataset.base_path = './nerf_synthetic'
-RayDataset.scene = 'lego_f1'
+RayDataset.scene = 'lego_f20'
 RayDataset.scene_type = 'nerf_synthetic'
 
 
