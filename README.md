@@ -23,18 +23,21 @@ FD3:              28.424	0.9698	28.4557	0.9698	27.7249	0.9693	12.1206	0.9435	 7.
 
 Example model size per scene:
 ```
-FD1: 10.41MB    
-compresed feature plane + normpare_fp + compressed mlp + normpare_mlp =  20.06KB + 375B + 67.56KB + 270B
-                                                                         16.44KB
-                                                                         9.78KB
-                                                                         5.62KB
-                                                                         3.65KB
+FD1: 10.41MB                                                              single scene                              two scene
+compresed feature plane + normpare_fp + compressed mlp + normpare_mlp =  20.06KB + 375B + 67.56KB + 270B         33.82KB + 620B
+                                                                         16.44KB                                 25.28KB
+                                                                         9.78KB                                  15.40KB
+                                                                         5.62KB                                  8.80KB
+                                                                         3.65KB                                  4.99KB
+
 FD3: 10.61MB
-compresed feature plane + normpare_fp + compressed mlp + normpare_mlp =  55.47KB + 375B + 72.87KB + 270B
-                                                                         46.05KB
-                                                                         27.66KB
-                                                                         14.19KB
-                                                                         6.16KB
+compresed feature plane + normpare_fp + compressed mlp + normpare_mlp =  55.47KB + 375B + 72.87KB + 270B        100.34KB + 620B
+                                                                         46.05KB                                80.65KB
+                                                                         27.66KB                                48.08KB
+                                                                         14.19KB                                24.62KB 
+                                                                         6.16KB                                 9.35KB
+
+Approximate 2.43KB if not include occ(8 MB), binary, feature_planes and mlp
 ```                                                                         
 Note: Shared occupancy for all scenes, binary removed(does not affect result)
 Note: compressed result difference, but noT too much like cut_steak is 20.06, sear is 19.09, coffee is 19.47
