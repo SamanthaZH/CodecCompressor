@@ -175,10 +175,12 @@ compresed feature plane + normpare_fp + compressed mlp + normpare_mlp =  55.47KB
                                                                          14.19KB                                24.62KB 
                                                                          6.16KB                                 9.35KB
 
-Approximate 1990Byte if not include occ(8MB), binary(2MB), feature_planes(fd1=0.09MB/ fd3 = 0.28) and mlp
+1990Byte per frame left,  occ(8MB), binary(2MB), feature_planes(fd1=0.09MB/ fd3 = 0.28) and mlp
 ```                                                                         
 Note: Shared occupancy for all scenes, binary removed(does not affect result)
+
 Note: compressed result difference, but noT too much like cut_steak is 20.06, sear is 19.09, coffee is 19.47
+
 model link: https://drive.google.com/file/d/1ar6iyGNlsJzQzCi38nRpcHz7HLfo1lG7/view?usp=sharing
 contains "single scene" - for just single scene compression, " multiple scene" is for compressing multiple scenes together. 
 
