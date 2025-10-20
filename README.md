@@ -135,13 +135,28 @@ ray_sample: 1024
 
 # For checking
 Codec Folder contains all compression code, including patch vector to video and recovery
-Check compression, in codec.py
-'python codec.py'
+Check compression
+run 'python codec.py', need to change just uncomment setting line10-19 for synthetic or line 21-28 for dynerf
 
 Check the result
-run 'python test_model.py --ginc config_files/blender/test_only_f5.gin' 
-It will auto run all compressed, the model named "ckpt#.ckpt" is Feature compression only, the model named "mlp#.chpt" is compressed both feature vector and MLP.
-Change dataset name and model dir before run it
+
+run 'python test_model.py --ginc config_files/blender/test_only_syn.gin' for synthetic dataset 
+    'python test_model.py --ginc config_files/blender/test_only_dm.gin' for dynerf dataset, this is for compression and verification.
+Two file might need to change: current set is for dynerf dataset:
+
+ 1. change reference model, in "" neural_field -> encoding->tri_mip.py-> line 43 for dynerf, 44 for synthetic""
+ ```
+            # load from cpk
+            self.fm = torch.load("./cut/fd1/nerf_synthetic/cut_f1/Tri-MipRF/model_w_ds/fm.ckpt")
+            #self.fm = torch.load("./log_sample/fd1/nerf_synthetic/lego_f1/Tri-MipRF/model_w_ds/fm.ckpt") for lego dataset
+```
+
+2. config_files->blender-> test_only_xx.gin, total three files can used: '''test_only_syn.gin''' (now set for fd1), '''test_only_dm.gin''' (set for fd3), '''test_only_single.gin'''(for dynerf single scene test)
+   
+If you want to test single scene of dynerf, you can move the "cut_single" out of log_sample, change to "cut"; 
+- It will auto run all compressed, the model named "ckpt#.ckpt" is Feature compression only, the model named "mlp#.chpt" is compressed both feature vector and MLP.
+
+
 
 The Sample result of cut_steak: (The result are for multiple scene compression) 
 ```
