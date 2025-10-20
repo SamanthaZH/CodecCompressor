@@ -8,6 +8,7 @@ import os,pickle
 ## normalized planes to yuv444 frames and to video via ffmpeg
 
 '''
+# for synthetic scene
 dataset = 'lego'
 fd = 1
 #root_path = './'+dataset+'/fd'+ str(fd)+'/'
@@ -16,7 +17,8 @@ root = root_path + 'nerf_synthetic/'+dataset+'_f'
 scene, qp = 2, 0
 start = 2
 '''
-'''
+
+#for dynerf
 dataset = 'sear'
 fd = 1
 root_path = './'+dataset+'/fd'+ str(fd)+'/'
@@ -24,7 +26,7 @@ root_path = './'+dataset+'/fd'+ str(fd)+'/'
 root = root_path + 'nerf_synthetic/'+dataset+'_f'
 scene, qp = 3, 0
 start = 2
-'''
+
 # concat and recover planes
 merge.batch_process(root, scene,root_path,dataset,start)
 for qp in [0,10,20,30,40]:
