@@ -1,1450 +1,0 @@
-/home/jzhou23/tricp/lib/python3.9/site-packages/torch/cuda/__init__.py:497: UserWarning: Can't initialize NVML
-  warnings.warn("Can't initialize NVML")
-/home/jzhou23/tricp/lib/python3.9/site-packages/tinycudann/modules.py:57: UserWarning: tinycudann was built for lower compute capability (75) than the system's (80). Performance may be suboptimal.
-  warnings.warn(f"tinycudann was built for lower compute capability ({cc}) than the system's ({system_compute_capability}). Performance may be suboptimal.")
-2024-09-12 22:35:46.059 | INFO     | __main__:main:25 - ==> Init dataloader ...
-2024-09-12 22:35:46.144 | INFO     | dataset.ray_dataset:__init__:42 - ==> Find 1 cameras
-  0%|          | 0/100 [00:00<?, ?it/s]  3%|▎         | 3/100 [00:00<00:05, 18.53it/s] 57%|█████▋    | 57/100 [00:00<00:00, 262.13it/s]100%|██████████| 100/100 [00:00<00:00, 347.99it/s]
-/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py:554: UserWarning: This DataLoader will create 16 worker processes in total. Our suggested max number of worker in current system is 12, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(_create_warning_msg(
-2024-09-12 22:35:46.670 | INFO     | dataset.ray_dataset:__init__:42 - ==> Find 1 cameras
-  0%|          | 0/20 [00:00<?, ?it/s]100%|██████████| 20/20 [00:00<00:00, 218.36it/s]
-2024-09-12 22:35:46.817 | INFO     | __main__:main:49 - ==> Init model ...
-2024-09-12 22:35:48.102 | INFO     | __main__:main:51 - TriMipRFModel(
-  (field): TriMipRF(
-    (encoding): TriMipEncoding()
-    (direction_encoding): Encoding(n_input_dims=3, n_output_dims=16, seed=1337, dtype=torch.float16, hyperparams={'degree': 4, 'otype': 'SphericalHarmonics'})
-    (mlp_base): Network(n_input_dims=64, n_output_dims=16, seed=1337, dtype=torch.float16, hyperparams={'encoding': {'offset': 0.0, 'otype': 'Identity', 'scale': 1.0}, 'network': {'activation': 'ReLU', 'n_hidden_layers': 2, 'n_neurons': 128, 'otype': 'FullyFusedMLP', 'output_activation': 'None'}, 'otype': 'NetworkWithInputEncoding'})
-    (mlp_head): Network(n_input_dims=31, n_output_dims=3, seed=1337, dtype=torch.float16, hyperparams={'encoding': {'offset': 0.0, 'otype': 'Identity', 'scale': 1.0}, 'network': {'activation': 'ReLU', 'n_hidden_layers': 4, 'n_neurons': 128, 'otype': 'FullyFusedMLP', 'output_activation': 'Sigmoid'}, 'otype': 'NetworkWithInputEncoding'})
-  )
-  (ray_sampler): OccupancyGrid()
-)
-2024-09-12 22:35:48.103 | INFO     | __main__:main:53 - ==> Init trainer ...
-2024-09-12 22:35:48.124 | INFO     | trainer.trainer:__init__:64 - # Parameters for trimipRF.get_optimizer:
-# ==============================================================================
-trimipRF.get_optimizer.feature_lr_scale = 10.0
-trimipRF.get_optimizer.lr = 0.002
-trimipRF.get_optimizer.weight_decay = 1e-05
-
-# Parameters for get_scheduler:
-# ==============================================================================
-get_scheduler.gamma = 0.6
-
-# Parameters for main:
-# ==============================================================================
-main.batch_size = 28
-main.model_name = 'Tri-MipRF'
-main.num_workers = 16
-main.seed = 42
-main.stages = 'train_eval'
-main.train_split = 'trainval'
-
-# Parameters for RayDataset:
-# ==============================================================================
-RayDataset.base_path = './amily'
-RayDataset.num_rays = 8192
-RayDataset.render_bkgd = 'white'
-RayDataset.scene = 'amily_f7'
-RayDataset.scene_type = 'nerf_synthetic'
-RayDataset.to_world = True
-
-# Parameters for Trainer:
-# ==============================================================================
-Trainer.base_exp_dir = './log_amily/fd1'
-Trainer.dynamic_batch_size = True
-Trainer.eval_step = 50000
-Trainer.exp_name = 'nerf_synthetic/amily_f7/Tri-MipRF/2024-09-12_22-35-46'
-Trainer.is_first_frame = False
-Trainer.log_step = 1000
-Trainer.max_steps = 50001
-Trainer.num_rays = 8192
-Trainer.target_sample_batch_size = 262144
-Trainer.test_chunk_size = 8192
-Trainer.varied_eval_img = True
-
-# Parameters for TriMipEncoding:
-# ==============================================================================
-TriMipEncoding.comb = 5
-TriMipEncoding.feature_dim_factor = 1
-TriMipEncoding.include_cp = True
-TriMipEncoding.include_xyz = False
-
-# Parameters for TriMipRF:
-# ==============================================================================
-TriMipRF.feature_dim = 16
-TriMipRF.geo_feat_dim = 15
-TriMipRF.n_levels = 8
-TriMipRF.net_depth_base = 2
-TriMipRF.net_depth_color = 4
-TriMipRF.net_width = 128
-TriMipRF.plane_size = 512
-
-# Parameters for TriMipRFModel:
-# ==============================================================================
-TriMipRFModel.occ_grid_resolution = 128
-TriMipRFModel.samples_per_ray = 1024
-
-2024-09-12 22:35:48.129 | INFO     | trainer.trainer:fit:111 - ==> Start training ...
-2024-09-12 22:35:52.712 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:100 iter_time:0.014867782592773438 ETA:0:12:21 num_alive_ray:4201 rendering_samples_actual:258455 num_rays:5057 PSNR:23.736263275146484 total_loss:0.006858882959932089 
-2024-09-12 22:36:09.116 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:1000 iter_time:0.01955580711364746 ETA:0:15:58 num_alive_ray:14741 rendering_samples_actual:254736 num_rays:100248 PSNR:35.36880874633789 total_loss:0.0027086162008345127 
-2024-09-12 22:36:31.067 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:2000 iter_time:0.021843910217285156 ETA:0:17:28 num_alive_ray:18194 rendering_samples_actual:263055 num_rays:129565 PSNR:37.98736572265625 total_loss:0.001569764455780387 
-2024-09-12 22:36:54.140 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:3000 iter_time:0.020682334899902344 ETA:0:16:12 num_alive_ray:21583 rendering_samples_actual:264675 num_rays:130674 PSNR:38.76212692260742 total_loss:0.001173021038994193 
-2024-09-12 22:37:17.348 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:4000 iter_time:0.021431922912597656 ETA:0:16:25 num_alive_ray:22697 rendering_samples_actual:267274 num_rays:135381 PSNR:39.697959899902344 total_loss:0.0009185248636640608 
-2024-09-12 22:37:40.893 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:5000 iter_time:0.021416425704956055 ETA:0:16:03 num_alive_ray:22649 rendering_samples_actual:260292 num_rays:138064 PSNR:40.3183708190918 total_loss:0.0008199610165320337 
-2024-09-12 22:38:04.886 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:6000 iter_time:0.022504806518554688 ETA:0:16:30 num_alive_ray:22584 rendering_samples_actual:262987 num_rays:151324 PSNR:40.49259567260742 total_loss:0.0008593470556661487 
-2024-09-12 22:38:29.094 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:7000 iter_time:0.02305316925048828 ETA:0:16:31 num_alive_ray:23016 rendering_samples_actual:271741 num_rays:155476 PSNR:40.44973373413086 total_loss:0.0008756017195992172 
-2024-09-12 22:38:53.706 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:8000 iter_time:0.02299952507019043 ETA:0:16:06 num_alive_ray:24245 rendering_samples_actual:262701 num_rays:148722 PSNR:40.74872589111328 total_loss:0.0007351221283897758 
-2024-09-12 22:39:18.700 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:9000 iter_time:0.02408766746520996 ETA:0:16:27 num_alive_ray:22466 rendering_samples_actual:263401 num_rays:159792 PSNR:41.26426696777344 total_loss:0.0007460684864781797 
-2024-09-12 22:39:43.785 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:10000 iter_time:0.022069215774536133 ETA:0:14:42 num_alive_ray:21897 rendering_samples_actual:258058 num_rays:160174 PSNR:41.52851867675781 total_loss:0.0007566528511233628 
-2024-09-12 22:40:08.726 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:11000 iter_time:0.023549318313598633 ETA:0:15:18 num_alive_ray:22657 rendering_samples_actual:262697 num_rays:163721 PSNR:41.59440612792969 total_loss:0.0007204071735031903 
-2024-09-12 22:40:33.929 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:12000 iter_time:0.02215576171875 ETA:0:14:01 num_alive_ray:22278 rendering_samples_actual:260081 num_rays:167472 PSNR:42.113197326660156 total_loss:0.0006751957698725164 
-2024-09-12 22:40:59.310 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:13000 iter_time:0.0234222412109375 ETA:0:14:26 num_alive_ray:22486 rendering_samples_actual:262069 num_rays:164697 PSNR:42.18556213378906 total_loss:0.0006425338797271252 
-2024-09-12 22:41:25.008 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:14000 iter_time:0.024996042251586914 ETA:0:14:59 num_alive_ray:23084 rendering_samples_actual:258270 num_rays:171376 PSNR:41.86249542236328 total_loss:0.000695672701112926 
-2024-09-12 22:41:50.361 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:15000 iter_time:0.02447676658630371 ETA:0:14:16 num_alive_ray:21775 rendering_samples_actual:259416 num_rays:172885 PSNR:41.964942932128906 total_loss:0.0007263013394549489 
-2024-09-12 22:42:15.954 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:16000 iter_time:0.02564549446105957 ETA:0:14:31 num_alive_ray:22499 rendering_samples_actual:275321 num_rays:182342 PSNR:42.470672607421875 total_loss:0.0006681258673779666 
-2024-09-12 22:42:42.197 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:17000 iter_time:0.022433757781982422 ETA:0:12:20 num_alive_ray:22185 rendering_samples_actual:261295 num_rays:176626 PSNR:42.80411148071289 total_loss:0.0006091594696044922 
-2024-09-12 22:43:08.361 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:18000 iter_time:0.025687217712402344 ETA:0:13:42 num_alive_ray:22125 rendering_samples_actual:261644 num_rays:179098 PSNR:42.38982009887695 total_loss:0.0006437762640416622 
-2024-09-12 22:43:34.794 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:19000 iter_time:0.025162220001220703 ETA:0:13:00 num_alive_ray:22026 rendering_samples_actual:270431 num_rays:185680 PSNR:42.71579360961914 total_loss:0.0006592119461856782 
-2024-09-12 22:44:01.204 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:20000 iter_time:0.025706052780151367 ETA:0:12:51 num_alive_ray:21872 rendering_samples_actual:266913 num_rays:182780 PSNR:42.62644577026367 total_loss:0.0006617365870624781 
-2024-09-12 22:44:27.747 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:21000 iter_time:0.022939682006835938 ETA:0:11:05 num_alive_ray:21118 rendering_samples_actual:259907 num_rays:181779 PSNR:42.61555480957031 total_loss:0.0006781775155104697 
-2024-09-12 22:44:54.294 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:22000 iter_time:0.02414536476135254 ETA:0:11:16 num_alive_ray:21931 rendering_samples_actual:264830 num_rays:176591 PSNR:41.837257385253906 total_loss:0.0007475200109183788 
-2024-09-12 22:45:20.811 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:23000 iter_time:0.024464845657348633 ETA:0:11:00 num_alive_ray:21944 rendering_samples_actual:261026 num_rays:180674 PSNR:42.86097717285156 total_loss:0.0006070460076443851 
-2024-09-12 22:45:47.422 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:24000 iter_time:0.025809049606323242 ETA:0:11:11 num_alive_ray:22022 rendering_samples_actual:270435 num_rays:184487 PSNR:42.952301025390625 total_loss:0.0006154542788863182 
-2024-09-12 22:46:14.227 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:25000 iter_time:0.02472996711730957 ETA:0:10:18 num_alive_ray:21041 rendering_samples_actual:255541 num_rays:182642 PSNR:43.09713363647461 total_loss:0.0006119351601228118 
-2024-09-12 22:46:41.655 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:26000 iter_time:0.024477481842041016 ETA:0:09:47 num_alive_ray:20677 rendering_samples_actual:261726 num_rays:197396 PSNR:43.98170471191406 total_loss:0.0005620442098006606 
-2024-09-12 22:47:09.219 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:27000 iter_time:0.0274655818939209 ETA:0:10:31 num_alive_ray:20444 rendering_samples_actual:259274 num_rays:192994 PSNR:43.92209243774414 total_loss:0.0005628252401947975 
-2024-09-12 22:47:36.915 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:28000 iter_time:0.0262606143951416 ETA:0:09:37 num_alive_ray:21166 rendering_samples_actual:267043 num_rays:197265 PSNR:43.962581634521484 total_loss:0.0005344324745237827 
-2024-09-12 22:48:04.629 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:29000 iter_time:0.02605414390563965 ETA:0:09:07 num_alive_ray:21134 rendering_samples_actual:262538 num_rays:196246 PSNR:43.97758102416992 total_loss:0.0005463767447508872 
-2024-09-12 22:48:32.589 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:30000 iter_time:0.027065277099609375 ETA:0:09:01 num_alive_ray:20713 rendering_samples_actual:264524 num_rays:200707 PSNR:43.98422622680664 total_loss:0.0005608799983747303 
-2024-09-12 22:49:00.316 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:31000 iter_time:0.02775883674621582 ETA:0:08:47 num_alive_ray:21291 rendering_samples_actual:262352 num_rays:192464 PSNR:44.19232940673828 total_loss:0.0004900013445876539 
-2024-09-12 22:49:27.926 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:32000 iter_time:0.024921894073486328 ETA:0:07:28 num_alive_ray:21127 rendering_samples_actual:260834 num_rays:195831 PSNR:43.87815856933594 total_loss:0.0005406045238487422 
-2024-09-12 22:49:55.670 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:33000 iter_time:0.026534080505371094 ETA:0:07:31 num_alive_ray:21436 rendering_samples_actual:266134 num_rays:201176 PSNR:44.184226989746094 total_loss:0.0005138254491612315 
-2024-09-12 22:50:23.430 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:34000 iter_time:0.02513861656188965 ETA:0:06:42 num_alive_ray:20778 rendering_samples_actual:263729 num_rays:199628 PSNR:43.67314147949219 total_loss:0.0005957473767921329 
-2024-09-12 22:50:51.333 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:35000 iter_time:0.027192354202270508 ETA:0:06:47 num_alive_ray:21099 rendering_samples_actual:262761 num_rays:198683 PSNR:44.32080841064453 total_loss:0.0005136055988259614 
-2024-09-12 22:51:19.233 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:36000 iter_time:0.02648162841796875 ETA:0:06:10 num_alive_ray:20523 rendering_samples_actual:262929 num_rays:196307 PSNR:43.935035705566406 total_loss:0.0005382585804909468 
-2024-09-12 22:51:47.148 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:37000 iter_time:0.024528026580810547 ETA:0:05:18 num_alive_ray:21111 rendering_samples_actual:263085 num_rays:200532 PSNR:44.19355392456055 total_loss:0.0005251934053376317 
-2024-09-12 22:52:15.234 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:38000 iter_time:0.025793075561523438 ETA:0:05:09 num_alive_ray:20573 rendering_samples_actual:258882 num_rays:203972 PSNR:44.6439094543457 total_loss:0.00048124519526027143 
-2024-09-12 22:52:43.461 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:39000 iter_time:0.026488780975341797 ETA:0:04:51 num_alive_ray:20785 rendering_samples_actual:263409 num_rays:207202 PSNR:44.62312316894531 total_loss:0.0005043876590207219 
-2024-09-12 22:53:12.072 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:40000 iter_time:0.026253700256347656 ETA:0:04:22 num_alive_ray:20338 rendering_samples_actual:260792 num_rays:204774 PSNR:44.47304153442383 total_loss:0.0005172960227355361 
-2024-09-12 22:53:40.422 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:41000 iter_time:0.026559114456176758 ETA:0:03:59 num_alive_ray:20716 rendering_samples_actual:264874 num_rays:205618 PSNR:44.69173049926758 total_loss:0.0004720010329037905 
-2024-09-12 22:54:08.996 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:42000 iter_time:0.027964353561401367 ETA:0:03:43 num_alive_ray:21088 rendering_samples_actual:270126 num_rays:212957 PSNR:44.86079406738281 total_loss:0.0004653529613278806 
-2024-09-12 22:54:37.650 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:43000 iter_time:0.027051925659179688 ETA:0:03:09 num_alive_ray:20760 rendering_samples_actual:262900 num_rays:212695 PSNR:44.98113250732422 total_loss:0.00046714485506527126 
-2024-09-12 22:55:06.384 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:44000 iter_time:0.02600884437561035 ETA:0:02:36 num_alive_ray:20495 rendering_samples_actual:264029 num_rays:209942 PSNR:44.753238677978516 total_loss:0.00047654545051045716 
-2024-09-12 22:55:35.049 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:45000 iter_time:0.027159929275512695 ETA:0:02:15 num_alive_ray:20411 rendering_samples_actual:261045 num_rays:205329 PSNR:45.133209228515625 total_loss:0.00044984908890910447 
-2024-09-12 22:56:03.833 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:46000 iter_time:0.026231765747070312 ETA:0:01:44 num_alive_ray:20882 rendering_samples_actual:268210 num_rays:213765 PSNR:44.94608688354492 total_loss:0.0004514015163294971 
-2024-09-12 22:56:32.611 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:47000 iter_time:0.027856826782226562 ETA:0:01:23 num_alive_ray:20537 rendering_samples_actual:260906 num_rays:208808 PSNR:45.183319091796875 total_loss:0.0004497157933656126 
-2024-09-12 22:57:01.551 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:48000 iter_time:0.026211023330688477 ETA:0:00:52 num_alive_ray:20581 rendering_samples_actual:262651 num_rays:209152 PSNR:44.85342025756836 total_loss:0.00045454761129803956 
-2024-09-12 22:57:30.428 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:49000 iter_time:0.02786707878112793 ETA:0:00:27 num_alive_ray:20273 rendering_samples_actual:259526 num_rays:211488 PSNR:45.31034851074219 total_loss:0.000437796872574836 
-2024-09-12 22:57:59.382 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:50000 iter_time:0.027012348175048828 ETA:0:00:00 num_alive_ray:20314 rendering_samples_actual:263590 num_rays:211571 PSNR:45.339813232421875 total_loss:0.00043707137228921056 
-2024-09-12 22:57:59.676 | INFO     | utils.writer:write_scalar_dicts:79 - num_alive_ray:61333 rendering_samples_actual:0 num_rays:800 PSNR:45.3692512512207 
-2024-09-12 22:57:59.840 | INFO     | trainer.trainer:fit:161 - ==> Training done!
-2024-09-12 22:57:59.841 | INFO     | trainer.trainer:save_ckpt:244 - ==> Saving checkpoints to log_amily/fd1/nerf_synthetic/amily_f7/Tri-MipRF/2024-09-12_22-35-46/model.ckpt
-2024-09-12 22:57:59.874 | INFO     | trainer.trainer:eval:191 - ==> Start evaluation on testset ...
-  0%|          | 0/20 [00:00<?, ?it/s]  5%|▌         | 1/20 [00:00<00:11,  1.62it/s] 10%|█         | 2/20 [00:00<00:07,  2.39it/s] 15%|█▌        | 3/20 [00:01<00:06,  2.69it/s] 20%|██        | 4/20 [00:01<00:05,  2.92it/s] 25%|██▌       | 5/20 [00:01<00:04,  3.03it/s] 30%|███       | 6/20 [00:02<00:04,  3.26it/s] 35%|███▌      | 7/20 [00:02<00:04,  3.20it/s] 40%|████      | 8/20 [00:02<00:03,  3.20it/s] 45%|████▌     | 9/20 [00:03<00:03,  3.23it/s] 50%|█████     | 10/20 [00:03<00:03,  3.21it/s] 55%|█████▌    | 11/20 [00:03<00:02,  3.18it/s] 60%|██████    | 12/20 [00:03<00:02,  3.34it/s] 65%|██████▌   | 13/20 [00:04<00:02,  3.26it/s] 70%|███████   | 14/20 [00:04<00:01,  3.30it/s] 75%|███████▌  | 15/20 [00:04<00:01,  3.26it/s] 80%|████████  | 16/20 [00:05<00:01,  3.23it/s] 85%|████████▌ | 17/20 [00:05<00:00,  3.21it/s] 90%|█████████ | 18/20 [00:05<00:00,  3.21it/s] 95%|█████████▌| 19/20 [00:06<00:00,  3.35it/s]100%|██████████| 20/20 [00:06<00:00,  3.43it/s]100%|██████████| 20/20 [00:06<00:00,  3.13it/s]
-  0%|          | 0/20 [00:00<?, ?it/s] 25%|██▌       | 5/20 [00:00<00:00, 41.77it/s] 50%|█████     | 10/20 [00:00<00:00, 46.07it/s] 75%|███████▌  | 15/20 [00:00<00:00, 47.15it/s]100%|██████████| 20/20 [00:00<00:00, 48.00it/s]100%|██████████| 20/20 [00:00<00:00, 47.06it/s]
-2024-09-12 22:58:06.688 | INFO     | trainer.trainer:eval:224 - ==> Evaluation done
-2024-09-12 22:58:06.689 | INFO     | utils.writer:write_scalar_dicts:79 - num_alive_ray:62914.35 rendering_samples_actual:50.2 num_rays:800.0 PSNR:45.08572959899902 
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-WARNING:
-
-You should always run with libnvidia-ml.so that is installed with your
-NVIDIA Display Driver. By default it's installed in /usr/lib and /usr/lib64.
-libnvidia-ml.so in GDK package is a stub library that is attached only for
-build purposes (e.g. machine that you build your application doesn't have
-to have Display Driver installed).
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-/home/jzhou23/tricp/lib/python3.9/site-packages/torch/cuda/__init__.py:497: UserWarning: Can't initialize NVML
-  warnings.warn("Can't initialize NVML")
-/home/jzhou23/tricp/lib/python3.9/site-packages/tinycudann/modules.py:57: UserWarning: tinycudann was built for lower compute capability (75) than the system's (80). Performance may be suboptimal.
-  warnings.warn(f"tinycudann was built for lower compute capability ({cc}) than the system's ({system_compute_capability}). Performance may be suboptimal.")
-2024-09-12 22:58:12.908 | INFO     | __main__:main:25 - ==> Init dataloader ...
-2024-09-12 22:58:12.969 | INFO     | dataset.ray_dataset:__init__:42 - ==> Find 1 cameras
-  0%|          | 0/100 [00:00<?, ?it/s]  4%|▍         | 4/100 [00:00<00:02, 33.87it/s] 45%|████▌     | 45/100 [00:00<00:00, 237.79it/s]100%|██████████| 100/100 [00:00<00:00, 340.01it/s]
-/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py:554: UserWarning: This DataLoader will create 16 worker processes in total. Our suggested max number of worker in current system is 12, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(_create_warning_msg(
-2024-09-12 22:58:13.414 | INFO     | dataset.ray_dataset:__init__:42 - ==> Find 1 cameras
-  0%|          | 0/20 [00:00<?, ?it/s]100%|██████████| 20/20 [00:00<00:00, 217.39it/s]
-2024-09-12 22:58:13.907 | INFO     | __main__:main:49 - ==> Init model ...
-2024-09-12 22:58:15.302 | INFO     | __main__:main:51 - TriMipRFModel(
-  (field): TriMipRF(
-    (encoding): TriMipEncoding()
-    (direction_encoding): Encoding(n_input_dims=3, n_output_dims=16, seed=1337, dtype=torch.float16, hyperparams={'degree': 4, 'otype': 'SphericalHarmonics'})
-    (mlp_base): Network(n_input_dims=64, n_output_dims=16, seed=1337, dtype=torch.float16, hyperparams={'encoding': {'offset': 0.0, 'otype': 'Identity', 'scale': 1.0}, 'network': {'activation': 'ReLU', 'n_hidden_layers': 2, 'n_neurons': 128, 'otype': 'FullyFusedMLP', 'output_activation': 'None'}, 'otype': 'NetworkWithInputEncoding'})
-    (mlp_head): Network(n_input_dims=31, n_output_dims=3, seed=1337, dtype=torch.float16, hyperparams={'encoding': {'offset': 0.0, 'otype': 'Identity', 'scale': 1.0}, 'network': {'activation': 'ReLU', 'n_hidden_layers': 4, 'n_neurons': 128, 'otype': 'FullyFusedMLP', 'output_activation': 'Sigmoid'}, 'otype': 'NetworkWithInputEncoding'})
-  )
-  (ray_sampler): OccupancyGrid()
-)
-2024-09-12 22:58:15.303 | INFO     | __main__:main:53 - ==> Init trainer ...
-2024-09-12 22:58:15.329 | INFO     | trainer.trainer:__init__:64 - # Parameters for trimipRF.get_optimizer:
-# ==============================================================================
-trimipRF.get_optimizer.feature_lr_scale = 10.0
-trimipRF.get_optimizer.lr = 0.002
-trimipRF.get_optimizer.weight_decay = 1e-05
-
-# Parameters for get_scheduler:
-# ==============================================================================
-get_scheduler.gamma = 0.6
-
-# Parameters for main:
-# ==============================================================================
-main.batch_size = 28
-main.model_name = 'Tri-MipRF'
-main.num_workers = 16
-main.seed = 42
-main.stages = 'train_eval'
-main.train_split = 'trainval'
-
-# Parameters for RayDataset:
-# ==============================================================================
-RayDataset.base_path = './amily'
-RayDataset.num_rays = 8192
-RayDataset.render_bkgd = 'white'
-RayDataset.scene = 'amily_f8'
-RayDataset.scene_type = 'nerf_synthetic'
-RayDataset.to_world = True
-
-# Parameters for Trainer:
-# ==============================================================================
-Trainer.base_exp_dir = './log_amily/fd1'
-Trainer.dynamic_batch_size = True
-Trainer.eval_step = 50000
-Trainer.exp_name = 'nerf_synthetic/amily_f8/Tri-MipRF/2024-09-12_22-58-12'
-Trainer.is_first_frame = False
-Trainer.log_step = 1000
-Trainer.max_steps = 50001
-Trainer.num_rays = 8192
-Trainer.target_sample_batch_size = 262144
-Trainer.test_chunk_size = 8192
-Trainer.varied_eval_img = True
-
-# Parameters for TriMipEncoding:
-# ==============================================================================
-TriMipEncoding.comb = 5
-TriMipEncoding.feature_dim_factor = 1
-TriMipEncoding.include_cp = True
-TriMipEncoding.include_xyz = False
-
-# Parameters for TriMipRF:
-# ==============================================================================
-TriMipRF.feature_dim = 16
-TriMipRF.geo_feat_dim = 15
-TriMipRF.n_levels = 8
-TriMipRF.net_depth_base = 2
-TriMipRF.net_depth_color = 4
-TriMipRF.net_width = 128
-TriMipRF.plane_size = 512
-
-# Parameters for TriMipRFModel:
-# ==============================================================================
-TriMipRFModel.occ_grid_resolution = 128
-TriMipRFModel.samples_per_ray = 1024
-
-2024-09-12 22:58:15.334 | INFO     | trainer.trainer:fit:111 - ==> Start training ...
-2024-09-12 22:58:19.781 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:100 iter_time:0.013027429580688477 ETA:0:10:50 num_alive_ray:4635 rendering_samples_actual:258883 num_rays:5738 PSNR:23.358001708984375 total_loss:0.007764395326375961 
-2024-09-12 22:58:36.104 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:1000 iter_time:0.01942753791809082 ETA:0:15:51 num_alive_ray:14403 rendering_samples_actual:253498 num_rays:107630 PSNR:35.454715728759766 total_loss:0.0029989283066242933 
-2024-09-12 22:58:58.552 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:2000 iter_time:0.021320581436157227 ETA:0:17:03 num_alive_ray:19365 rendering_samples_actual:261253 num_rays:131706 PSNR:37.95011520385742 total_loss:0.001485481159761548 
-2024-09-12 22:59:22.303 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:3000 iter_time:0.022901535034179688 ETA:0:17:56 num_alive_ray:19967 rendering_samples_actual:258739 num_rays:141156 PSNR:38.39177322387695 total_loss:0.0014329309342429042 
-2024-09-12 22:59:46.498 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:4000 iter_time:0.02260613441467285 ETA:0:17:19 num_alive_ray:21714 rendering_samples_actual:264531 num_rays:147827 PSNR:39.396488189697266 total_loss:0.0011272137053310871 
-2024-09-12 23:00:11.037 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:5000 iter_time:0.022487640380859375 ETA:0:16:51 num_alive_ray:20859 rendering_samples_actual:262995 num_rays:156855 PSNR:39.869712829589844 total_loss:0.0010945061221718788 
-2024-09-12 23:00:36.007 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:6000 iter_time:0.02443718910217285 ETA:0:17:55 num_alive_ray:21362 rendering_samples_actual:263459 num_rays:165871 PSNR:40.608760833740234 total_loss:0.0009900417644530535 
-2024-09-12 23:01:01.070 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:7000 iter_time:0.024126291275024414 ETA:0:17:17 num_alive_ray:21646 rendering_samples_actual:265080 num_rays:169386 PSNR:40.920387268066406 total_loss:0.00090405362425372 
-2024-09-12 23:01:26.712 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:8000 iter_time:0.02505207061767578 ETA:0:17:32 num_alive_ray:21389 rendering_samples_actual:256797 num_rays:169127 PSNR:40.757469177246094 total_loss:0.0009356161463074386 
-2024-09-12 23:01:52.511 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:9000 iter_time:0.023664474487304688 ETA:0:16:10 num_alive_ray:22160 rendering_samples_actual:258852 num_rays:167476 PSNR:41.43124008178711 total_loss:0.0007716001709923148 
-2024-09-12 23:02:18.509 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:10000 iter_time:0.02590203285217285 ETA:0:17:16 num_alive_ray:20947 rendering_samples_actual:261504 num_rays:177255 PSNR:41.540138244628906 total_loss:0.0008402796229347587 
-2024-09-12 23:02:44.908 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:11000 iter_time:0.02555561065673828 ETA:0:16:36 num_alive_ray:23188 rendering_samples_actual:267712 num_rays:174836 PSNR:42.15281295776367 total_loss:0.000680761702824384 
-2024-09-12 23:03:11.409 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:12000 iter_time:0.025999784469604492 ETA:0:16:28 num_alive_ray:21864 rendering_samples_actual:264290 num_rays:179589 PSNR:42.11546325683594 total_loss:0.0007344723562709987 
-2024-09-12 23:03:38.199 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:13000 iter_time:0.024367094039916992 ETA:0:15:01 num_alive_ray:21405 rendering_samples_actual:262387 num_rays:180942 PSNR:42.1796760559082 total_loss:0.0007291721412912011 
-2024-09-12 23:04:05.231 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:14000 iter_time:0.02549004554748535 ETA:0:15:17 num_alive_ray:21425 rendering_samples_actual:260014 num_rays:180584 PSNR:42.54768371582031 total_loss:0.0006737286457791924 
-2024-09-12 23:04:32.024 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:15000 iter_time:0.02607274055480957 ETA:0:15:12 num_alive_ray:21888 rendering_samples_actual:267070 num_rays:185245 PSNR:42.22293472290039 total_loss:0.000723852077499032 
-2024-09-12 23:04:59.250 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:16000 iter_time:0.025152206420898438 ETA:0:14:15 num_alive_ray:22041 rendering_samples_actual:269165 num_rays:186776 PSNR:42.61511993408203 total_loss:0.000661397585645318 
-2024-09-12 23:05:26.465 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:17000 iter_time:0.0260012149810791 ETA:0:14:18 num_alive_ray:21815 rendering_samples_actual:259628 num_rays:184533 PSNR:42.72858810424805 total_loss:0.0006528412341140211 
-2024-09-12 23:05:53.774 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:18000 iter_time:0.02662062644958496 ETA:0:14:11 num_alive_ray:22317 rendering_samples_actual:261222 num_rays:182123 PSNR:42.52671813964844 total_loss:0.0006493623950518668 
-2024-09-12 23:06:21.282 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:19000 iter_time:0.024445533752441406 ETA:0:12:37 num_alive_ray:22050 rendering_samples_actual:264383 num_rays:192211 PSNR:42.816097259521484 total_loss:0.0006430457578971982 
-2024-09-12 23:06:48.665 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:20000 iter_time:0.025071144104003906 ETA:0:12:32 num_alive_ray:21779 rendering_samples_actual:262282 num_rays:190240 PSNR:43.12784194946289 total_loss:0.0006201121723279357 
-2024-09-12 23:07:16.392 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:21000 iter_time:0.0260617733001709 ETA:0:12:35 num_alive_ray:21443 rendering_samples_actual:260858 num_rays:194482 PSNR:42.6212272644043 total_loss:0.0006955949356779456 
-2024-09-12 23:07:44.071 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:22000 iter_time:0.02532505989074707 ETA:0:11:49 num_alive_ray:21836 rendering_samples_actual:268445 num_rays:194799 PSNR:42.8642692565918 total_loss:0.000662175239995122 
-2024-09-12 23:08:11.703 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:23000 iter_time:0.02689051628112793 ETA:0:12:06 num_alive_ray:21546 rendering_samples_actual:259435 num_rays:190208 PSNR:43.20079803466797 total_loss:0.0005935569060966372 
-2024-09-12 23:08:39.469 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:24000 iter_time:0.026434659957885742 ETA:0:11:27 num_alive_ray:21655 rendering_samples_actual:260228 num_rays:189624 PSNR:43.48061752319336 total_loss:0.0005519583937712014 
-2024-09-12 23:09:07.379 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:25000 iter_time:0.0254671573638916 ETA:0:10:36 num_alive_ray:21271 rendering_samples_actual:257234 num_rays:190334 PSNR:43.623207092285156 total_loss:0.0005518531543202698 
-2024-09-12 23:09:35.732 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:26000 iter_time:0.02615499496459961 ETA:0:10:27 num_alive_ray:20813 rendering_samples_actual:257901 num_rays:201242 PSNR:44.36185073852539 total_loss:0.000520851172041148 
-2024-09-12 23:10:04.300 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:27000 iter_time:0.02604365348815918 ETA:0:09:59 num_alive_ray:20707 rendering_samples_actual:255892 num_rays:195412 PSNR:43.91362380981445 total_loss:0.0005365710821934044 
-2024-09-12 23:10:32.866 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:28000 iter_time:0.027131080627441406 ETA:0:09:56 num_alive_ray:21142 rendering_samples_actual:265892 num_rays:204549 PSNR:43.96463394165039 total_loss:0.0005488547030836344 
-2024-09-12 23:11:01.395 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:29000 iter_time:0.02728414535522461 ETA:0:09:32 num_alive_ray:21139 rendering_samples_actual:263304 num_rays:206318 PSNR:44.03024673461914 total_loss:0.0005423643160611391 
-2024-09-12 23:11:30.075 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:30000 iter_time:0.026305675506591797 ETA:0:08:46 num_alive_ray:21362 rendering_samples_actual:263948 num_rays:202920 PSNR:43.815879821777344 total_loss:0.0005435120547190309 
-2024-09-12 23:11:58.795 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:31000 iter_time:0.02735280990600586 ETA:0:08:39 num_alive_ray:21247 rendering_samples_actual:264856 num_rays:201679 PSNR:44.159488677978516 total_loss:0.0005255213472992182 
-2024-09-12 23:12:27.306 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:32000 iter_time:0.02773571014404297 ETA:0:08:19 num_alive_ray:21435 rendering_samples_actual:262141 num_rays:204255 PSNR:43.57197570800781 total_loss:0.000605682551395148 
-2024-09-12 23:12:55.948 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:33000 iter_time:0.027500391006469727 ETA:0:07:47 num_alive_ray:20917 rendering_samples_actual:263640 num_rays:206114 PSNR:44.10722351074219 total_loss:0.0005400090012699366 
-2024-09-12 23:13:24.733 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:34000 iter_time:0.026395082473754883 ETA:0:07:02 num_alive_ray:21117 rendering_samples_actual:261694 num_rays:203518 PSNR:44.4747200012207 total_loss:0.0005049394094385207 
-2024-09-12 23:13:53.484 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:35000 iter_time:0.028241395950317383 ETA:0:07:03 num_alive_ray:21229 rendering_samples_actual:261990 num_rays:203496 PSNR:44.319583892822266 total_loss:0.0004988330765627325 
-2024-09-12 23:14:22.218 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:36000 iter_time:0.02760791778564453 ETA:0:06:26 num_alive_ray:21260 rendering_samples_actual:259885 num_rays:199223 PSNR:44.39365005493164 total_loss:0.0004975026240572333 
-2024-09-12 23:14:50.713 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:37000 iter_time:0.025586366653442383 ETA:0:05:32 num_alive_ray:21743 rendering_samples_actual:263814 num_rays:204245 PSNR:44.275474548339844 total_loss:0.0004946794360876083 
-2024-09-12 23:15:19.509 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:38000 iter_time:0.0258941650390625 ETA:0:05:10 num_alive_ray:21105 rendering_samples_actual:259632 num_rays:209074 PSNR:44.565879821777344 total_loss:0.0004843455972149968 
-2024-09-12 23:15:48.324 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:39000 iter_time:0.02747201919555664 ETA:0:05:02 num_alive_ray:21313 rendering_samples_actual:265096 num_rays:208116 PSNR:44.638771057128906 total_loss:0.00048068631440401077 
-2024-09-12 23:16:17.266 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:40000 iter_time:0.026925086975097656 ETA:0:04:29 num_alive_ray:20426 rendering_samples_actual:260223 num_rays:207262 PSNR:44.620662689208984 total_loss:0.0005052877822890878 
-2024-09-12 23:16:46.167 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:41000 iter_time:0.025585174560546875 ETA:0:03:50 num_alive_ray:20827 rendering_samples_actual:264732 num_rays:208069 PSNR:44.63556671142578 total_loss:0.0004815352731384337 
-2024-09-12 23:17:15.070 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:42000 iter_time:0.026549339294433594 ETA:0:03:32 num_alive_ray:21332 rendering_samples_actual:271656 num_rays:216620 PSNR:45.14982604980469 total_loss:0.0004446508828550577 
-2024-09-12 23:17:44.022 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:43000 iter_time:0.029068946838378906 ETA:0:03:23 num_alive_ray:20945 rendering_samples_actual:263402 num_rays:213910 PSNR:44.9521598815918 total_loss:0.0004531384911388159 
-2024-09-12 23:18:13.136 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:44000 iter_time:0.026280879974365234 ETA:0:02:37 num_alive_ray:20643 rendering_samples_actual:263745 num_rays:211604 PSNR:44.93552780151367 total_loss:0.00046766322338953614 
-2024-09-12 23:18:42.197 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:45000 iter_time:0.02586841583251953 ETA:0:02:09 num_alive_ray:20485 rendering_samples_actual:258795 num_rays:209402 PSNR:45.06377410888672 total_loss:0.0004495376779232174 
-2024-09-12 23:19:11.296 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:46000 iter_time:0.026130199432373047 ETA:0:01:44 num_alive_ray:20707 rendering_samples_actual:265352 num_rays:213343 PSNR:45.088523864746094 total_loss:0.0004464876838028431 
-2024-09-12 23:19:40.418 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:47000 iter_time:0.029215097427368164 ETA:0:01:27 num_alive_ray:20690 rendering_samples_actual:262618 num_rays:213691 PSNR:45.33439254760742 total_loss:0.00044745448394678533 
-2024-09-12 23:20:09.698 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:48000 iter_time:0.026602983474731445 ETA:0:00:53 num_alive_ray:20752 rendering_samples_actual:262837 num_rays:214083 PSNR:45.27033996582031 total_loss:0.00045248359674587846 
-2024-09-12 23:20:39.002 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:49000 iter_time:0.02724146842956543 ETA:0:00:27 num_alive_ray:20280 rendering_samples_actual:258294 num_rays:213063 PSNR:45.097808837890625 total_loss:0.0004542959213722497 
-2024-09-12 23:21:08.229 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:50000 iter_time:0.026573896408081055 ETA:0:00:00 num_alive_ray:20603 rendering_samples_actual:265067 num_rays:214923 PSNR:45.14682388305664 total_loss:0.00045711942948400974 
-2024-09-12 23:21:08.539 | INFO     | utils.writer:write_scalar_dicts:79 - num_alive_ray:61015 rendering_samples_actual:17 num_rays:800 PSNR:45.27051544189453 
-2024-09-12 23:21:08.705 | INFO     | trainer.trainer:fit:161 - ==> Training done!
-2024-09-12 23:21:08.705 | INFO     | trainer.trainer:save_ckpt:244 - ==> Saving checkpoints to log_amily/fd1/nerf_synthetic/amily_f8/Tri-MipRF/2024-09-12_22-58-12/model.ckpt
-2024-09-12 23:21:08.738 | INFO     | trainer.trainer:eval:191 - ==> Start evaluation on testset ...
-  0%|          | 0/20 [00:00<?, ?it/s]Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f65c8bc7310>
-Traceback (most recent call last):
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1466, in __del__
-    self._shutdown_workers()
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1449, in _shutdown_workers
-    if w.is_alive():
-  File "/opt/sw/spack/apps/linux-rhel8-x86_64_v2/gcc-10.3.0/python-3.9.9-jh/lib/python3.9/multiprocessing/process.py", line 160, in is_alive
-    assert self._parent_pid == os.getpid(), 'can only test a child process'
-AssertionError: can only test a child process
-Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f65c8bc7310>
-Traceback (most recent call last):
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1466, in __del__
-    self._shutdown_workers()
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1449, in _shutdown_workers
-    if w.is_alive():
-  File "/opt/sw/spack/apps/linux-rhel8-x86_64_v2/gcc-10.3.0/python-3.9.9-jh/lib/python3.9/multiprocessing/process.py", line 160, in is_alive
-    assert self._parent_pid == os.getpid(), 'can only test a child process'
-AssertionError: can only test a child process
-  5%|▌         | 1/20 [00:00<00:09,  2.11it/s] 10%|█         | 2/20 [00:00<00:06,  2.73it/s] 15%|█▌        | 3/20 [00:01<00:05,  2.90it/s] 20%|██        | 4/20 [00:01<00:05,  3.03it/s] 25%|██▌       | 5/20 [00:01<00:04,  3.11it/s] 30%|███       | 6/20 [00:01<00:04,  3.28it/s] 35%|███▌      | 7/20 [00:02<00:04,  3.22it/s] 40%|████      | 8/20 [00:02<00:03,  3.23it/s] 45%|████▌     | 9/20 [00:02<00:03,  3.23it/s] 50%|█████     | 10/20 [00:03<00:03,  3.22it/s] 55%|█████▌    | 11/20 [00:03<00:02,  3.21it/s] 60%|██████    | 12/20 [00:03<00:02,  3.35it/s] 65%|██████▌   | 13/20 [00:04<00:02,  3.28it/s] 70%|███████   | 14/20 [00:04<00:01,  3.30it/s] 75%|███████▌  | 15/20 [00:04<00:01,  3.26it/s] 80%|████████  | 16/20 [00:05<00:01,  3.24it/s] 85%|████████▌ | 17/20 [00:05<00:00,  3.21it/s] 90%|█████████ | 18/20 [00:05<00:00,  3.21it/s] 95%|█████████▌| 19/20 [00:05<00:00,  3.33it/s]100%|██████████| 20/20 [00:06<00:00,  3.38it/s]100%|██████████| 20/20 [00:06<00:00,  3.17it/s]
-  0%|          | 0/20 [00:00<?, ?it/s] 20%|██        | 4/20 [00:00<00:00, 34.32it/s] 40%|████      | 8/20 [00:00<00:00, 36.79it/s] 65%|██████▌   | 13/20 [00:00<00:00, 42.25it/s] 95%|█████████▌| 19/20 [00:00<00:00, 45.98it/s]100%|██████████| 20/20 [00:00<00:00, 43.83it/s]
-2024-09-12 23:21:15.514 | INFO     | trainer.trainer:eval:224 - ==> Evaluation done
-2024-09-12 23:21:15.515 | INFO     | utils.writer:write_scalar_dicts:79 - num_alive_ray:62871.85 rendering_samples_actual:113.95 num_rays:800.0 PSNR:45.09609527587891 
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-WARNING:
-
-You should always run with libnvidia-ml.so that is installed with your
-NVIDIA Display Driver. By default it's installed in /usr/lib and /usr/lib64.
-libnvidia-ml.so in GDK package is a stub library that is attached only for
-build purposes (e.g. machine that you build your application doesn't have
-to have Display Driver installed).
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-/home/jzhou23/tricp/lib/python3.9/site-packages/torch/cuda/__init__.py:497: UserWarning: Can't initialize NVML
-  warnings.warn("Can't initialize NVML")
-/home/jzhou23/tricp/lib/python3.9/site-packages/tinycudann/modules.py:57: UserWarning: tinycudann was built for lower compute capability (75) than the system's (80). Performance may be suboptimal.
-  warnings.warn(f"tinycudann was built for lower compute capability ({cc}) than the system's ({system_compute_capability}). Performance may be suboptimal.")
-2024-09-12 23:21:31.201 | INFO     | __main__:main:25 - ==> Init dataloader ...
-2024-09-12 23:21:31.245 | INFO     | dataset.ray_dataset:__init__:42 - ==> Find 1 cameras
-  0%|          | 0/100 [00:00<?, ?it/s]  1%|          | 1/100 [00:00<00:16,  6.01it/s] 67%|██████▋   | 67/100 [00:00<00:00, 291.48it/s]100%|██████████| 100/100 [00:00<00:00, 338.22it/s]
-/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py:554: UserWarning: This DataLoader will create 16 worker processes in total. Our suggested max number of worker in current system is 12, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(_create_warning_msg(
-2024-09-12 23:21:31.682 | INFO     | dataset.ray_dataset:__init__:42 - ==> Find 1 cameras
-  0%|          | 0/20 [00:00<?, ?it/s]100%|██████████| 20/20 [00:00<00:00, 215.28it/s]
-2024-09-12 23:21:31.860 | INFO     | __main__:main:49 - ==> Init model ...
-2024-09-12 23:21:34.256 | INFO     | __main__:main:51 - TriMipRFModel(
-  (field): TriMipRF(
-    (encoding): TriMipEncoding()
-    (direction_encoding): Encoding(n_input_dims=3, n_output_dims=16, seed=1337, dtype=torch.float16, hyperparams={'degree': 4, 'otype': 'SphericalHarmonics'})
-    (mlp_base): Network(n_input_dims=64, n_output_dims=16, seed=1337, dtype=torch.float16, hyperparams={'encoding': {'offset': 0.0, 'otype': 'Identity', 'scale': 1.0}, 'network': {'activation': 'ReLU', 'n_hidden_layers': 2, 'n_neurons': 128, 'otype': 'FullyFusedMLP', 'output_activation': 'None'}, 'otype': 'NetworkWithInputEncoding'})
-    (mlp_head): Network(n_input_dims=31, n_output_dims=3, seed=1337, dtype=torch.float16, hyperparams={'encoding': {'offset': 0.0, 'otype': 'Identity', 'scale': 1.0}, 'network': {'activation': 'ReLU', 'n_hidden_layers': 4, 'n_neurons': 128, 'otype': 'FullyFusedMLP', 'output_activation': 'Sigmoid'}, 'otype': 'NetworkWithInputEncoding'})
-  )
-  (ray_sampler): OccupancyGrid()
-)
-2024-09-12 23:21:34.257 | INFO     | __main__:main:53 - ==> Init trainer ...
-2024-09-12 23:21:34.275 | INFO     | trainer.trainer:__init__:64 - # Parameters for trimipRF.get_optimizer:
-# ==============================================================================
-trimipRF.get_optimizer.feature_lr_scale = 10.0
-trimipRF.get_optimizer.lr = 0.002
-trimipRF.get_optimizer.weight_decay = 1e-05
-
-# Parameters for get_scheduler:
-# ==============================================================================
-get_scheduler.gamma = 0.6
-
-# Parameters for main:
-# ==============================================================================
-main.batch_size = 28
-main.model_name = 'Tri-MipRF'
-main.num_workers = 16
-main.seed = 42
-main.stages = 'train_eval'
-main.train_split = 'trainval'
-
-# Parameters for RayDataset:
-# ==============================================================================
-RayDataset.base_path = './amily'
-RayDataset.num_rays = 8192
-RayDataset.render_bkgd = 'white'
-RayDataset.scene = 'amily_f9'
-RayDataset.scene_type = 'nerf_synthetic'
-RayDataset.to_world = True
-
-# Parameters for Trainer:
-# ==============================================================================
-Trainer.base_exp_dir = './log_amily/fd1'
-Trainer.dynamic_batch_size = True
-Trainer.eval_step = 50000
-Trainer.exp_name = 'nerf_synthetic/amily_f9/Tri-MipRF/2024-09-12_23-21-31'
-Trainer.is_first_frame = False
-Trainer.log_step = 1000
-Trainer.max_steps = 50001
-Trainer.num_rays = 8192
-Trainer.target_sample_batch_size = 262144
-Trainer.test_chunk_size = 8192
-Trainer.varied_eval_img = True
-
-# Parameters for TriMipEncoding:
-# ==============================================================================
-TriMipEncoding.comb = 5
-TriMipEncoding.feature_dim_factor = 1
-TriMipEncoding.include_cp = True
-TriMipEncoding.include_xyz = False
-
-# Parameters for TriMipRF:
-# ==============================================================================
-TriMipRF.feature_dim = 16
-TriMipRF.geo_feat_dim = 15
-TriMipRF.n_levels = 8
-TriMipRF.net_depth_base = 2
-TriMipRF.net_depth_color = 4
-TriMipRF.net_width = 128
-TriMipRF.plane_size = 512
-
-# Parameters for TriMipRFModel:
-# ==============================================================================
-TriMipRFModel.occ_grid_resolution = 128
-TriMipRFModel.samples_per_ray = 1024
-
-2024-09-12 23:21:34.280 | INFO     | trainer.trainer:fit:111 - ==> Start training ...
-2024-09-12 23:21:38.918 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:100 iter_time:0.012859344482421875 ETA:0:10:41 num_alive_ray:4587 rendering_samples_actual:258820 num_rays:5628 PSNR:23.168153762817383 total_loss:0.007841560058295727 
-2024-09-12 23:21:55.121 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:1000 iter_time:0.0186920166015625 ETA:0:15:15 num_alive_ray:17141 rendering_samples_actual:260849 num_rays:97942 PSNR:35.76089859008789 total_loss:0.002195731969550252 
-2024-09-12 23:22:17.261 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:2000 iter_time:0.020727157592773438 ETA:0:16:34 num_alive_ray:18641 rendering_samples_actual:254357 num_rays:129658 PSNR:37.939579010009766 total_loss:0.0015653209993615746 
-2024-09-12 23:22:40.567 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:3000 iter_time:0.022401809692382812 ETA:0:17:32 num_alive_ray:19909 rendering_samples_actual:259084 num_rays:139174 PSNR:38.98035430908203 total_loss:0.0012455082032829523 
-2024-09-12 23:23:04.635 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:4000 iter_time:0.02264404296875 ETA:0:17:21 num_alive_ray:23154 rendering_samples_actual:261570 num_rays:136627 PSNR:39.68842315673828 total_loss:0.0009164056391455233 
-2024-09-12 23:23:29.206 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:5000 iter_time:0.02245330810546875 ETA:0:16:50 num_alive_ray:23252 rendering_samples_actual:271551 num_rays:152691 PSNR:40.08831787109375 total_loss:0.0009099296294152737 
-2024-09-12 23:23:53.775 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:6000 iter_time:0.024047136306762695 ETA:0:17:38 num_alive_ray:21789 rendering_samples_actual:264244 num_rays:162541 PSNR:40.27065658569336 total_loss:0.0010066658724099398 
-2024-09-12 23:24:19.161 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:7000 iter_time:0.023419857025146484 ETA:0:16:47 num_alive_ray:21696 rendering_samples_actual:260441 num_rays:167424 PSNR:40.453163146972656 total_loss:0.000965273124165833 
-2024-09-12 23:24:44.658 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:8000 iter_time:0.024260759353637695 ETA:0:16:58 num_alive_ray:22381 rendering_samples_actual:261434 num_rays:172674 PSNR:40.892398834228516 total_loss:0.0008904319256544113 
-2024-09-12 23:25:09.939 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:9000 iter_time:0.023819446563720703 ETA:0:16:16 num_alive_ray:22758 rendering_samples_actual:257262 num_rays:174304 PSNR:41.11579513549805 total_loss:0.0008491776534356177 
-2024-09-12 23:25:36.079 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:10000 iter_time:0.024965524673461914 ETA:0:16:38 num_alive_ray:22206 rendering_samples_actual:265088 num_rays:182808 PSNR:41.81645584106445 total_loss:0.0007652791682630777 
-2024-09-12 23:26:02.596 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:11000 iter_time:0.024540185928344727 ETA:0:15:57 num_alive_ray:22604 rendering_samples_actual:259419 num_rays:178192 PSNR:41.970706939697266 total_loss:0.0007262814906425774 
-2024-09-12 23:26:29.256 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:12000 iter_time:0.024394512176513672 ETA:0:15:27 num_alive_ray:21546 rendering_samples_actual:263704 num_rays:185521 PSNR:41.7874755859375 total_loss:0.0008266615332104266 
-2024-09-12 23:26:56.216 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:13000 iter_time:0.024333953857421875 ETA:0:15:00 num_alive_ray:22962 rendering_samples_actual:263491 num_rays:179588 PSNR:42.3494758605957 total_loss:0.000653668015729636 
-2024-09-12 23:27:22.976 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:14000 iter_time:0.02459263801574707 ETA:0:14:45 num_alive_ray:22206 rendering_samples_actual:258253 num_rays:183797 PSNR:42.3139533996582 total_loss:0.0006991385016590357 
-2024-09-12 23:27:49.845 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:15000 iter_time:0.024875402450561523 ETA:0:14:30 num_alive_ray:22961 rendering_samples_actual:261887 num_rays:185264 PSNR:42.43751525878906 total_loss:0.0006626843241974711 
-2024-09-12 23:28:17.270 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:16000 iter_time:0.026082754135131836 ETA:0:14:46 num_alive_ray:22102 rendering_samples_actual:274970 num_rays:195347 PSNR:42.20286178588867 total_loss:0.0007640785770490766 
-2024-09-12 23:28:44.843 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:17000 iter_time:0.02429676055908203 ETA:0:13:21 num_alive_ray:22133 rendering_samples_actual:262425 num_rays:193729 PSNR:42.515960693359375 total_loss:0.0007068902486935258 
-2024-09-12 23:29:12.459 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:18000 iter_time:0.025855302810668945 ETA:0:13:47 num_alive_ray:22197 rendering_samples_actual:261876 num_rays:193125 PSNR:42.31427001953125 total_loss:0.000659788609482348 
-2024-09-12 23:29:39.954 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:19000 iter_time:0.026912450790405273 ETA:0:13:54 num_alive_ray:22412 rendering_samples_actual:263998 num_rays:195891 PSNR:43.01233673095703 total_loss:0.0006230930448509753 
-2024-09-12 23:30:07.830 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:20000 iter_time:0.025372982025146484 ETA:0:12:41 num_alive_ray:22233 rendering_samples_actual:265354 num_rays:200162 PSNR:42.9760856628418 total_loss:0.0006637272308580577 
-2024-09-12 23:30:35.616 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:21000 iter_time:0.02524113655090332 ETA:0:12:12 num_alive_ray:21813 rendering_samples_actual:260876 num_rays:194393 PSNR:42.97919464111328 total_loss:0.0006444735336117446 
-2024-09-12 23:31:03.702 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:22000 iter_time:0.02619171142578125 ETA:0:12:13 num_alive_ray:22300 rendering_samples_actual:269173 num_rays:201055 PSNR:42.953975677490234 total_loss:0.0006675695185549557 
-2024-09-12 23:31:31.621 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:23000 iter_time:0.026157855987548828 ETA:0:11:46 num_alive_ray:22414 rendering_samples_actual:255868 num_rays:196994 PSNR:42.94197463989258 total_loss:0.0006369785987772048 
-2024-09-12 23:31:59.463 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:24000 iter_time:0.025959253311157227 ETA:0:11:14 num_alive_ray:22574 rendering_samples_actual:264406 num_rays:197040 PSNR:43.250240325927734 total_loss:0.0006086889188736677 
-2024-09-12 23:32:27.474 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:25000 iter_time:0.024985790252685547 ETA:0:10:24 num_alive_ray:21966 rendering_samples_actual:255153 num_rays:199424 PSNR:43.139434814453125 total_loss:0.0006344906287267804 
-2024-09-12 23:32:56.048 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:26000 iter_time:0.026051998138427734 ETA:0:10:25 num_alive_ray:20934 rendering_samples_actual:260031 num_rays:209247 PSNR:43.78512954711914 total_loss:0.0005861595273017883 
-2024-09-12 23:33:24.881 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:27000 iter_time:0.027262210845947266 ETA:0:10:27 num_alive_ray:21077 rendering_samples_actual:256817 num_rays:203272 PSNR:44.092567443847656 total_loss:0.0005446348804980516 
-2024-09-12 23:33:53.825 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:28000 iter_time:0.027077913284301758 ETA:0:09:55 num_alive_ray:21534 rendering_samples_actual:263024 num_rays:210454 PSNR:44.10154342651367 total_loss:0.0005644322372972965 
-2024-09-12 23:34:22.724 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:29000 iter_time:0.026983261108398438 ETA:0:09:26 num_alive_ray:21880 rendering_samples_actual:262285 num_rays:207912 PSNR:43.973812103271484 total_loss:0.0005473277997225523 
-2024-09-12 23:34:51.388 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:30000 iter_time:0.0258481502532959 ETA:0:08:36 num_alive_ray:22254 rendering_samples_actual:259684 num_rays:207659 PSNR:43.95997619628906 total_loss:0.0005443314439617097 
-2024-09-12 23:35:20.125 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:31000 iter_time:0.027267932891845703 ETA:0:08:38 num_alive_ray:21984 rendering_samples_actual:263059 num_rays:205410 PSNR:43.954864501953125 total_loss:0.0005465373978950083 
-2024-09-12 23:35:49.024 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:32000 iter_time:0.02621936798095703 ETA:0:07:51 num_alive_ray:21800 rendering_samples_actual:268025 num_rays:215308 PSNR:44.06254577636719 total_loss:0.0005528845940716565 
-2024-09-12 23:36:18.143 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:33000 iter_time:0.026679515838623047 ETA:0:07:33 num_alive_ray:21646 rendering_samples_actual:264783 num_rays:212306 PSNR:44.401851654052734 total_loss:0.0005041853291913867 
-2024-09-12 23:36:47.133 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:34000 iter_time:0.02666163444519043 ETA:0:07:06 num_alive_ray:21490 rendering_samples_actual:262880 num_rays:210916 PSNR:44.24094772338867 total_loss:0.0005402704118750989 
-2024-09-12 23:37:16.037 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:35000 iter_time:0.027868032455444336 ETA:0:06:58 num_alive_ray:21448 rendering_samples_actual:260383 num_rays:207715 PSNR:43.99860382080078 total_loss:0.0005507172318175435 
-2024-09-12 23:37:45.027 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:36000 iter_time:0.026230335235595703 ETA:0:06:07 num_alive_ray:20878 rendering_samples_actual:257044 num_rays:207945 PSNR:44.17073059082031 total_loss:0.0005359736387617886 
-2024-09-12 23:38:14.278 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:37000 iter_time:0.027054309844970703 ETA:0:05:51 num_alive_ray:21735 rendering_samples_actual:261583 num_rays:215633 PSNR:44.35153579711914 total_loss:0.0005116291576996446 
-2024-09-12 23:38:43.614 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:38000 iter_time:0.026599407196044922 ETA:0:05:19 num_alive_ray:21242 rendering_samples_actual:261374 num_rays:218080 PSNR:44.718109130859375 total_loss:0.0004937892081215978 
-2024-09-12 23:39:13.100 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:39000 iter_time:0.027643680572509766 ETA:0:05:04 num_alive_ray:21405 rendering_samples_actual:265467 num_rays:217918 PSNR:44.64636993408203 total_loss:0.000501565751619637 
-2024-09-12 23:39:42.676 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:40000 iter_time:0.025983810424804688 ETA:0:04:19 num_alive_ray:20920 rendering_samples_actual:260638 num_rays:213749 PSNR:44.724037170410156 total_loss:0.0004995862254872918 
-2024-09-12 23:40:12.089 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:41000 iter_time:0.027033329010009766 ETA:0:04:03 num_alive_ray:21260 rendering_samples_actual:269440 num_rays:218567 PSNR:44.585662841796875 total_loss:0.0005217830766923726 
-2024-09-12 23:40:41.508 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:42000 iter_time:0.027112483978271484 ETA:0:03:36 num_alive_ray:21232 rendering_samples_actual:266691 num_rays:219805 PSNR:45.08271408081055 total_loss:0.00045458957902155817 
-2024-09-12 23:41:10.968 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:43000 iter_time:0.028039216995239258 ETA:0:03:16 num_alive_ray:21372 rendering_samples_actual:263633 num_rays:222432 PSNR:44.96063232421875 total_loss:0.0004888644907623529 
-2024-09-12 23:41:40.710 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:44000 iter_time:0.026491880416870117 ETA:0:02:38 num_alive_ray:20807 rendering_samples_actual:262260 num_rays:220275 PSNR:44.96563720703125 total_loss:0.000485760101582855 
-2024-09-12 23:42:10.442 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:45000 iter_time:0.027689456939697266 ETA:0:02:18 num_alive_ray:20836 rendering_samples_actual:259636 num_rays:217561 PSNR:45.22478103637695 total_loss:0.00044977973448112607 
-2024-09-12 23:42:40.143 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:46000 iter_time:0.02671074867248535 ETA:0:01:46 num_alive_ray:20927 rendering_samples_actual:262292 num_rays:220379 PSNR:44.77885437011719 total_loss:0.00047249047202058136 
-2024-09-12 23:43:09.882 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:47000 iter_time:0.027764558792114258 ETA:0:01:23 num_alive_ray:20999 rendering_samples_actual:264865 num_rays:220246 PSNR:45.19796371459961 total_loss:0.00045956464600749314 
-2024-09-12 23:43:39.677 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:48000 iter_time:0.027100801467895508 ETA:0:00:54 num_alive_ray:21077 rendering_samples_actual:263323 num_rays:220573 PSNR:45.04762268066406 total_loss:0.00046151431160978973 
-2024-09-12 23:44:09.537 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:49000 iter_time:0.02755570411682129 ETA:0:00:27 num_alive_ray:20841 rendering_samples_actual:258644 num_rays:219822 PSNR:45.139373779296875 total_loss:0.0004608485905919224 
-2024-09-12 23:44:39.485 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:50000 iter_time:0.027074098587036133 ETA:0:00:00 num_alive_ray:21005 rendering_samples_actual:263991 num_rays:222497 PSNR:45.4825553894043 total_loss:0.00043412140803411603 
-2024-09-12 23:44:39.775 | INFO     | utils.writer:write_scalar_dicts:79 - num_alive_ray:59736 rendering_samples_actual:239 num_rays:800 PSNR:45.0782470703125 
-2024-09-12 23:44:39.923 | INFO     | trainer.trainer:fit:161 - ==> Training done!
-2024-09-12 23:44:39.923 | INFO     | trainer.trainer:save_ckpt:244 - ==> Saving checkpoints to log_amily/fd1/nerf_synthetic/amily_f9/Tri-MipRF/2024-09-12_23-21-31/model.ckpt
-2024-09-12 23:44:39.960 | INFO     | trainer.trainer:eval:191 - ==> Start evaluation on testset ...
-  0%|          | 0/20 [00:00<?, ?it/s]Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f7fbd9a6310>
-Traceback (most recent call last):
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1466, in __del__
-    self._shutdown_workers()
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1449, in _shutdown_workers
-    if w.is_alive():
-  File "/opt/sw/spack/apps/linux-rhel8-x86_64_v2/gcc-10.3.0/python-3.9.9-jh/lib/python3.9/multiprocessing/process.py", line 160, in is_alive
-    assert self._parent_pid == os.getpid(), 'can only test a child process'
-AssertionError: can only test a child process
-Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f7fbd9a6310>
-Traceback (most recent call last):
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1466, in __del__
-    self._shutdown_workers()
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1449, in _shutdown_workers
-    if w.is_alive():
-  File "/opt/sw/spack/apps/linux-rhel8-x86_64_v2/gcc-10.3.0/python-3.9.9-jh/lib/python3.9/multiprocessing/process.py", line 160, in is_alive
-    assert self._parent_pid == os.getpid(), 'can only test a child process'
-AssertionError: can only test a child process
-  5%|▌         | 1/20 [00:00<00:09,  1.98it/s] 10%|█         | 2/20 [00:00<00:06,  2.64it/s] 15%|█▌        | 3/20 [00:01<00:05,  2.86it/s] 20%|██        | 4/20 [00:01<00:05,  3.02it/s] 25%|██▌       | 5/20 [00:01<00:04,  3.10it/s] 30%|███       | 6/20 [00:01<00:04,  3.30it/s] 35%|███▌      | 7/20 [00:02<00:04,  3.25it/s] 40%|████      | 8/20 [00:02<00:03,  3.24it/s] 45%|████▌     | 9/20 [00:02<00:03,  3.27it/s] 50%|█████     | 10/20 [00:03<00:03,  3.25it/s] 55%|█████▌    | 11/20 [00:03<00:02,  3.23it/s] 60%|██████    | 12/20 [00:03<00:02,  3.35it/s] 65%|██████▌   | 13/20 [00:04<00:02,  3.27it/s] 70%|███████   | 14/20 [00:04<00:01,  3.30it/s] 75%|███████▌  | 15/20 [00:04<00:01,  3.27it/s] 80%|████████  | 16/20 [00:05<00:01,  3.22it/s] 85%|████████▌ | 17/20 [00:05<00:00,  3.22it/s] 90%|█████████ | 18/20 [00:05<00:00,  3.20it/s] 95%|█████████▌| 19/20 [00:05<00:00,  3.33it/s]100%|██████████| 20/20 [00:06<00:00,  3.39it/s]100%|██████████| 20/20 [00:06<00:00,  3.16it/s]
-  0%|          | 0/20 [00:00<?, ?it/s] 20%|██        | 4/20 [00:00<00:00, 39.85it/s] 50%|█████     | 10/20 [00:00<00:00, 47.15it/s] 80%|████████  | 16/20 [00:00<00:00, 48.70it/s]100%|██████████| 20/20 [00:00<00:00, 48.91it/s]
-2024-09-12 23:44:46.700 | INFO     | trainer.trainer:eval:224 - ==> Evaluation done
-2024-09-12 23:44:46.701 | INFO     | utils.writer:write_scalar_dicts:79 - num_alive_ray:61520.8 rendering_samples_actual:20.15 num_rays:800.0 PSNR:45.02077751159668 
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-WARNING:
-
-You should always run with libnvidia-ml.so that is installed with your
-NVIDIA Display Driver. By default it's installed in /usr/lib and /usr/lib64.
-libnvidia-ml.so in GDK package is a stub library that is attached only for
-build purposes (e.g. machine that you build your application doesn't have
-to have Display Driver installed).
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-/home/jzhou23/tricp/lib/python3.9/site-packages/torch/cuda/__init__.py:497: UserWarning: Can't initialize NVML
-  warnings.warn("Can't initialize NVML")
-/home/jzhou23/tricp/lib/python3.9/site-packages/tinycudann/modules.py:57: UserWarning: tinycudann was built for lower compute capability (75) than the system's (80). Performance may be suboptimal.
-  warnings.warn(f"tinycudann was built for lower compute capability ({cc}) than the system's ({system_compute_capability}). Performance may be suboptimal.")
-2024-09-12 23:44:52.923 | INFO     | __main__:main:25 - ==> Init dataloader ...
-2024-09-12 23:44:53.040 | INFO     | dataset.ray_dataset:__init__:42 - ==> Find 1 cameras
-  0%|          | 0/100 [00:00<?, ?it/s]  1%|          | 1/100 [00:00<00:13,  7.23it/s] 41%|████      | 41/100 [00:00<00:00, 206.18it/s]100%|██████████| 100/100 [00:00<00:00, 328.54it/s]
-/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py:554: UserWarning: This DataLoader will create 16 worker processes in total. Our suggested max number of worker in current system is 12, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(_create_warning_msg(
-2024-09-12 23:44:53.558 | INFO     | dataset.ray_dataset:__init__:42 - ==> Find 1 cameras
-  0%|          | 0/20 [00:00<?, ?it/s]100%|██████████| 20/20 [00:00<00:00, 237.33it/s]
-2024-09-12 23:44:53.704 | INFO     | __main__:main:49 - ==> Init model ...
-2024-09-12 23:44:55.137 | INFO     | __main__:main:51 - TriMipRFModel(
-  (field): TriMipRF(
-    (encoding): TriMipEncoding()
-    (direction_encoding): Encoding(n_input_dims=3, n_output_dims=16, seed=1337, dtype=torch.float16, hyperparams={'degree': 4, 'otype': 'SphericalHarmonics'})
-    (mlp_base): Network(n_input_dims=64, n_output_dims=16, seed=1337, dtype=torch.float16, hyperparams={'encoding': {'offset': 0.0, 'otype': 'Identity', 'scale': 1.0}, 'network': {'activation': 'ReLU', 'n_hidden_layers': 2, 'n_neurons': 128, 'otype': 'FullyFusedMLP', 'output_activation': 'None'}, 'otype': 'NetworkWithInputEncoding'})
-    (mlp_head): Network(n_input_dims=31, n_output_dims=3, seed=1337, dtype=torch.float16, hyperparams={'encoding': {'offset': 0.0, 'otype': 'Identity', 'scale': 1.0}, 'network': {'activation': 'ReLU', 'n_hidden_layers': 4, 'n_neurons': 128, 'otype': 'FullyFusedMLP', 'output_activation': 'Sigmoid'}, 'otype': 'NetworkWithInputEncoding'})
-  )
-  (ray_sampler): OccupancyGrid()
-)
-2024-09-12 23:44:55.138 | INFO     | __main__:main:53 - ==> Init trainer ...
-2024-09-12 23:44:55.160 | INFO     | trainer.trainer:__init__:64 - # Parameters for trimipRF.get_optimizer:
-# ==============================================================================
-trimipRF.get_optimizer.feature_lr_scale = 10.0
-trimipRF.get_optimizer.lr = 0.002
-trimipRF.get_optimizer.weight_decay = 1e-05
-
-# Parameters for get_scheduler:
-# ==============================================================================
-get_scheduler.gamma = 0.6
-
-# Parameters for main:
-# ==============================================================================
-main.batch_size = 28
-main.model_name = 'Tri-MipRF'
-main.num_workers = 16
-main.seed = 42
-main.stages = 'train_eval'
-main.train_split = 'trainval'
-
-# Parameters for RayDataset:
-# ==============================================================================
-RayDataset.base_path = './amily'
-RayDataset.num_rays = 8192
-RayDataset.render_bkgd = 'white'
-RayDataset.scene = 'amily_f10'
-RayDataset.scene_type = 'nerf_synthetic'
-RayDataset.to_world = True
-
-# Parameters for Trainer:
-# ==============================================================================
-Trainer.base_exp_dir = './log_amily/fd1'
-Trainer.dynamic_batch_size = True
-Trainer.eval_step = 50000
-Trainer.exp_name = 'nerf_synthetic/amily_f10/Tri-MipRF/2024-09-12_23-44-52'
-Trainer.is_first_frame = False
-Trainer.log_step = 1000
-Trainer.max_steps = 50001
-Trainer.num_rays = 8192
-Trainer.target_sample_batch_size = 262144
-Trainer.test_chunk_size = 8192
-Trainer.varied_eval_img = True
-
-# Parameters for TriMipEncoding:
-# ==============================================================================
-TriMipEncoding.comb = 5
-TriMipEncoding.feature_dim_factor = 1
-TriMipEncoding.include_cp = True
-TriMipEncoding.include_xyz = False
-
-# Parameters for TriMipRF:
-# ==============================================================================
-TriMipRF.feature_dim = 16
-TriMipRF.geo_feat_dim = 15
-TriMipRF.n_levels = 8
-TriMipRF.net_depth_base = 2
-TriMipRF.net_depth_color = 4
-TriMipRF.net_width = 128
-TriMipRF.plane_size = 512
-
-# Parameters for TriMipRFModel:
-# ==============================================================================
-TriMipRFModel.occ_grid_resolution = 128
-TriMipRFModel.samples_per_ray = 1024
-
-2024-09-12 23:44:55.165 | INFO     | trainer.trainer:fit:111 - ==> Start training ...
-2024-09-12 23:44:59.610 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:100 iter_time:0.011929035186767578 ETA:0:09:55 num_alive_ray:3714 rendering_samples_actual:258390 num_rays:4344 PSNR:23.692171096801758 total_loss:0.0065719131380319595 
-2024-09-12 23:45:15.783 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:1000 iter_time:0.018177032470703125 ETA:0:14:50 num_alive_ray:15585 rendering_samples_actual:260680 num_rays:95303 PSNR:35.31810760498047 total_loss:0.0025882276240736246 
-2024-09-12 23:45:37.753 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:2000 iter_time:0.020211219787597656 ETA:0:16:10 num_alive_ray:17805 rendering_samples_actual:252833 num_rays:122153 PSNR:37.475013732910156 total_loss:0.0017250609816983342 
-2024-09-12 23:46:00.941 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:3000 iter_time:0.021228551864624023 ETA:0:16:37 num_alive_ray:19145 rendering_samples_actual:266645 num_rays:136745 PSNR:38.15315246582031 total_loss:0.0015580226900056005 
-2024-09-12 23:46:24.775 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:4000 iter_time:0.021540164947509766 ETA:0:16:30 num_alive_ray:20636 rendering_samples_actual:263904 num_rays:137848 PSNR:39.207767486572266 total_loss:0.0011129522463306785 
-2024-09-12 23:46:49.252 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:5000 iter_time:0.022849082946777344 ETA:0:17:08 num_alive_ray:21588 rendering_samples_actual:268465 num_rays:149450 PSNR:39.84756088256836 total_loss:0.0010437894379720092 
-2024-09-12 23:47:13.266 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:6000 iter_time:0.023398160934448242 ETA:0:17:09 num_alive_ray:21946 rendering_samples_actual:253382 num_rays:147966 PSNR:40.08513641357422 total_loss:0.0009651613654568791 
-2024-09-12 23:47:37.815 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:7000 iter_time:0.022605180740356445 ETA:0:16:12 num_alive_ray:22632 rendering_samples_actual:260754 num_rays:150902 PSNR:40.69313430786133 total_loss:0.0007899392512626946 
-2024-09-12 23:48:02.944 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:8000 iter_time:0.023454666137695312 ETA:0:16:25 num_alive_ray:21896 rendering_samples_actual:257808 num_rays:157906 PSNR:40.74851989746094 total_loss:0.0008760386845096946 
-2024-09-12 23:48:28.502 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:9000 iter_time:0.023788928985595703 ETA:0:16:15 num_alive_ray:22859 rendering_samples_actual:261635 num_rays:162971 PSNR:41.307437896728516 total_loss:0.0007526009576395154 
-2024-09-12 23:48:54.535 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:10000 iter_time:0.02429795265197754 ETA:0:16:11 num_alive_ray:21091 rendering_samples_actual:263609 num_rays:176327 PSNR:41.59324645996094 total_loss:0.0008477910305373371 
-2024-09-12 23:49:20.096 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:11000 iter_time:0.024059772491455078 ETA:0:15:38 num_alive_ray:21744 rendering_samples_actual:257923 num_rays:172533 PSNR:41.59309387207031 total_loss:0.0007913396111689508 
-2024-09-12 23:49:46.161 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:12000 iter_time:0.023662805557250977 ETA:0:14:59 num_alive_ray:21517 rendering_samples_actual:259087 num_rays:174094 PSNR:41.572025299072266 total_loss:0.0008139659184962511 
-2024-09-12 23:50:12.018 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:13000 iter_time:0.024120569229125977 ETA:0:14:52 num_alive_ray:21653 rendering_samples_actual:259002 num_rays:173116 PSNR:41.94152069091797 total_loss:0.0007439498440362513 
-2024-09-12 23:50:38.290 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:14000 iter_time:0.024348020553588867 ETA:0:14:36 num_alive_ray:21643 rendering_samples_actual:263134 num_rays:178030 PSNR:42.1829719543457 total_loss:0.0007267284672707319 
-2024-09-12 23:51:04.705 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:15000 iter_time:0.024988412857055664 ETA:0:14:34 num_alive_ray:21652 rendering_samples_actual:266812 num_rays:182458 PSNR:42.411617279052734 total_loss:0.000689515785779804 
-2024-09-12 23:51:31.402 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:16000 iter_time:0.026585102081298828 ETA:0:15:03 num_alive_ray:22015 rendering_samples_actual:274954 num_rays:186877 PSNR:41.75421905517578 total_loss:0.0008009859011508524 
-2024-09-12 23:51:57.868 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:17000 iter_time:0.025259733200073242 ETA:0:13:53 num_alive_ray:22337 rendering_samples_actual:265923 num_rays:182133 PSNR:42.58072280883789 total_loss:0.0006578604225069284 
-2024-09-12 23:52:24.489 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:18000 iter_time:0.0249483585357666 ETA:0:13:18 num_alive_ray:22279 rendering_samples_actual:263068 num_rays:182092 PSNR:42.724205017089844 total_loss:0.0006033794488757849 
-2024-09-12 23:52:51.185 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:19000 iter_time:0.025058984756469727 ETA:0:12:56 num_alive_ray:22025 rendering_samples_actual:269623 num_rays:190286 PSNR:42.601715087890625 total_loss:0.00068497663596645 
-2024-09-12 23:53:18.082 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:20000 iter_time:0.024633169174194336 ETA:0:12:19 num_alive_ray:22136 rendering_samples_actual:261129 num_rays:183581 PSNR:42.72566223144531 total_loss:0.0006312173791229725 
-2024-09-12 23:53:44.696 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:21000 iter_time:0.0244443416595459 ETA:0:11:48 num_alive_ray:21095 rendering_samples_actual:250899 num_rays:181729 PSNR:42.703468322753906 total_loss:0.0006813829531893134 
-2024-09-12 23:54:11.835 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:22000 iter_time:0.025907516479492188 ETA:0:12:05 num_alive_ray:21943 rendering_samples_actual:265742 num_rays:192428 PSNR:42.910301208496094 total_loss:0.0006508438964374363 
-2024-09-12 23:54:38.834 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:23000 iter_time:0.02502131462097168 ETA:0:11:15 num_alive_ray:21489 rendering_samples_actual:256099 num_rays:188755 PSNR:42.9935417175293 total_loss:0.0006337302038446069 
-2024-09-12 23:55:05.862 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:24000 iter_time:0.025799989700317383 ETA:0:11:10 num_alive_ray:21821 rendering_samples_actual:256853 num_rays:187689 PSNR:42.55281448364258 total_loss:0.0006857536500319839 
-2024-09-12 23:55:32.905 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:25000 iter_time:0.024103403091430664 ETA:0:10:02 num_alive_ray:21407 rendering_samples_actual:258228 num_rays:191327 PSNR:43.190040588378906 total_loss:0.0006273808539845049 
-2024-09-12 23:56:00.684 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:26000 iter_time:0.026767492294311523 ETA:0:10:42 num_alive_ray:20857 rendering_samples_actual:261480 num_rays:199874 PSNR:43.83259201049805 total_loss:0.000587920774705708 
-2024-09-12 23:56:28.651 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:27000 iter_time:0.025551557540893555 ETA:0:09:47 num_alive_ray:20682 rendering_samples_actual:258861 num_rays:196675 PSNR:44.006370544433594 total_loss:0.000539591652341187 
-2024-09-12 23:56:56.629 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:28000 iter_time:0.026719331741333008 ETA:0:09:47 num_alive_ray:20920 rendering_samples_actual:259912 num_rays:198436 PSNR:43.9803466796875 total_loss:0.0005588401691056788 
-2024-09-12 23:57:24.627 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:29000 iter_time:0.026052474975585938 ETA:0:09:07 num_alive_ray:21158 rendering_samples_actual:261643 num_rays:202325 PSNR:44.140193939208984 total_loss:0.0005414622719399631 
-2024-09-12 23:57:52.641 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:30000 iter_time:0.025815963745117188 ETA:0:08:36 num_alive_ray:21523 rendering_samples_actual:266997 num_rays:202220 PSNR:44.08345031738281 total_loss:0.0005445892456918955 
-2024-09-12 23:58:20.573 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:31000 iter_time:0.026865482330322266 ETA:0:08:30 num_alive_ray:21325 rendering_samples_actual:261253 num_rays:196246 PSNR:43.83830261230469 total_loss:0.0005559240817092359 
-2024-09-12 23:58:48.569 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:32000 iter_time:0.02602243423461914 ETA:0:07:48 num_alive_ray:21993 rendering_samples_actual:271152 num_rays:205944 PSNR:44.02090835571289 total_loss:0.0005523358704522252 
-2024-09-12 23:59:16.569 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:33000 iter_time:0.02659463882446289 ETA:0:07:32 num_alive_ray:22024 rendering_samples_actual:269293 num_rays:203467 PSNR:44.0047721862793 total_loss:0.0005318002658896148 
-2024-09-12 23:59:44.554 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:34000 iter_time:0.026213407516479492 ETA:0:06:59 num_alive_ray:21316 rendering_samples_actual:263422 num_rays:202733 PSNR:44.20963668823242 total_loss:0.000518064305651933 
-2024-09-13 00:00:12.656 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:35000 iter_time:0.026775598526000977 ETA:0:06:41 num_alive_ray:21285 rendering_samples_actual:263763 num_rays:200148 PSNR:43.88227081298828 total_loss:0.0005647622747346759 
-2024-09-13 00:00:40.724 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:36000 iter_time:0.025681734085083008 ETA:0:05:59 num_alive_ray:21083 rendering_samples_actual:259044 num_rays:197174 PSNR:44.2933349609375 total_loss:0.0005159433931112289 
-2024-09-13 00:01:08.899 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:37000 iter_time:0.02632617950439453 ETA:0:05:42 num_alive_ray:20936 rendering_samples_actual:259956 num_rays:203727 PSNR:44.12969207763672 total_loss:0.0005279546603560448 
-2024-09-13 00:01:37.226 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:38000 iter_time:0.026422500610351562 ETA:0:05:17 num_alive_ray:21322 rendering_samples_actual:262614 num_rays:207959 PSNR:44.65140914916992 total_loss:0.00048882479313761 
-2024-09-13 00:02:05.753 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:39000 iter_time:0.027869224548339844 ETA:0:05:06 num_alive_ray:20962 rendering_samples_actual:259326 num_rays:206377 PSNR:43.79726028442383 total_loss:0.0005656081484630704 
-2024-09-13 00:02:34.547 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:40000 iter_time:0.026214599609375 ETA:0:04:22 num_alive_ray:20663 rendering_samples_actual:261245 num_rays:205750 PSNR:44.7696533203125 total_loss:0.000477718684123829 
-2024-09-13 00:03:03.205 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:41000 iter_time:0.028400182723999023 ETA:0:04:15 num_alive_ray:21057 rendering_samples_actual:266423 num_rays:208484 PSNR:44.77707290649414 total_loss:0.0004796388966497034 
-2024-09-13 00:03:31.914 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:42000 iter_time:0.026426076889038086 ETA:0:03:31 num_alive_ray:21128 rendering_samples_actual:268057 num_rays:213927 PSNR:44.8112907409668 total_loss:0.0004837237938772887 
-2024-09-13 00:04:00.718 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:43000 iter_time:0.028010129928588867 ETA:0:03:16 num_alive_ray:20856 rendering_samples_actual:261180 num_rays:210287 PSNR:44.88870620727539 total_loss:0.00045319859054870903 
-2024-09-13 00:04:29.667 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:44000 iter_time:0.02591538429260254 ETA:0:02:35 num_alive_ray:20352 rendering_samples_actual:262558 num_rays:208585 PSNR:45.027748107910156 total_loss:0.00045761006185784936 
-2024-09-13 00:04:58.564 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:45000 iter_time:0.0268404483795166 ETA:0:02:14 num_alive_ray:20629 rendering_samples_actual:259201 num_rays:208256 PSNR:44.76198959350586 total_loss:0.00047861741040833294 
-2024-09-13 00:05:27.589 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:46000 iter_time:0.026733875274658203 ETA:0:01:46 num_alive_ray:20649 rendering_samples_actual:263258 num_rays:211437 PSNR:45.0923957824707 total_loss:0.0004436533199623227 
-2024-09-13 00:05:56.704 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:47000 iter_time:0.02716541290283203 ETA:0:01:21 num_alive_ray:20873 rendering_samples_actual:265901 num_rays:211646 PSNR:44.97992706298828 total_loss:0.00046226673293858767 
-2024-09-13 00:06:25.833 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:48000 iter_time:0.027335643768310547 ETA:0:00:54 num_alive_ray:20765 rendering_samples_actual:264357 num_rays:212876 PSNR:44.880531311035156 total_loss:0.0004666978493332863 
-2024-09-13 00:06:54.914 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:49000 iter_time:0.028134584426879883 ETA:0:00:28 num_alive_ray:20272 rendering_samples_actual:258943 num_rays:210576 PSNR:45.23488235473633 total_loss:0.0004461233038455248 
-2024-09-13 00:07:23.956 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:50000 iter_time:0.026836395263671875 ETA:0:00:00 num_alive_ray:20486 rendering_samples_actual:262971 num_rays:211470 PSNR:45.154056549072266 total_loss:0.00045124549069441855 
-2024-09-13 00:07:24.270 | INFO     | utils.writer:write_scalar_dicts:79 - num_alive_ray:62164 rendering_samples_actual:129 num_rays:800 PSNR:45.33067321777344 
-2024-09-13 00:07:24.421 | INFO     | trainer.trainer:fit:161 - ==> Training done!
-2024-09-13 00:07:24.421 | INFO     | trainer.trainer:save_ckpt:244 - ==> Saving checkpoints to log_amily/fd1/nerf_synthetic/amily_f10/Tri-MipRF/2024-09-12_23-44-52/model.ckpt
-2024-09-13 00:07:24.450 | INFO     | trainer.trainer:eval:191 - ==> Start evaluation on testset ...
-  0%|          | 0/20 [00:00<?, ?it/s]Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f2402fab310>
-Traceback (most recent call last):
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1466, in __del__
-    self._shutdown_workers()
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1449, in _shutdown_workers
-    if w.is_alive():
-  File "/opt/sw/spack/apps/linux-rhel8-x86_64_v2/gcc-10.3.0/python-3.9.9-jh/lib/python3.9/multiprocessing/process.py", line 160, in is_alive
-    assert self._parent_pid == os.getpid(), 'can only test a child process'
-AssertionError: can only test a child process
-Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f2402fab310>
-Traceback (most recent call last):
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1466, in __del__
-    self._shutdown_workers()
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1449, in _shutdown_workers
-    if w.is_alive():
-  File "/opt/sw/spack/apps/linux-rhel8-x86_64_v2/gcc-10.3.0/python-3.9.9-jh/lib/python3.9/multiprocessing/process.py", line 160, in is_alive
-    assert self._parent_pid == os.getpid(), 'can only test a child process'
-AssertionError: can only test a child process
-  5%|▌         | 1/20 [00:00<00:10,  1.87it/s] 10%|█         | 2/20 [00:00<00:07,  2.45it/s] 15%|█▌        | 3/20 [00:01<00:06,  2.65it/s] 20%|██        | 4/20 [00:01<00:05,  2.79it/s] 25%|██▌       | 5/20 [00:01<00:05,  2.87it/s] 30%|███       | 6/20 [00:02<00:04,  3.03it/s] 35%|███▌      | 7/20 [00:02<00:04,  2.99it/s] 40%|████      | 8/20 [00:02<00:03,  3.01it/s] 45%|████▌     | 9/20 [00:03<00:03,  3.06it/s] 50%|█████     | 10/20 [00:03<00:03,  3.08it/s] 55%|█████▌    | 11/20 [00:03<00:02,  3.07it/s] 60%|██████    | 12/20 [00:04<00:02,  3.19it/s] 65%|██████▌   | 13/20 [00:04<00:02,  3.15it/s] 70%|███████   | 14/20 [00:04<00:01,  3.14it/s] 75%|███████▌  | 15/20 [00:05<00:01,  3.15it/s] 80%|████████  | 16/20 [00:05<00:01,  3.13it/s] 85%|████████▌ | 17/20 [00:05<00:00,  3.14it/s] 90%|█████████ | 18/20 [00:05<00:00,  3.14it/s] 95%|█████████▌| 19/20 [00:06<00:00,  3.22it/s]100%|██████████| 20/20 [00:06<00:00,  3.27it/s]100%|██████████| 20/20 [00:06<00:00,  3.00it/s]
-  0%|          | 0/20 [00:00<?, ?it/s] 20%|██        | 4/20 [00:00<00:00, 37.51it/s] 45%|████▌     | 9/20 [00:00<00:00, 43.53it/s] 70%|███████   | 14/20 [00:00<00:00, 44.98it/s] 95%|█████████▌| 19/20 [00:00<00:00, 45.43it/s]100%|██████████| 20/20 [00:00<00:00, 44.94it/s]
-2024-09-13 00:07:31.558 | INFO     | trainer.trainer:eval:224 - ==> Evaluation done
-2024-09-13 00:07:31.559 | INFO     | utils.writer:write_scalar_dicts:79 - num_alive_ray:63541.0 rendering_samples_actual:51.55 num_rays:800.0 PSNR:45.05303421020508 
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-WARNING:
-
-You should always run with libnvidia-ml.so that is installed with your
-NVIDIA Display Driver. By default it's installed in /usr/lib and /usr/lib64.
-libnvidia-ml.so in GDK package is a stub library that is attached only for
-build purposes (e.g. machine that you build your application doesn't have
-to have Display Driver installed).
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-/home/jzhou23/tricp/lib/python3.9/site-packages/torch/cuda/__init__.py:497: UserWarning: Can't initialize NVML
-  warnings.warn("Can't initialize NVML")
-/home/jzhou23/tricp/lib/python3.9/site-packages/tinycudann/modules.py:57: UserWarning: tinycudann was built for lower compute capability (75) than the system's (80). Performance may be suboptimal.
-  warnings.warn(f"tinycudann was built for lower compute capability ({cc}) than the system's ({system_compute_capability}). Performance may be suboptimal.")
-2024-09-13 00:07:38.004 | INFO     | __main__:main:25 - ==> Init dataloader ...
-2024-09-13 00:07:38.199 | INFO     | dataset.ray_dataset:__init__:42 - ==> Find 1 cameras
-  0%|          | 0/100 [00:00<?, ?it/s]  1%|          | 1/100 [00:00<00:20,  4.87it/s] 95%|█████████▌| 95/100 [00:00<00:00, 387.55it/s]100%|██████████| 100/100 [00:00<00:00, 324.48it/s]
-/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py:554: UserWarning: This DataLoader will create 16 worker processes in total. Our suggested max number of worker in current system is 12, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(_create_warning_msg(
-2024-09-13 00:07:38.732 | INFO     | dataset.ray_dataset:__init__:42 - ==> Find 1 cameras
-  0%|          | 0/20 [00:00<?, ?it/s]100%|██████████| 20/20 [00:00<00:00, 244.29it/s]
-2024-09-13 00:07:38.953 | INFO     | __main__:main:49 - ==> Init model ...
-2024-09-13 00:07:40.249 | INFO     | __main__:main:51 - TriMipRFModel(
-  (field): TriMipRF(
-    (encoding): TriMipEncoding()
-    (direction_encoding): Encoding(n_input_dims=3, n_output_dims=16, seed=1337, dtype=torch.float16, hyperparams={'degree': 4, 'otype': 'SphericalHarmonics'})
-    (mlp_base): Network(n_input_dims=64, n_output_dims=16, seed=1337, dtype=torch.float16, hyperparams={'encoding': {'offset': 0.0, 'otype': 'Identity', 'scale': 1.0}, 'network': {'activation': 'ReLU', 'n_hidden_layers': 2, 'n_neurons': 128, 'otype': 'FullyFusedMLP', 'output_activation': 'None'}, 'otype': 'NetworkWithInputEncoding'})
-    (mlp_head): Network(n_input_dims=31, n_output_dims=3, seed=1337, dtype=torch.float16, hyperparams={'encoding': {'offset': 0.0, 'otype': 'Identity', 'scale': 1.0}, 'network': {'activation': 'ReLU', 'n_hidden_layers': 4, 'n_neurons': 128, 'otype': 'FullyFusedMLP', 'output_activation': 'Sigmoid'}, 'otype': 'NetworkWithInputEncoding'})
-  )
-  (ray_sampler): OccupancyGrid()
-)
-2024-09-13 00:07:40.249 | INFO     | __main__:main:53 - ==> Init trainer ...
-2024-09-13 00:07:40.266 | INFO     | trainer.trainer:__init__:64 - # Parameters for trimipRF.get_optimizer:
-# ==============================================================================
-trimipRF.get_optimizer.feature_lr_scale = 10.0
-trimipRF.get_optimizer.lr = 0.002
-trimipRF.get_optimizer.weight_decay = 1e-05
-
-# Parameters for get_scheduler:
-# ==============================================================================
-get_scheduler.gamma = 0.6
-
-# Parameters for main:
-# ==============================================================================
-main.batch_size = 28
-main.model_name = 'Tri-MipRF'
-main.num_workers = 16
-main.seed = 42
-main.stages = 'train_eval'
-main.train_split = 'trainval'
-
-# Parameters for RayDataset:
-# ==============================================================================
-RayDataset.base_path = './amily'
-RayDataset.num_rays = 8192
-RayDataset.render_bkgd = 'white'
-RayDataset.scene = 'amily_f11'
-RayDataset.scene_type = 'nerf_synthetic'
-RayDataset.to_world = True
-
-# Parameters for Trainer:
-# ==============================================================================
-Trainer.base_exp_dir = './log_amily/fd1'
-Trainer.dynamic_batch_size = True
-Trainer.eval_step = 50000
-Trainer.exp_name = 'nerf_synthetic/amily_f11/Tri-MipRF/2024-09-13_00-07-38'
-Trainer.is_first_frame = False
-Trainer.log_step = 1000
-Trainer.max_steps = 50001
-Trainer.num_rays = 8192
-Trainer.target_sample_batch_size = 262144
-Trainer.test_chunk_size = 8192
-Trainer.varied_eval_img = True
-
-# Parameters for TriMipEncoding:
-# ==============================================================================
-TriMipEncoding.comb = 5
-TriMipEncoding.feature_dim_factor = 1
-TriMipEncoding.include_cp = True
-TriMipEncoding.include_xyz = False
-
-# Parameters for TriMipRF:
-# ==============================================================================
-TriMipRF.feature_dim = 16
-TriMipRF.geo_feat_dim = 15
-TriMipRF.n_levels = 8
-TriMipRF.net_depth_base = 2
-TriMipRF.net_depth_color = 4
-TriMipRF.net_width = 128
-TriMipRF.plane_size = 512
-
-# Parameters for TriMipRFModel:
-# ==============================================================================
-TriMipRFModel.occ_grid_resolution = 128
-TriMipRFModel.samples_per_ray = 1024
-
-2024-09-13 00:07:40.270 | INFO     | trainer.trainer:fit:111 - ==> Start training ...
-2024-09-13 00:07:44.737 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:100 iter_time:0.011675596237182617 ETA:0:09:42 num_alive_ray:3529 rendering_samples_actual:256213 num_rays:4109 PSNR:23.29853630065918 total_loss:0.006696197669953108 
-2024-09-13 00:08:01.461 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:1000 iter_time:0.01900315284729004 ETA:0:15:31 num_alive_ray:16600 rendering_samples_actual:259863 num_rays:100366 PSNR:35.5699577331543 total_loss:0.0023909376468509436 
-2024-09-13 00:08:23.234 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:2000 iter_time:0.02057933807373047 ETA:0:16:27 num_alive_ray:19400 rendering_samples_actual:259415 num_rays:129695 PSNR:37.52680206298828 total_loss:0.0017223575850948691 
-2024-09-13 00:08:46.222 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:3000 iter_time:0.021770238876342773 ETA:0:17:03 num_alive_ray:19475 rendering_samples_actual:258499 num_rays:141709 PSNR:38.52945327758789 total_loss:0.0014165641041472554 
-2024-09-13 00:09:09.861 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:4000 iter_time:0.022503376007080078 ETA:0:17:15 num_alive_ray:21474 rendering_samples_actual:262154 num_rays:140301 PSNR:39.696319580078125 total_loss:0.0010117226047441363 
-2024-09-13 00:09:33.700 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:5000 iter_time:0.0219573974609375 ETA:0:16:28 num_alive_ray:24533 rendering_samples_actual:266516 num_rays:140775 PSNR:40.31010818481445 total_loss:0.0007500151405110955 
-2024-09-13 00:09:57.956 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:6000 iter_time:0.022370576858520508 ETA:0:16:24 num_alive_ray:23559 rendering_samples_actual:256014 num_rays:153490 PSNR:40.41111373901367 total_loss:0.000836607941891998 
-2024-09-13 00:10:21.974 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:7000 iter_time:0.022502422332763672 ETA:0:16:07 num_alive_ray:23929 rendering_samples_actual:263182 num_rays:151823 PSNR:40.46929931640625 total_loss:0.0008248561643995345 
-2024-09-13 00:10:46.747 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:8000 iter_time:0.023789644241333008 ETA:0:16:39 num_alive_ray:21738 rendering_samples_actual:263553 num_rays:171963 PSNR:40.77950668334961 total_loss:0.0009510595700703561 
-2024-09-13 00:11:11.802 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:9000 iter_time:0.024217844009399414 ETA:0:16:32 num_alive_ray:22311 rendering_samples_actual:269391 num_rays:174587 PSNR:41.110687255859375 total_loss:0.0008650049567222595 
-2024-09-13 00:11:37.320 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:10000 iter_time:0.022335052490234375 ETA:0:14:53 num_alive_ray:21735 rendering_samples_actual:259567 num_rays:172493 PSNR:41.497222900390625 total_loss:0.000808276585303247 
-2024-09-13 00:12:02.812 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:11000 iter_time:0.0242462158203125 ETA:0:15:45 num_alive_ray:22244 rendering_samples_actual:261523 num_rays:175576 PSNR:41.621402740478516 total_loss:0.000777008943259716 
-2024-09-13 00:12:28.876 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:12000 iter_time:0.025236845016479492 ETA:0:15:59 num_alive_ray:22451 rendering_samples_actual:262575 num_rays:176114 PSNR:42.22391128540039 total_loss:0.0006794039509259164 
-2024-09-13 00:12:55.156 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:13000 iter_time:0.02400517463684082 ETA:0:14:48 num_alive_ray:23162 rendering_samples_actual:261083 num_rays:169240 PSNR:42.152854919433594 total_loss:0.000646270695142448 
-2024-09-13 00:13:21.656 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:14000 iter_time:0.0256805419921875 ETA:0:15:24 num_alive_ray:22409 rendering_samples_actual:262398 num_rays:183488 PSNR:42.35112380981445 total_loss:0.0006952815456315875 
-2024-09-13 00:13:48.301 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:15000 iter_time:0.025304794311523438 ETA:0:14:45 num_alive_ray:22555 rendering_samples_actual:266463 num_rays:184220 PSNR:42.392356872558594 total_loss:0.0006762543926015496 
-2024-09-13 00:14:15.177 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:16000 iter_time:0.025081396102905273 ETA:0:14:12 num_alive_ray:22290 rendering_samples_actual:274246 num_rays:190826 PSNR:41.32624816894531 total_loss:0.0009083905024453998 
-2024-09-13 00:14:42.065 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:17000 iter_time:0.02465057373046875 ETA:0:13:33 num_alive_ray:22547 rendering_samples_actual:262635 num_rays:180920 PSNR:42.53913497924805 total_loss:0.0006490915548056364 
-2024-09-13 00:15:08.683 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:18000 iter_time:0.024227619171142578 ETA:0:12:55 num_alive_ray:22641 rendering_samples_actual:264681 num_rays:183565 PSNR:42.290122985839844 total_loss:0.0006818685214966536 
-2024-09-13 00:15:35.202 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:19000 iter_time:0.03386807441711426 ETA:0:17:29 num_alive_ray:22371 rendering_samples_actual:262862 num_rays:188245 PSNR:42.926673889160156 total_loss:0.0006213710294105113 
-2024-09-13 00:16:02.107 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:20000 iter_time:0.026653528213500977 ETA:0:13:19 num_alive_ray:22562 rendering_samples_actual:264327 num_rays:188742 PSNR:42.76417541503906 total_loss:0.0006320465472526848 
-2024-09-13 00:16:29.072 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:21000 iter_time:0.023481130599975586 ETA:0:11:20 num_alive_ray:21442 rendering_samples_actual:253113 num_rays:185112 PSNR:42.759613037109375 total_loss:0.0006781479460187256 
-2024-09-13 00:16:56.102 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:22000 iter_time:0.025688648223876953 ETA:0:11:59 num_alive_ray:21735 rendering_samples_actual:265296 num_rays:189009 PSNR:43.2359504699707 total_loss:0.0005943313590250909 
-2024-09-13 00:17:23.361 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:23000 iter_time:0.026174545288085938 ETA:0:11:46 num_alive_ray:21804 rendering_samples_actual:261956 num_rays:195245 PSNR:43.09382629394531 total_loss:0.000631858070846647 
-2024-09-13 00:17:50.567 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:24000 iter_time:0.026042461395263672 ETA:0:11:17 num_alive_ray:22603 rendering_samples_actual:264524 num_rays:192053 PSNR:43.258216857910156 total_loss:0.0005767499096691608 
-2024-09-13 00:18:17.723 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:25000 iter_time:0.02487635612487793 ETA:0:10:21 num_alive_ray:21630 rendering_samples_actual:261444 num_rays:192220 PSNR:43.37701416015625 total_loss:0.0006012725061737001 
-2024-09-13 00:18:45.542 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:26000 iter_time:0.02605581283569336 ETA:0:10:25 num_alive_ray:21183 rendering_samples_actual:263854 num_rays:202796 PSNR:43.457279205322266 total_loss:0.0006104003405198455 
-2024-09-13 00:19:13.653 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:27000 iter_time:0.02510809898376465 ETA:0:09:37 num_alive_ray:20467 rendering_samples_actual:256571 num_rays:198806 PSNR:44.194061279296875 total_loss:0.0005345786339603364 
-2024-09-13 00:19:41.802 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:28000 iter_time:0.025454998016357422 ETA:0:09:20 num_alive_ray:21168 rendering_samples_actual:258636 num_rays:201825 PSNR:44.09803009033203 total_loss:0.0005374252214096487 
-2024-09-13 00:20:09.858 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:29000 iter_time:0.027684926986694336 ETA:0:09:41 num_alive_ray:20978 rendering_samples_actual:259733 num_rays:202988 PSNR:43.82501983642578 total_loss:0.0005902599659748375 
-2024-09-13 00:20:38.067 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:30000 iter_time:0.026039838790893555 ETA:0:08:40 num_alive_ray:21331 rendering_samples_actual:266098 num_rays:206727 PSNR:43.95064163208008 total_loss:0.0005701317568309605 
-2024-09-13 00:21:06.432 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:31000 iter_time:0.024425506591796875 ETA:0:07:44 num_alive_ray:20965 rendering_samples_actual:262864 num_rays:200532 PSNR:43.97069549560547 total_loss:0.0005584268947131932 
-2024-09-13 00:21:34.599 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:32000 iter_time:0.025764942169189453 ETA:0:07:43 num_alive_ray:21369 rendering_samples_actual:266737 num_rays:207153 PSNR:43.890071868896484 total_loss:0.0005602912860922515 
-2024-09-13 00:22:02.840 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:33000 iter_time:0.02705836296081543 ETA:0:07:40 num_alive_ray:21283 rendering_samples_actual:268105 num_rays:208642 PSNR:44.23316955566406 total_loss:0.0005438366788439453 
-2024-09-13 00:22:31.106 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:34000 iter_time:0.02530050277709961 ETA:0:06:44 num_alive_ray:21232 rendering_samples_actual:261181 num_rays:203847 PSNR:44.288177490234375 total_loss:0.0005185093614272773 
-2024-09-13 00:22:59.322 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:35000 iter_time:0.0270388126373291 ETA:0:06:45 num_alive_ray:21146 rendering_samples_actual:267078 num_rays:206973 PSNR:43.988094329833984 total_loss:0.0005614207475446165 
-2024-09-13 00:23:27.619 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:36000 iter_time:0.026955127716064453 ETA:0:06:17 num_alive_ray:21020 rendering_samples_actual:261537 num_rays:204646 PSNR:43.98861312866211 total_loss:0.0005579174030572176 
-2024-09-13 00:23:55.884 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:37000 iter_time:0.02711176872253418 ETA:0:05:52 num_alive_ray:21346 rendering_samples_actual:259545 num_rays:204320 PSNR:44.18635559082031 total_loss:0.0005244642379693687 
-2024-09-13 00:24:24.381 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:38000 iter_time:0.02704000473022461 ETA:0:05:24 num_alive_ray:20475 rendering_samples_actual:259388 num_rays:209970 PSNR:44.92665100097656 total_loss:0.0004914604360237718 
-2024-09-13 00:24:53.235 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:39000 iter_time:0.028042316436767578 ETA:0:05:08 num_alive_ray:20927 rendering_samples_actual:264396 num_rays:214008 PSNR:44.566829681396484 total_loss:0.0005207228823564947 
-2024-09-13 00:25:22.266 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:40000 iter_time:0.025614261627197266 ETA:0:04:16 num_alive_ray:20820 rendering_samples_actual:260867 num_rays:207457 PSNR:44.57579040527344 total_loss:0.0004910714342258871 
-2024-09-13 00:25:51.146 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:41000 iter_time:0.027198314666748047 ETA:0:04:04 num_alive_ray:20782 rendering_samples_actual:262381 num_rays:210442 PSNR:44.859928131103516 total_loss:0.00048264555516652763 
-2024-09-13 00:26:20.075 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:42000 iter_time:0.02743387222290039 ETA:0:03:39 num_alive_ray:20867 rendering_samples_actual:266429 num_rays:215141 PSNR:45.02218246459961 total_loss:0.0004759950388688594 
-2024-09-13 00:26:49.133 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:43000 iter_time:0.02838921546936035 ETA:0:03:18 num_alive_ray:20592 rendering_samples_actual:263626 num_rays:216686 PSNR:44.951438903808594 total_loss:0.00046662386739626527 
-2024-09-13 00:27:18.281 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:44000 iter_time:0.02635025978088379 ETA:0:02:38 num_alive_ray:20322 rendering_samples_actual:261138 num_rays:210817 PSNR:45.150787353515625 total_loss:0.0004571171011775732 
-2024-09-13 00:27:47.372 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:45000 iter_time:0.02671504020690918 ETA:0:02:13 num_alive_ray:20656 rendering_samples_actual:260260 num_rays:212659 PSNR:44.93156814575195 total_loss:0.00048178836004808545 
-2024-09-13 00:28:16.599 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:46000 iter_time:0.026253461837768555 ETA:0:01:45 num_alive_ray:20522 rendering_samples_actual:264042 num_rays:215480 PSNR:45.0936393737793 total_loss:0.0004582262772601098 
-2024-09-13 00:28:45.858 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:47000 iter_time:0.028154373168945312 ETA:0:01:24 num_alive_ray:20515 rendering_samples_actual:261637 num_rays:213528 PSNR:45.21686935424805 total_loss:0.0004451459681149572 
-2024-09-13 00:29:15.135 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:48000 iter_time:0.027917861938476562 ETA:0:00:55 num_alive_ray:20626 rendering_samples_actual:263826 num_rays:215152 PSNR:45.13541030883789 total_loss:0.00046610127901658416 
-2024-09-13 00:29:44.421 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:49000 iter_time:0.026762008666992188 ETA:0:00:26 num_alive_ray:20412 rendering_samples_actual:260010 num_rays:213361 PSNR:45.19643783569336 total_loss:0.0004565139824990183 
-2024-09-13 00:30:13.648 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:50000 iter_time:0.026578664779663086 ETA:0:00:00 num_alive_ray:20494 rendering_samples_actual:265044 num_rays:216889 PSNR:45.1289176940918 total_loss:0.0004805840435437858 
-2024-09-13 00:30:13.945 | INFO     | utils.writer:write_scalar_dicts:79 - num_alive_ray:59913 rendering_samples_actual:0 num_rays:800 PSNR:45.22940444946289 
-2024-09-13 00:30:14.094 | INFO     | trainer.trainer:fit:161 - ==> Training done!
-2024-09-13 00:30:14.095 | INFO     | trainer.trainer:save_ckpt:244 - ==> Saving checkpoints to log_amily/fd1/nerf_synthetic/amily_f11/Tri-MipRF/2024-09-13_00-07-38/model.ckpt
-2024-09-13 00:30:14.131 | INFO     | trainer.trainer:eval:191 - ==> Start evaluation on testset ...
-  0%|          | 0/20 [00:00<?, ?it/s]Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f652b828310>
-Traceback (most recent call last):
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1466, in __del__
-    self._shutdown_workers()
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1449, in _shutdown_workers
-    if w.is_alive():
-  File "/opt/sw/spack/apps/linux-rhel8-x86_64_v2/gcc-10.3.0/python-3.9.9-jh/lib/python3.9/multiprocessing/process.py", line 160, in is_alive
-    assert self._parent_pid == os.getpid(), 'can only test a child process'
-AssertionError: can only test a child process
-Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f652b828310>
-Traceback (most recent call last):
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1466, in __del__
-    self._shutdown_workers()
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1449, in _shutdown_workers
-    if w.is_alive():
-  File "/opt/sw/spack/apps/linux-rhel8-x86_64_v2/gcc-10.3.0/python-3.9.9-jh/lib/python3.9/multiprocessing/process.py", line 160, in is_alive
-    assert self._parent_pid == os.getpid(), 'can only test a child process'
-AssertionError: can only test a child process
-  5%|▌         | 1/20 [00:00<00:11,  1.71it/s] 10%|█         | 2/20 [00:00<00:07,  2.41it/s] 15%|█▌        | 3/20 [00:01<00:06,  2.69it/s] 20%|██        | 4/20 [00:01<00:05,  2.85it/s] 25%|██▌       | 5/20 [00:01<00:05,  2.95it/s] 30%|███       | 6/20 [00:02<00:04,  3.17it/s] 35%|███▌      | 7/20 [00:02<00:04,  3.11it/s] 40%|████      | 8/20 [00:02<00:03,  3.12it/s] 45%|████▌     | 9/20 [00:03<00:03,  3.15it/s] 50%|█████     | 10/20 [00:03<00:03,  3.15it/s] 55%|█████▌    | 11/20 [00:03<00:02,  3.14it/s] 60%|██████    | 12/20 [00:03<00:02,  3.27it/s] 65%|██████▌   | 13/20 [00:04<00:02,  3.22it/s] 70%|███████   | 14/20 [00:04<00:01,  3.24it/s] 75%|███████▌  | 15/20 [00:04<00:01,  3.24it/s] 80%|████████  | 16/20 [00:05<00:01,  3.23it/s] 85%|████████▌ | 17/20 [00:05<00:00,  3.23it/s] 90%|█████████ | 18/20 [00:05<00:00,  3.24it/s] 95%|█████████▌| 19/20 [00:06<00:00,  3.36it/s]100%|██████████| 20/20 [00:06<00:00,  3.39it/s]100%|██████████| 20/20 [00:06<00:00,  3.08it/s]
-  0%|          | 0/20 [00:00<?, ?it/s] 20%|██        | 4/20 [00:00<00:00, 36.68it/s] 45%|████▌     | 9/20 [00:00<00:00, 42.69it/s] 75%|███████▌  | 15/20 [00:00<00:00, 47.02it/s]100%|██████████| 20/20 [00:00<00:00, 46.54it/s]
-2024-09-13 00:30:21.051 | INFO     | trainer.trainer:eval:224 - ==> Evaluation done
-2024-09-13 00:30:21.051 | INFO     | utils.writer:write_scalar_dicts:79 - num_alive_ray:61854.5 rendering_samples_actual:95.1 num_rays:800.0 PSNR:45.102345848083495 
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-WARNING:
-
-You should always run with libnvidia-ml.so that is installed with your
-NVIDIA Display Driver. By default it's installed in /usr/lib and /usr/lib64.
-libnvidia-ml.so in GDK package is a stub library that is attached only for
-build purposes (e.g. machine that you build your application doesn't have
-to have Display Driver installed).
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-/home/jzhou23/tricp/lib/python3.9/site-packages/torch/cuda/__init__.py:497: UserWarning: Can't initialize NVML
-  warnings.warn("Can't initialize NVML")
-/home/jzhou23/tricp/lib/python3.9/site-packages/tinycudann/modules.py:57: UserWarning: tinycudann was built for lower compute capability (75) than the system's (80). Performance may be suboptimal.
-  warnings.warn(f"tinycudann was built for lower compute capability ({cc}) than the system's ({system_compute_capability}). Performance may be suboptimal.")
-2024-09-13 00:30:27.206 | INFO     | __main__:main:25 - ==> Init dataloader ...
-2024-09-13 00:30:27.245 | INFO     | dataset.ray_dataset:__init__:42 - ==> Find 1 cameras
-  0%|          | 0/100 [00:00<?, ?it/s]  3%|▎         | 3/100 [00:00<00:04, 21.45it/s] 54%|█████▍    | 54/100 [00:00<00:00, 265.43it/s]100%|██████████| 100/100 [00:00<00:00, 359.60it/s]
-/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py:554: UserWarning: This DataLoader will create 16 worker processes in total. Our suggested max number of worker in current system is 12, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(_create_warning_msg(
-2024-09-13 00:30:28.870 | INFO     | dataset.ray_dataset:__init__:42 - ==> Find 1 cameras
-  0%|          | 0/20 [00:00<?, ?it/s]100%|██████████| 20/20 [00:00<00:00, 276.12it/s]
-2024-09-13 00:30:29.151 | INFO     | __main__:main:49 - ==> Init model ...
-2024-09-13 00:30:30.726 | INFO     | __main__:main:51 - TriMipRFModel(
-  (field): TriMipRF(
-    (encoding): TriMipEncoding()
-    (direction_encoding): Encoding(n_input_dims=3, n_output_dims=16, seed=1337, dtype=torch.float16, hyperparams={'degree': 4, 'otype': 'SphericalHarmonics'})
-    (mlp_base): Network(n_input_dims=64, n_output_dims=16, seed=1337, dtype=torch.float16, hyperparams={'encoding': {'offset': 0.0, 'otype': 'Identity', 'scale': 1.0}, 'network': {'activation': 'ReLU', 'n_hidden_layers': 2, 'n_neurons': 128, 'otype': 'FullyFusedMLP', 'output_activation': 'None'}, 'otype': 'NetworkWithInputEncoding'})
-    (mlp_head): Network(n_input_dims=31, n_output_dims=3, seed=1337, dtype=torch.float16, hyperparams={'encoding': {'offset': 0.0, 'otype': 'Identity', 'scale': 1.0}, 'network': {'activation': 'ReLU', 'n_hidden_layers': 4, 'n_neurons': 128, 'otype': 'FullyFusedMLP', 'output_activation': 'Sigmoid'}, 'otype': 'NetworkWithInputEncoding'})
-  )
-  (ray_sampler): OccupancyGrid()
-)
-2024-09-13 00:30:30.727 | INFO     | __main__:main:53 - ==> Init trainer ...
-2024-09-13 00:30:30.748 | INFO     | trainer.trainer:__init__:64 - # Parameters for trimipRF.get_optimizer:
-# ==============================================================================
-trimipRF.get_optimizer.feature_lr_scale = 10.0
-trimipRF.get_optimizer.lr = 0.002
-trimipRF.get_optimizer.weight_decay = 1e-05
-
-# Parameters for get_scheduler:
-# ==============================================================================
-get_scheduler.gamma = 0.6
-
-# Parameters for main:
-# ==============================================================================
-main.batch_size = 28
-main.model_name = 'Tri-MipRF'
-main.num_workers = 16
-main.seed = 42
-main.stages = 'train_eval'
-main.train_split = 'trainval'
-
-# Parameters for RayDataset:
-# ==============================================================================
-RayDataset.base_path = './amily'
-RayDataset.num_rays = 8192
-RayDataset.render_bkgd = 'white'
-RayDataset.scene = 'amily_f12'
-RayDataset.scene_type = 'nerf_synthetic'
-RayDataset.to_world = True
-
-# Parameters for Trainer:
-# ==============================================================================
-Trainer.base_exp_dir = './log_amily/fd1'
-Trainer.dynamic_batch_size = True
-Trainer.eval_step = 50000
-Trainer.exp_name = 'nerf_synthetic/amily_f12/Tri-MipRF/2024-09-13_00-30-27'
-Trainer.is_first_frame = False
-Trainer.log_step = 1000
-Trainer.max_steps = 50001
-Trainer.num_rays = 8192
-Trainer.target_sample_batch_size = 262144
-Trainer.test_chunk_size = 8192
-Trainer.varied_eval_img = True
-
-# Parameters for TriMipEncoding:
-# ==============================================================================
-TriMipEncoding.comb = 5
-TriMipEncoding.feature_dim_factor = 1
-TriMipEncoding.include_cp = True
-TriMipEncoding.include_xyz = False
-
-# Parameters for TriMipRF:
-# ==============================================================================
-TriMipRF.feature_dim = 16
-TriMipRF.geo_feat_dim = 15
-TriMipRF.n_levels = 8
-TriMipRF.net_depth_base = 2
-TriMipRF.net_depth_color = 4
-TriMipRF.net_width = 128
-TriMipRF.plane_size = 512
-
-# Parameters for TriMipRFModel:
-# ==============================================================================
-TriMipRFModel.occ_grid_resolution = 128
-TriMipRFModel.samples_per_ray = 1024
-
-2024-09-13 00:30:30.760 | INFO     | trainer.trainer:fit:111 - ==> Start training ...
-2024-09-13 00:30:35.456 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:100 iter_time:0.011810302734375 ETA:0:09:49 num_alive_ray:3543 rendering_samples_actual:256812 num_rays:4093 PSNR:23.081514358520508 total_loss:0.006861507892608643 
-2024-09-13 00:30:51.757 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:1000 iter_time:0.021982908248901367 ETA:0:17:57 num_alive_ray:14617 rendering_samples_actual:258679 num_rays:102409 PSNR:35.06271743774414 total_loss:0.0030354862101376057 
-2024-09-13 00:31:14.158 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:2000 iter_time:0.02115154266357422 ETA:0:16:55 num_alive_ray:17178 rendering_samples_actual:255540 num_rays:131952 PSNR:37.154388427734375 total_loss:0.002074198331683874 
-2024-09-13 00:31:37.595 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:3000 iter_time:0.022394418716430664 ETA:0:17:32 num_alive_ray:19432 rendering_samples_actual:261387 num_rays:140413 PSNR:38.63002395629883 total_loss:0.0014160204445943236 
-2024-09-13 00:32:01.574 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:4000 iter_time:0.021786212921142578 ETA:0:16:42 num_alive_ray:21751 rendering_samples_actual:267877 num_rays:142826 PSNR:39.36781692504883 total_loss:0.0010986404959112406 
-2024-09-13 00:32:26.466 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:5000 iter_time:0.02272176742553711 ETA:0:17:02 num_alive_ray:24469 rendering_samples_actual:268692 num_rays:143717 PSNR:39.91591262817383 total_loss:0.0008398827048949897 
-2024-09-13 00:32:51.063 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:6000 iter_time:0.02270221710205078 ETA:0:16:38 num_alive_ray:23147 rendering_samples_actual:256300 num_rays:146141 PSNR:40.03816223144531 total_loss:0.0008780061034485698 
-2024-09-13 00:33:16.215 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:7000 iter_time:0.024568557739257812 ETA:0:17:36 num_alive_ray:21720 rendering_samples_actual:261651 num_rays:172015 PSNR:40.758453369140625 total_loss:0.0009140724432654679 
-2024-09-13 00:33:41.907 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:8000 iter_time:0.023897171020507812 ETA:0:16:43 num_alive_ray:23061 rendering_samples_actual:260563 num_rays:160168 PSNR:40.894920349121094 total_loss:0.0007993645267561078 
-2024-09-13 00:34:07.395 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:9000 iter_time:0.025180339813232422 ETA:0:17:12 num_alive_ray:22271 rendering_samples_actual:265180 num_rays:181093 PSNR:41.258628845214844 total_loss:0.0008747148094698787 
-2024-09-13 00:34:33.527 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:10000 iter_time:0.024512529373168945 ETA:0:16:20 num_alive_ray:22247 rendering_samples_actual:254444 num_rays:161969 PSNR:42.162078857421875 total_loss:0.0006508321384899318 
-2024-09-13 00:34:59.958 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:11000 iter_time:0.025763988494873047 ETA:0:16:44 num_alive_ray:21015 rendering_samples_actual:259024 num_rays:179935 PSNR:42.07685852050781 total_loss:0.0007547434070147574 
-2024-09-13 00:35:26.905 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:12000 iter_time:0.026561737060546875 ETA:0:16:49 num_alive_ray:21998 rendering_samples_actual:265207 num_rays:182592 PSNR:42.23126983642578 total_loss:0.0007129959994927049 
-2024-09-13 00:35:53.722 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:13000 iter_time:0.024418354034423828 ETA:0:15:03 num_alive_ray:22207 rendering_samples_actual:261089 num_rays:173963 PSNR:42.410579681396484 total_loss:0.0006630987045355141 
-2024-09-13 00:36:20.481 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:14000 iter_time:0.024733543395996094 ETA:0:14:50 num_alive_ray:22240 rendering_samples_actual:260716 num_rays:177908 PSNR:42.097721099853516 total_loss:0.000692552886903286 
-2024-09-13 00:36:47.493 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:15000 iter_time:0.025556087493896484 ETA:0:14:54 num_alive_ray:21887 rendering_samples_actual:267093 num_rays:187457 PSNR:41.7163200378418 total_loss:0.0008431660826317966 
-2024-09-13 00:37:14.858 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:16000 iter_time:0.026113271713256836 ETA:0:14:47 num_alive_ray:22608 rendering_samples_actual:271508 num_rays:189025 PSNR:42.40892028808594 total_loss:0.0006851547514088452 
-2024-09-13 00:37:42.255 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:17000 iter_time:0.023785114288330078 ETA:0:13:04 num_alive_ray:22004 rendering_samples_actual:264874 num_rays:187269 PSNR:42.60557556152344 total_loss:0.000679990800563246 
-2024-09-13 00:38:09.735 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:18000 iter_time:0.02667522430419922 ETA:0:14:13 num_alive_ray:21851 rendering_samples_actual:262399 num_rays:188280 PSNR:42.55026626586914 total_loss:0.0006708258879370987 
-2024-09-13 00:38:37.472 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:19000 iter_time:0.024377822875976562 ETA:0:12:35 num_alive_ray:22003 rendering_samples_actual:266740 num_rays:197470 PSNR:43.13053512573242 total_loss:0.0006442258600145578 
-2024-09-13 00:39:05.204 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:20000 iter_time:0.026761293411254883 ETA:0:13:22 num_alive_ray:21846 rendering_samples_actual:261933 num_rays:192614 PSNR:42.82443618774414 total_loss:0.0006518221343867481 
-2024-09-13 00:39:32.921 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:21000 iter_time:0.023808956146240234 ETA:0:11:30 num_alive_ray:21958 rendering_samples_actual:263249 num_rays:188230 PSNR:42.77422332763672 total_loss:0.0006520553142763674 
-2024-09-13 00:40:00.928 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:22000 iter_time:0.026096105575561523 ETA:0:12:10 num_alive_ray:21640 rendering_samples_actual:269611 num_rays:198010 PSNR:42.398956298828125 total_loss:0.0007341532036662102 
-2024-09-13 00:40:28.958 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:23000 iter_time:0.025458097457885742 ETA:0:11:27 num_alive_ray:21927 rendering_samples_actual:254644 num_rays:193484 PSNR:43.04977035522461 total_loss:0.0006146988016553223 
-2024-09-13 00:40:56.993 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:24000 iter_time:0.026935100555419922 ETA:0:11:40 num_alive_ray:21968 rendering_samples_actual:263969 num_rays:196089 PSNR:43.196537017822266 total_loss:0.0006158041651360691 
-2024-09-13 00:41:25.046 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:25000 iter_time:0.02655196189880371 ETA:0:11:03 num_alive_ray:21609 rendering_samples_actual:261053 num_rays:194421 PSNR:42.748809814453125 total_loss:0.0006707060383632779 
-2024-09-13 00:41:53.716 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:26000 iter_time:0.027074575424194336 ETA:0:10:49 num_alive_ray:20971 rendering_samples_actual:258957 num_rays:203957 PSNR:43.625858306884766 total_loss:0.0006024218746460974 
-2024-09-13 00:42:22.521 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:27000 iter_time:0.02804422378540039 ETA:0:10:45 num_alive_ray:20863 rendering_samples_actual:256055 num_rays:199089 PSNR:43.894126892089844 total_loss:0.0005512551870197058 
-2024-09-13 00:42:51.223 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:28000 iter_time:0.026371479034423828 ETA:0:09:40 num_alive_ray:21061 rendering_samples_actual:258925 num_rays:203352 PSNR:44.13747787475586 total_loss:0.000521987269166857 
-2024-09-13 00:43:19.703 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:29000 iter_time:0.027721405029296875 ETA:0:09:42 num_alive_ray:21288 rendering_samples_actual:258962 num_rays:205325 PSNR:43.76191711425781 total_loss:0.0005891576875001192 
-2024-09-13 00:43:48.328 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:30000 iter_time:0.026025772094726562 ETA:0:08:40 num_alive_ray:21415 rendering_samples_actual:260891 num_rays:207337 PSNR:44.083274841308594 total_loss:0.0005445862771011889 
-2024-09-13 00:44:16.808 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:31000 iter_time:0.026201725006103516 ETA:0:08:17 num_alive_ray:21153 rendering_samples_actual:261573 num_rays:204550 PSNR:43.917755126953125 total_loss:0.0005469124298542738 
-2024-09-13 00:44:45.436 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:32000 iter_time:0.02572035789489746 ETA:0:07:42 num_alive_ray:21307 rendering_samples_actual:262264 num_rays:207501 PSNR:44.1616096496582 total_loss:0.0005509773036465049 
-2024-09-13 00:45:13.914 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:33000 iter_time:0.02660989761352539 ETA:0:07:32 num_alive_ray:21827 rendering_samples_actual:269114 num_rays:210227 PSNR:44.150760650634766 total_loss:0.0005457605584524572 
-2024-09-13 00:45:42.372 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:34000 iter_time:0.026690959930419922 ETA:0:07:07 num_alive_ray:21024 rendering_samples_actual:259294 num_rays:209011 PSNR:44.39962387084961 total_loss:0.0005192700191400945 
-2024-09-13 00:46:11.032 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:35000 iter_time:0.02680182456970215 ETA:0:06:42 num_alive_ray:21491 rendering_samples_actual:261841 num_rays:207903 PSNR:43.82322692871094 total_loss:0.0005618493887595832 
-2024-09-13 00:46:39.592 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:36000 iter_time:0.025616884231567383 ETA:0:05:58 num_alive_ray:21378 rendering_samples_actual:259412 num_rays:205082 PSNR:44.151180267333984 total_loss:0.0005096808890812099 
-2024-09-13 00:47:08.079 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:37000 iter_time:0.02696967124938965 ETA:0:05:50 num_alive_ray:21381 rendering_samples_actual:264503 num_rays:210509 PSNR:44.26066589355469 total_loss:0.0005355972098186612 
-2024-09-13 00:47:36.821 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:38000 iter_time:0.02698969841003418 ETA:0:05:23 num_alive_ray:21244 rendering_samples_actual:259988 num_rays:210433 PSNR:44.78050994873047 total_loss:0.00048190454253926873 
-2024-09-13 00:48:05.764 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:39000 iter_time:0.027456998825073242 ETA:0:05:02 num_alive_ray:21340 rendering_samples_actual:265008 num_rays:214343 PSNR:44.77261734008789 total_loss:0.0004915297031402588 
-2024-09-13 00:48:35.022 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:40000 iter_time:0.026105403900146484 ETA:0:04:21 num_alive_ray:20650 rendering_samples_actual:262086 num_rays:212419 PSNR:44.72904586791992 total_loss:0.0005050759064033628 
-2024-09-13 00:49:04.167 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:41000 iter_time:0.02600574493408203 ETA:0:03:54 num_alive_ray:21383 rendering_samples_actual:264683 num_rays:215243 PSNR:44.82823181152344 total_loss:0.0004694261297117919 
-2024-09-13 00:49:33.388 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:42000 iter_time:0.026673555374145508 ETA:0:03:33 num_alive_ray:21206 rendering_samples_actual:267483 num_rays:218621 PSNR:45.08953857421875 total_loss:0.00046673809993080795 
-2024-09-13 00:50:02.695 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:43000 iter_time:0.028578519821166992 ETA:0:03:20 num_alive_ray:21098 rendering_samples_actual:262418 num_rays:218940 PSNR:44.83634948730469 total_loss:0.00047483769594691694 
-2024-09-13 00:50:32.078 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:44000 iter_time:0.026658058166503906 ETA:0:02:39 num_alive_ray:20638 rendering_samples_actual:261558 num_rays:217004 PSNR:45.00126647949219 total_loss:0.00047472704318352044 
-2024-09-13 00:51:01.432 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:45000 iter_time:0.02758049964904785 ETA:0:02:17 num_alive_ray:20993 rendering_samples_actual:260015 num_rays:216648 PSNR:45.032527923583984 total_loss:0.00047326349886134267 
-2024-09-13 00:51:30.835 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:46000 iter_time:0.026410579681396484 ETA:0:01:45 num_alive_ray:20767 rendering_samples_actual:263944 num_rays:217998 PSNR:45.02543258666992 total_loss:0.00047075742622837424 
-2024-09-13 00:52:00.258 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:47000 iter_time:0.02797079086303711 ETA:0:01:23 num_alive_ray:20810 rendering_samples_actual:262313 num_rays:216212 PSNR:45.184288024902344 total_loss:0.00044538528891280293 
-2024-09-13 00:52:29.684 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:48000 iter_time:0.026730060577392578 ETA:0:00:53 num_alive_ray:20745 rendering_samples_actual:262452 num_rays:218989 PSNR:45.32844543457031 total_loss:0.0004595294303726405 
-2024-09-13 00:52:59.407 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:49000 iter_time:0.0287168025970459 ETA:0:00:28 num_alive_ray:20734 rendering_samples_actual:261309 num_rays:219637 PSNR:45.52191162109375 total_loss:0.00043798473780043423 
-2024-09-13 00:53:29.015 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:50000 iter_time:0.026952743530273438 ETA:0:00:00 num_alive_ray:20895 rendering_samples_actual:266115 num_rays:220744 PSNR:45.228206634521484 total_loss:0.0004634641809388995 
-2024-09-13 00:53:29.324 | INFO     | utils.writer:write_scalar_dicts:79 - num_alive_ray:60980 rendering_samples_actual:0 num_rays:800 PSNR:45.42768478393555 
-2024-09-13 00:53:29.522 | INFO     | trainer.trainer:fit:161 - ==> Training done!
-2024-09-13 00:53:29.522 | INFO     | trainer.trainer:save_ckpt:244 - ==> Saving checkpoints to log_amily/fd1/nerf_synthetic/amily_f12/Tri-MipRF/2024-09-13_00-30-27/model.ckpt
-2024-09-13 00:53:29.738 | INFO     | trainer.trainer:eval:191 - ==> Start evaluation on testset ...
-  0%|          | 0/20 [00:00<?, ?it/s]  5%|▌         | 1/20 [00:00<00:08,  2.20it/s] 10%|█         | 2/20 [00:00<00:06,  2.82it/s] 15%|█▌        | 3/20 [00:01<00:05,  2.96it/s] 20%|██        | 4/20 [00:01<00:05,  3.05it/s] 25%|██▌       | 5/20 [00:01<00:04,  3.11it/s] 30%|███       | 6/20 [00:01<00:04,  3.28it/s] 35%|███▌      | 7/20 [00:02<00:04,  3.23it/s] 40%|████      | 8/20 [00:02<00:03,  3.24it/s] 45%|████▌     | 9/20 [00:02<00:03,  3.23it/s] 50%|█████     | 10/20 [00:03<00:03,  3.23it/s] 55%|█████▌    | 11/20 [00:03<00:02,  3.21it/s] 60%|██████    | 12/20 [00:03<00:02,  3.34it/s] 65%|██████▌   | 13/20 [00:04<00:02,  3.27it/s] 70%|███████   | 14/20 [00:04<00:01,  3.25it/s] 75%|███████▌  | 15/20 [00:04<00:01,  3.21it/s] 80%|████████  | 16/20 [00:05<00:01,  3.16it/s] 85%|████████▌ | 17/20 [00:05<00:00,  3.18it/s] 90%|█████████ | 18/20 [00:05<00:00,  3.16it/s] 95%|█████████▌| 19/20 [00:05<00:00,  3.31it/s]100%|██████████| 20/20 [00:06<00:00,  3.37it/s]100%|██████████| 20/20 [00:06<00:00,  3.18it/s]
-  0%|          | 0/20 [00:00<?, ?it/s]  5%|▌         | 1/20 [00:03<01:03,  3.35s/it] 30%|███       | 6/20 [00:03<00:06,  2.33it/s] 55%|█████▌    | 11/20 [00:03<00:01,  4.94it/s] 80%|████████  | 16/20 [00:03<00:00,  8.21it/s]100%|██████████| 20/20 [00:03<00:00,  5.34it/s]
-2024-09-13 00:53:39.781 | INFO     | trainer.trainer:eval:224 - ==> Evaluation done
-2024-09-13 00:53:39.781 | INFO     | utils.writer:write_scalar_dicts:79 - num_alive_ray:61928.05 rendering_samples_actual:0.0 num_rays:800.0 PSNR:45.195861625671384 
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-WARNING:
-
-You should always run with libnvidia-ml.so that is installed with your
-NVIDIA Display Driver. By default it's installed in /usr/lib and /usr/lib64.
-libnvidia-ml.so in GDK package is a stub library that is attached only for
-build purposes (e.g. machine that you build your application doesn't have
-to have Display Driver installed).
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-/home/jzhou23/tricp/lib/python3.9/site-packages/torch/cuda/__init__.py:497: UserWarning: Can't initialize NVML
-  warnings.warn("Can't initialize NVML")
-/home/jzhou23/tricp/lib/python3.9/site-packages/tinycudann/modules.py:57: UserWarning: tinycudann was built for lower compute capability (75) than the system's (80). Performance may be suboptimal.
-  warnings.warn(f"tinycudann was built for lower compute capability ({cc}) than the system's ({system_compute_capability}). Performance may be suboptimal.")
-2024-09-13 00:53:56.996 | INFO     | __main__:main:25 - ==> Init dataloader ...
-2024-09-13 00:53:57.291 | INFO     | dataset.ray_dataset:__init__:42 - ==> Find 1 cameras
-  0%|          | 0/100 [00:00<?, ?it/s]  1%|          | 1/100 [00:00<00:12,  7.95it/s] 52%|█████▏    | 52/100 [00:00<00:00, 240.03it/s] 81%|████████  | 81/100 [00:00<00:00, 256.30it/s]100%|██████████| 100/100 [00:00<00:00, 274.82it/s]
-/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py:554: UserWarning: This DataLoader will create 16 worker processes in total. Our suggested max number of worker in current system is 12, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(_create_warning_msg(
-2024-09-13 00:53:59.060 | INFO     | dataset.ray_dataset:__init__:42 - ==> Find 1 cameras
-  0%|          | 0/20 [00:00<?, ?it/s]100%|██████████| 20/20 [00:00<00:00, 244.13it/s]
-2024-09-13 00:53:59.567 | INFO     | __main__:main:49 - ==> Init model ...
-2024-09-13 00:54:01.259 | INFO     | __main__:main:51 - TriMipRFModel(
-  (field): TriMipRF(
-    (encoding): TriMipEncoding()
-    (direction_encoding): Encoding(n_input_dims=3, n_output_dims=16, seed=1337, dtype=torch.float16, hyperparams={'degree': 4, 'otype': 'SphericalHarmonics'})
-    (mlp_base): Network(n_input_dims=64, n_output_dims=16, seed=1337, dtype=torch.float16, hyperparams={'encoding': {'offset': 0.0, 'otype': 'Identity', 'scale': 1.0}, 'network': {'activation': 'ReLU', 'n_hidden_layers': 2, 'n_neurons': 128, 'otype': 'FullyFusedMLP', 'output_activation': 'None'}, 'otype': 'NetworkWithInputEncoding'})
-    (mlp_head): Network(n_input_dims=31, n_output_dims=3, seed=1337, dtype=torch.float16, hyperparams={'encoding': {'offset': 0.0, 'otype': 'Identity', 'scale': 1.0}, 'network': {'activation': 'ReLU', 'n_hidden_layers': 4, 'n_neurons': 128, 'otype': 'FullyFusedMLP', 'output_activation': 'Sigmoid'}, 'otype': 'NetworkWithInputEncoding'})
-  )
-  (ray_sampler): OccupancyGrid()
-)
-2024-09-13 00:54:01.259 | INFO     | __main__:main:53 - ==> Init trainer ...
-2024-09-13 00:54:01.281 | INFO     | trainer.trainer:__init__:64 - # Parameters for trimipRF.get_optimizer:
-# ==============================================================================
-trimipRF.get_optimizer.feature_lr_scale = 10.0
-trimipRF.get_optimizer.lr = 0.002
-trimipRF.get_optimizer.weight_decay = 1e-05
-
-# Parameters for get_scheduler:
-# ==============================================================================
-get_scheduler.gamma = 0.6
-
-# Parameters for main:
-# ==============================================================================
-main.batch_size = 28
-main.model_name = 'Tri-MipRF'
-main.num_workers = 16
-main.seed = 42
-main.stages = 'train_eval'
-main.train_split = 'trainval'
-
-# Parameters for RayDataset:
-# ==============================================================================
-RayDataset.base_path = './amily'
-RayDataset.num_rays = 8192
-RayDataset.render_bkgd = 'white'
-RayDataset.scene = 'amily_f13'
-RayDataset.scene_type = 'nerf_synthetic'
-RayDataset.to_world = True
-
-# Parameters for Trainer:
-# ==============================================================================
-Trainer.base_exp_dir = './log_amily/fd1'
-Trainer.dynamic_batch_size = True
-Trainer.eval_step = 50000
-Trainer.exp_name = 'nerf_synthetic/amily_f13/Tri-MipRF/2024-09-13_00-53-56'
-Trainer.is_first_frame = False
-Trainer.log_step = 1000
-Trainer.max_steps = 50001
-Trainer.num_rays = 8192
-Trainer.target_sample_batch_size = 262144
-Trainer.test_chunk_size = 8192
-Trainer.varied_eval_img = True
-
-# Parameters for TriMipEncoding:
-# ==============================================================================
-TriMipEncoding.comb = 5
-TriMipEncoding.feature_dim_factor = 1
-TriMipEncoding.include_cp = True
-TriMipEncoding.include_xyz = False
-
-# Parameters for TriMipRF:
-# ==============================================================================
-TriMipRF.feature_dim = 16
-TriMipRF.geo_feat_dim = 15
-TriMipRF.n_levels = 8
-TriMipRF.net_depth_base = 2
-TriMipRF.net_depth_color = 4
-TriMipRF.net_width = 128
-TriMipRF.plane_size = 512
-
-# Parameters for TriMipRFModel:
-# ==============================================================================
-TriMipRFModel.occ_grid_resolution = 128
-TriMipRFModel.samples_per_ray = 1024
-
-2024-09-13 00:54:01.286 | INFO     | trainer.trainer:fit:111 - ==> Start training ...
-2024-09-13 00:54:06.050 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:100 iter_time:0.020031213760375977 ETA:0:16:39 num_alive_ray:3466 rendering_samples_actual:257490 num_rays:3961 PSNR:23.617780685424805 total_loss:0.006364760920405388 
-2024-09-13 00:54:22.082 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:1000 iter_time:0.01908397674560547 ETA:0:15:35 num_alive_ray:14188 rendering_samples_actual:259820 num_rays:99327 PSNR:35.577362060546875 total_loss:0.0027724921237677336 
-2024-09-13 00:54:44.105 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:2000 iter_time:0.021487712860107422 ETA:0:17:11 num_alive_ray:16826 rendering_samples_actual:254985 num_rays:128794 PSNR:37.86320877075195 total_loss:0.0017642306629568338 
-2024-09-13 00:55:07.393 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:3000 iter_time:0.021705150604248047 ETA:0:17:00 num_alive_ray:18665 rendering_samples_actual:262367 num_rays:142433 PSNR:39.025123596191406 total_loss:0.0014046451542526484 
-2024-09-13 00:55:31.293 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:4000 iter_time:0.022678136825561523 ETA:0:17:23 num_alive_ray:19028 rendering_samples_actual:258569 num_rays:148151 PSNR:39.63010787963867 total_loss:0.0012304382398724556 
-2024-09-13 00:55:55.647 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:5000 iter_time:0.02252793312072754 ETA:0:16:53 num_alive_ray:20937 rendering_samples_actual:261694 num_rays:153575 PSNR:40.11918258666992 total_loss:0.0010003243805840611 
-2024-09-13 00:56:20.456 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:6000 iter_time:0.02432394027709961 ETA:0:17:50 num_alive_ray:21040 rendering_samples_actual:256370 num_rays:160259 PSNR:40.134010314941406 total_loss:0.0010679768165573478 
-2024-09-13 00:56:45.600 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:7000 iter_time:0.025454044342041016 ETA:0:18:14 num_alive_ray:20299 rendering_samples_actual:265196 num_rays:175848 PSNR:40.98212432861328 total_loss:0.00097710732370615 
-2024-09-13 00:57:11.226 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:8000 iter_time:0.024771451950073242 ETA:0:17:20 num_alive_ray:21470 rendering_samples_actual:264459 num_rays:165860 PSNR:41.33930206298828 total_loss:0.0008025051793083549 
-2024-09-13 00:57:37.100 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:9000 iter_time:0.0238339900970459 ETA:0:16:17 num_alive_ray:22943 rendering_samples_actual:261998 num_rays:170340 PSNR:41.81669616699219 total_loss:0.0006901992601342499 
-2024-09-13 00:58:03.343 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:10000 iter_time:0.023343563079833984 ETA:0:15:33 num_alive_ray:21098 rendering_samples_actual:253091 num_rays:171316 PSNR:42.022884368896484 total_loss:0.000713473476935178 
-2024-09-13 00:58:29.731 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:11000 iter_time:0.025997400283813477 ETA:0:16:53 num_alive_ray:21395 rendering_samples_actual:272307 num_rays:191046 PSNR:41.11898422241211 total_loss:0.000993523863144219 
-2024-09-13 00:58:56.592 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:12000 iter_time:0.024796485900878906 ETA:0:15:42 num_alive_ray:21673 rendering_samples_actual:272158 num_rays:190479 PSNR:41.53752899169922 total_loss:0.0008736649178899825 
-2024-09-13 00:59:23.297 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:13000 iter_time:0.023366689682006836 ETA:0:14:24 num_alive_ray:21806 rendering_samples_actual:264428 num_rays:181695 PSNR:42.263458251953125 total_loss:0.0006891516968607903 
-2024-09-13 00:59:50.331 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:14000 iter_time:0.02605724334716797 ETA:0:15:38 num_alive_ray:21778 rendering_samples_actual:258994 num_rays:184141 PSNR:42.50502014160156 total_loss:0.0007043006480671465 
-2024-09-13 01:00:17.492 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:15000 iter_time:0.024697065353393555 ETA:0:14:24 num_alive_ray:22200 rendering_samples_actual:264143 num_rays:189864 PSNR:42.82586669921875 total_loss:0.0006614975864067674 
-2024-09-13 01:00:44.798 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:16000 iter_time:0.02761387825012207 ETA:0:15:38 num_alive_ray:22493 rendering_samples_actual:269171 num_rays:191650 PSNR:42.524539947509766 total_loss:0.0006622387445531785 
-2024-09-13 01:01:12.081 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:17000 iter_time:0.02420186996459961 ETA:0:13:18 num_alive_ray:21984 rendering_samples_actual:262774 num_rays:190198 PSNR:43.10542297363281 total_loss:0.0006230024737305939 
-2024-09-13 01:01:39.620 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:18000 iter_time:0.02571868896484375 ETA:0:13:43 num_alive_ray:21755 rendering_samples_actual:262072 num_rays:193143 PSNR:43.065147399902344 total_loss:0.0006290451856330037 
-2024-09-13 01:02:06.980 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:19000 iter_time:0.02523207664489746 ETA:0:13:02 num_alive_ray:22389 rendering_samples_actual:264028 num_rays:191365 PSNR:42.88066482543945 total_loss:0.0006183062214404345 
-2024-09-13 01:02:34.494 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:20000 iter_time:0.02508831024169922 ETA:0:12:32 num_alive_ray:22144 rendering_samples_actual:263147 num_rays:196822 PSNR:43.056922912597656 total_loss:0.0006231462466530502 
-2024-09-13 01:03:02.170 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:21000 iter_time:0.025376558303833008 ETA:0:12:15 num_alive_ray:21528 rendering_samples_actual:261209 num_rays:196206 PSNR:43.01417922973633 total_loss:0.0006690369336865842 
-2024-09-13 01:03:29.721 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:22000 iter_time:0.024941682815551758 ETA:0:11:38 num_alive_ray:22324 rendering_samples_actual:274253 num_rays:197625 PSNR:42.606685638427734 total_loss:0.0006826540338806808 
-2024-09-13 01:03:57.118 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:23000 iter_time:0.023965835571289062 ETA:0:10:47 num_alive_ray:22320 rendering_samples_actual:264098 num_rays:196266 PSNR:43.268821716308594 total_loss:0.0005864230333827436 
-2024-09-13 01:04:24.570 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:24000 iter_time:0.02543783187866211 ETA:0:11:01 num_alive_ray:21931 rendering_samples_actual:264911 num_rays:201774 PSNR:43.21388626098633 total_loss:0.0006260456866584718 
-2024-09-13 01:04:52.264 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:25000 iter_time:0.025989294052124023 ETA:0:10:49 num_alive_ray:21867 rendering_samples_actual:255637 num_rays:193013 PSNR:43.48762893676758 total_loss:0.0005804299144074321 
-2024-09-13 01:05:20.422 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:26000 iter_time:0.025646209716796875 ETA:0:10:15 num_alive_ray:21309 rendering_samples_actual:262298 num_rays:206888 PSNR:44.10137939453125 total_loss:0.0005371508887037635 
-2024-09-13 01:05:48.832 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:27000 iter_time:0.027021408081054688 ETA:0:10:21 num_alive_ray:21086 rendering_samples_actual:256011 num_rays:201400 PSNR:44.17500305175781 total_loss:0.0005454661441035569 
-2024-09-13 01:06:17.310 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:28000 iter_time:0.027886152267456055 ETA:0:10:13 num_alive_ray:21325 rendering_samples_actual:262603 num_rays:209094 PSNR:44.079986572265625 total_loss:0.0005352096050046384 
-2024-09-13 01:06:45.919 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:29000 iter_time:0.025053024291992188 ETA:0:08:46 num_alive_ray:21086 rendering_samples_actual:260895 num_rays:207428 PSNR:44.26985549926758 total_loss:0.0005417100619524717 
-2024-09-13 01:07:14.474 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:30000 iter_time:0.02645397186279297 ETA:0:08:49 num_alive_ray:21678 rendering_samples_actual:262411 num_rays:209136 PSNR:44.277225494384766 total_loss:0.0005085496813990176 
-2024-09-13 01:07:42.933 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:31000 iter_time:0.026894092559814453 ETA:0:08:31 num_alive_ray:21600 rendering_samples_actual:260953 num_rays:202087 PSNR:44.2050666809082 total_loss:0.0005025559803470969 
-2024-09-13 01:08:11.326 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:32000 iter_time:0.025989532470703125 ETA:0:07:47 num_alive_ray:21993 rendering_samples_actual:269005 num_rays:209382 PSNR:44.152740478515625 total_loss:0.0005224772612564266 
-2024-09-13 01:08:39.799 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:33000 iter_time:0.026829957962036133 ETA:0:07:36 num_alive_ray:21907 rendering_samples_actual:266002 num_rays:210221 PSNR:44.67450714111328 total_loss:0.00047322449972853065 
-2024-09-13 01:09:08.395 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:34000 iter_time:0.02600836753845215 ETA:0:06:56 num_alive_ray:21246 rendering_samples_actual:260228 num_rays:209921 PSNR:44.31127166748047 total_loss:0.000518055516295135 
-2024-09-13 01:09:36.990 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:35000 iter_time:0.026942968368530273 ETA:0:06:44 num_alive_ray:21699 rendering_samples_actual:263659 num_rays:210233 PSNR:44.35163879394531 total_loss:0.0005116257816553116 
-2024-09-13 01:10:05.578 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:36000 iter_time:0.025508880615234375 ETA:0:05:57 num_alive_ray:21385 rendering_samples_actual:259940 num_rays:206321 PSNR:44.21417236328125 total_loss:0.0005258175078779459 
-2024-09-13 01:10:34.308 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:37000 iter_time:0.027039051055908203 ETA:0:05:51 num_alive_ray:21787 rendering_samples_actual:267498 num_rays:214843 PSNR:44.425140380859375 total_loss:0.0005149062490090728 
-2024-09-13 01:11:03.170 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:38000 iter_time:0.026262283325195312 ETA:0:05:15 num_alive_ray:21294 rendering_samples_actual:259779 num_rays:214657 PSNR:44.84370803833008 total_loss:0.0004588017181959003 
-2024-09-13 01:11:32.219 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:39000 iter_time:0.028043746948242188 ETA:0:05:08 num_alive_ray:21403 rendering_samples_actual:261161 num_rays:213604 PSNR:44.8459587097168 total_loss:0.0004652428615372628 
-2024-09-13 01:12:01.358 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:40000 iter_time:0.027133703231811523 ETA:0:04:31 num_alive_ray:20756 rendering_samples_actual:263390 num_rays:214112 PSNR:44.721153259277344 total_loss:0.0005072886706329882 
-2024-09-13 01:12:30.413 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:41000 iter_time:0.02824711799621582 ETA:0:04:14 num_alive_ray:21578 rendering_samples_actual:269053 num_rays:218413 PSNR:44.64093017578125 total_loss:0.00048243580386042595 
-2024-09-13 01:12:59.591 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:42000 iter_time:0.027159690856933594 ETA:0:03:37 num_alive_ray:21264 rendering_samples_actual:265230 num_rays:219494 PSNR:45.429630279541016 total_loss:0.00043763211579062045 
-2024-09-13 01:13:29.131 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:43000 iter_time:0.02818751335144043 ETA:0:03:17 num_alive_ray:21015 rendering_samples_actual:260384 num_rays:217686 PSNR:45.086666107177734 total_loss:0.0004561248351819813 
-2024-09-13 01:13:58.396 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:44000 iter_time:0.026311159133911133 ETA:0:02:37 num_alive_ray:20899 rendering_samples_actual:263357 num_rays:216094 PSNR:45.2152214050293 total_loss:0.00044602685375139117 
-2024-09-13 01:14:27.586 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:45000 iter_time:0.028024673461914062 ETA:0:02:20 num_alive_ray:20953 rendering_samples_actual:262889 num_rays:218691 PSNR:45.22251510620117 total_loss:0.0004540914378594607 
-2024-09-13 01:14:56.949 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:46000 iter_time:0.02643585205078125 ETA:0:01:45 num_alive_ray:21278 rendering_samples_actual:265611 num_rays:221478 PSNR:45.253456115722656 total_loss:0.00044170315959490836 
-2024-09-13 01:15:26.256 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:47000 iter_time:0.027472496032714844 ETA:0:01:22 num_alive_ray:21200 rendering_samples_actual:266178 num_rays:221376 PSNR:45.33395767211914 total_loss:0.000435006309999153 
-2024-09-13 01:15:55.678 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:48000 iter_time:0.026428937911987305 ETA:0:00:52 num_alive_ray:20847 rendering_samples_actual:260899 num_rays:218271 PSNR:45.40170669555664 total_loss:0.0004401050682645291 
-2024-09-13 01:16:25.091 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:49000 iter_time:0.02777552604675293 ETA:0:00:27 num_alive_ray:20874 rendering_samples_actual:260504 num_rays:220790 PSNR:45.43913269042969 total_loss:0.00043721069232560694 
-2024-09-13 01:16:54.505 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:50000 iter_time:0.02653813362121582 ETA:0:00:00 num_alive_ray:21043 rendering_samples_actual:266926 num_rays:220581 PSNR:45.35244369506836 total_loss:0.0004454822337720543 
-2024-09-13 01:16:54.831 | INFO     | utils.writer:write_scalar_dicts:79 - num_alive_ray:62111 rendering_samples_actual:0 num_rays:800 PSNR:45.27448654174805 
-2024-09-13 01:16:54.984 | INFO     | trainer.trainer:fit:161 - ==> Training done!
-2024-09-13 01:16:54.991 | INFO     | trainer.trainer:save_ckpt:244 - ==> Saving checkpoints to log_amily/fd1/nerf_synthetic/amily_f13/Tri-MipRF/2024-09-13_00-53-56/model.ckpt
-2024-09-13 01:16:55.027 | INFO     | trainer.trainer:eval:191 - ==> Start evaluation on testset ...
-  0%|          | 0/20 [00:00<?, ?it/s]Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f80f1042310>
-Traceback (most recent call last):
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1466, in __del__
-    self._shutdown_workers()
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1449, in _shutdown_workers
-    if w.is_alive():
-  File "/opt/sw/spack/apps/linux-rhel8-x86_64_v2/gcc-10.3.0/python-3.9.9-jh/lib/python3.9/multiprocessing/process.py", line 160, in is_alive
-    assert self._parent_pid == os.getpid(), 'can only test a child process'
-AssertionError: can only test a child process
-Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f80f1042310>
-Traceback (most recent call last):
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1466, in __del__
-    self._shutdown_workers()
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1449, in _shutdown_workers
-    if w.is_alive():
-  File "/opt/sw/spack/apps/linux-rhel8-x86_64_v2/gcc-10.3.0/python-3.9.9-jh/lib/python3.9/multiprocessing/process.py", line 160, in is_alive
-    assert self._parent_pid == os.getpid(), 'can only test a child process'
-AssertionError: can only test a child process
-  5%|▌         | 1/20 [00:00<00:10,  1.80it/s] 10%|█         | 2/20 [00:00<00:07,  2.52it/s] 15%|█▌        | 3/20 [00:01<00:06,  2.79it/s] 20%|██        | 4/20 [00:01<00:05,  2.95it/s] 25%|██▌       | 5/20 [00:01<00:04,  3.05it/s] 30%|███       | 6/20 [00:02<00:04,  3.18it/s] 35%|███▌      | 7/20 [00:02<00:04,  3.16it/s] 40%|████      | 8/20 [00:02<00:03,  3.19it/s] 45%|████▌     | 9/20 [00:03<00:03,  3.19it/s] 50%|█████     | 10/20 [00:03<00:03,  3.18it/s] 55%|█████▌    | 11/20 [00:03<00:02,  3.17it/s] 60%|██████    | 12/20 [00:03<00:02,  3.28it/s] 65%|██████▌   | 13/20 [00:04<00:02,  3.24it/s] 70%|███████   | 14/20 [00:04<00:01,  3.24it/s] 75%|███████▌  | 15/20 [00:04<00:01,  3.23it/s] 80%|████████  | 16/20 [00:05<00:01,  3.21it/s] 85%|████████▌ | 17/20 [00:05<00:00,  3.21it/s] 90%|█████████ | 18/20 [00:05<00:00,  3.20it/s] 95%|█████████▌| 19/20 [00:06<00:00,  3.26it/s]100%|██████████| 20/20 [00:06<00:00,  3.27it/s]100%|██████████| 20/20 [00:06<00:00,  3.09it/s]
-  0%|          | 0/20 [00:00<?, ?it/s] 20%|██        | 4/20 [00:00<00:00, 37.50it/s] 45%|████▌     | 9/20 [00:00<00:00, 43.51it/s] 70%|███████   | 14/20 [00:00<00:00, 44.19it/s] 95%|█████████▌| 19/20 [00:00<00:00, 45.00it/s]100%|██████████| 20/20 [00:00<00:00, 44.56it/s]
-2024-09-13 01:17:01.949 | INFO     | trainer.trainer:eval:224 - ==> Evaluation done
-2024-09-13 01:17:01.949 | INFO     | utils.writer:write_scalar_dicts:79 - num_alive_ray:62604.4 rendering_samples_actual:0.0 num_rays:800.0 PSNR:45.238535499572755 
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-WARNING:
-
-You should always run with libnvidia-ml.so that is installed with your
-NVIDIA Display Driver. By default it's installed in /usr/lib and /usr/lib64.
-libnvidia-ml.so in GDK package is a stub library that is attached only for
-build purposes (e.g. machine that you build your application doesn't have
-to have Display Driver installed).
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-/home/jzhou23/tricp/lib/python3.9/site-packages/torch/cuda/__init__.py:497: UserWarning: Can't initialize NVML
-  warnings.warn("Can't initialize NVML")
-/home/jzhou23/tricp/lib/python3.9/site-packages/tinycudann/modules.py:57: UserWarning: tinycudann was built for lower compute capability (75) than the system's (80). Performance may be suboptimal.
-  warnings.warn(f"tinycudann was built for lower compute capability ({cc}) than the system's ({system_compute_capability}). Performance may be suboptimal.")
-2024-09-13 01:17:08.077 | INFO     | __main__:main:25 - ==> Init dataloader ...
-2024-09-13 01:17:08.411 | INFO     | dataset.ray_dataset:__init__:42 - ==> Find 1 cameras
-  0%|          | 0/100 [00:00<?, ?it/s]  3%|▎         | 3/100 [00:00<00:05, 16.54it/s] 73%|███████▎  | 73/100 [00:00<00:00, 300.83it/s]100%|██████████| 100/100 [00:00<00:00, 329.38it/s]
-/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py:554: UserWarning: This DataLoader will create 16 worker processes in total. Our suggested max number of worker in current system is 12, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(_create_warning_msg(
-2024-09-13 01:17:10.067 | INFO     | dataset.ray_dataset:__init__:42 - ==> Find 1 cameras
-  0%|          | 0/20 [00:00<?, ?it/s]100%|██████████| 20/20 [00:00<00:00, 280.80it/s]
-2024-09-13 01:17:10.205 | INFO     | __main__:main:49 - ==> Init model ...
-2024-09-13 01:17:11.537 | INFO     | __main__:main:51 - TriMipRFModel(
-  (field): TriMipRF(
-    (encoding): TriMipEncoding()
-    (direction_encoding): Encoding(n_input_dims=3, n_output_dims=16, seed=1337, dtype=torch.float16, hyperparams={'degree': 4, 'otype': 'SphericalHarmonics'})
-    (mlp_base): Network(n_input_dims=64, n_output_dims=16, seed=1337, dtype=torch.float16, hyperparams={'encoding': {'offset': 0.0, 'otype': 'Identity', 'scale': 1.0}, 'network': {'activation': 'ReLU', 'n_hidden_layers': 2, 'n_neurons': 128, 'otype': 'FullyFusedMLP', 'output_activation': 'None'}, 'otype': 'NetworkWithInputEncoding'})
-    (mlp_head): Network(n_input_dims=31, n_output_dims=3, seed=1337, dtype=torch.float16, hyperparams={'encoding': {'offset': 0.0, 'otype': 'Identity', 'scale': 1.0}, 'network': {'activation': 'ReLU', 'n_hidden_layers': 4, 'n_neurons': 128, 'otype': 'FullyFusedMLP', 'output_activation': 'Sigmoid'}, 'otype': 'NetworkWithInputEncoding'})
-  )
-  (ray_sampler): OccupancyGrid()
-)
-2024-09-13 01:17:11.537 | INFO     | __main__:main:53 - ==> Init trainer ...
-2024-09-13 01:17:11.554 | INFO     | trainer.trainer:__init__:64 - # Parameters for trimipRF.get_optimizer:
-# ==============================================================================
-trimipRF.get_optimizer.feature_lr_scale = 10.0
-trimipRF.get_optimizer.lr = 0.002
-trimipRF.get_optimizer.weight_decay = 1e-05
-
-# Parameters for get_scheduler:
-# ==============================================================================
-get_scheduler.gamma = 0.6
-
-# Parameters for main:
-# ==============================================================================
-main.batch_size = 28
-main.model_name = 'Tri-MipRF'
-main.num_workers = 16
-main.seed = 42
-main.stages = 'train_eval'
-main.train_split = 'trainval'
-
-# Parameters for RayDataset:
-# ==============================================================================
-RayDataset.base_path = './amily'
-RayDataset.num_rays = 8192
-RayDataset.render_bkgd = 'white'
-RayDataset.scene = 'amily_f14'
-RayDataset.scene_type = 'nerf_synthetic'
-RayDataset.to_world = True
-
-# Parameters for Trainer:
-# ==============================================================================
-Trainer.base_exp_dir = './log_amily/fd1'
-Trainer.dynamic_batch_size = True
-Trainer.eval_step = 50000
-Trainer.exp_name = 'nerf_synthetic/amily_f14/Tri-MipRF/2024-09-13_01-17-08'
-Trainer.is_first_frame = False
-Trainer.log_step = 1000
-Trainer.max_steps = 50001
-Trainer.num_rays = 8192
-Trainer.target_sample_batch_size = 262144
-Trainer.test_chunk_size = 8192
-Trainer.varied_eval_img = True
-
-# Parameters for TriMipEncoding:
-# ==============================================================================
-TriMipEncoding.comb = 5
-TriMipEncoding.feature_dim_factor = 1
-TriMipEncoding.include_cp = True
-TriMipEncoding.include_xyz = False
-
-# Parameters for TriMipRF:
-# ==============================================================================
-TriMipRF.feature_dim = 16
-TriMipRF.geo_feat_dim = 15
-TriMipRF.n_levels = 8
-TriMipRF.net_depth_base = 2
-TriMipRF.net_depth_color = 4
-TriMipRF.net_width = 128
-TriMipRF.plane_size = 512
-
-# Parameters for TriMipRFModel:
-# ==============================================================================
-TriMipRFModel.occ_grid_resolution = 128
-TriMipRFModel.samples_per_ray = 1024
-
-2024-09-13 01:17:11.559 | INFO     | trainer.trainer:fit:111 - ==> Start training ...
-2024-09-13 01:17:15.969 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:100 iter_time:0.019997596740722656 ETA:0:16:37 num_alive_ray:3319 rendering_samples_actual:256529 num_rays:3800 PSNR:23.5281982421875 total_loss:0.006346215959638357 
-2024-09-13 01:17:32.213 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:1000 iter_time:0.018241167068481445 ETA:0:14:53 num_alive_ray:14956 rendering_samples_actual:259022 num_rays:96226 PSNR:35.03257369995117 total_loss:0.002787545323371887 
-2024-09-13 01:17:54.110 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:2000 iter_time:0.02034926414489746 ETA:0:16:16 num_alive_ray:16724 rendering_samples_actual:255504 num_rays:124762 PSNR:37.959136962890625 total_loss:0.0016581107629463077 
-2024-09-13 01:18:17.082 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:3000 iter_time:0.021290302276611328 ETA:0:16:40 num_alive_ray:19298 rendering_samples_actual:260089 num_rays:135141 PSNR:38.8978271484375 total_loss:0.0013038136530667543 
-2024-09-13 01:18:40.709 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:4000 iter_time:0.02140951156616211 ETA:0:16:24 num_alive_ray:19713 rendering_samples_actual:256073 num_rays:140966 PSNR:39.40959167480469 total_loss:0.001158877625130117 
-2024-09-13 01:19:04.799 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:5000 iter_time:0.023591279983520508 ETA:0:17:41 num_alive_ray:22109 rendering_samples_actual:269933 num_rays:146230 PSNR:40.23933792114258 total_loss:0.0009123253403231502 
-2024-09-13 01:19:28.649 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:6000 iter_time:0.021785974502563477 ETA:0:15:58 num_alive_ray:23687 rendering_samples_actual:260839 num_rays:141754 PSNR:40.28866958618164 total_loss:0.0008184428443200886 
-2024-09-13 01:19:52.580 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:7000 iter_time:0.023425817489624023 ETA:0:16:47 num_alive_ray:23537 rendering_samples_actual:267007 num_rays:150990 PSNR:40.59144592285156 total_loss:0.0007918108603917062 
-2024-09-13 01:20:17.450 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:8000 iter_time:0.023088455200195312 ETA:0:16:09 num_alive_ray:23159 rendering_samples_actual:261194 num_rays:152858 PSNR:41.35883712768555 total_loss:0.0006866458570584655 
-2024-09-13 01:20:42.514 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:9000 iter_time:0.02370762825012207 ETA:0:16:12 num_alive_ray:22449 rendering_samples_actual:261471 num_rays:161918 PSNR:41.35466384887695 total_loss:0.0007717247935943305 
-2024-09-13 01:21:06.975 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:10000 iter_time:0.02105879783630371 ETA:0:14:02 num_alive_ray:22327 rendering_samples_actual:263181 num_rays:158770 PSNR:41.46007537841797 total_loss:0.0007130109588615596 
-2024-09-13 01:21:31.937 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:11000 iter_time:0.02332758903503418 ETA:0:15:09 num_alive_ray:21277 rendering_samples_actual:261742 num_rays:172481 PSNR:41.31732940673828 total_loss:0.0008623990579508245 
-2024-09-13 01:21:57.107 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:12000 iter_time:0.023396730422973633 ETA:0:14:49 num_alive_ray:21698 rendering_samples_actual:263259 num_rays:162056 PSNR:41.54096603393555 total_loss:0.0007121452363207936 
-2024-09-13 01:22:22.777 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:13000 iter_time:0.023211240768432617 ETA:0:14:18 num_alive_ray:22036 rendering_samples_actual:268861 num_rays:170602 PSNR:42.18034744262695 total_loss:0.0006737770745530725 
-2024-09-13 01:22:48.232 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:14000 iter_time:0.0227510929107666 ETA:0:13:39 num_alive_ray:22565 rendering_samples_actual:259649 num_rays:170797 PSNR:42.30379867553711 total_loss:0.0006359548424370587 
-2024-09-13 01:23:13.730 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:15000 iter_time:0.024408340454101562 ETA:0:14:14 num_alive_ray:22848 rendering_samples_actual:264013 num_rays:172213 PSNR:42.397762298583984 total_loss:0.0006001973524689674 
-2024-09-13 01:23:39.582 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:16000 iter_time:0.023890972137451172 ETA:0:13:32 num_alive_ray:22329 rendering_samples_actual:270573 num_rays:178875 PSNR:41.4921875 total_loss:0.0008244143682532012 
-2024-09-13 01:24:05.710 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:17000 iter_time:0.02458024024963379 ETA:0:13:31 num_alive_ray:21597 rendering_samples_actual:265785 num_rays:180656 PSNR:42.505226135253906 total_loss:0.0006919964798726141 
-2024-09-13 01:24:32.071 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:18000 iter_time:0.025071382522583008 ETA:0:13:22 num_alive_ray:22518 rendering_samples_actual:264737 num_rays:179680 PSNR:42.08334732055664 total_loss:0.0007214487413875759 
-2024-09-13 01:24:58.427 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:19000 iter_time:0.024161100387573242 ETA:0:12:29 num_alive_ray:22883 rendering_samples_actual:263116 num_rays:179581 PSNR:42.61878204345703 total_loss:0.0006078457226976752 
-2024-09-13 01:25:24.802 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:20000 iter_time:0.02551865577697754 ETA:0:12:45 num_alive_ray:22699 rendering_samples_actual:262352 num_rays:178815 PSNR:43.01860046386719 total_loss:0.0005561655852943659 
-2024-09-13 01:25:51.214 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:21000 iter_time:0.024080276489257812 ETA:0:11:38 num_alive_ray:22293 rendering_samples_actual:257569 num_rays:178187 PSNR:43.13582229614258 total_loss:0.0005718998145312071 
-2024-09-13 01:26:17.809 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:22000 iter_time:0.024662017822265625 ETA:0:11:30 num_alive_ray:22827 rendering_samples_actual:267098 num_rays:185517 PSNR:43.090152740478516 total_loss:0.0005833007744513452 
-2024-09-13 01:26:44.434 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:23000 iter_time:0.023990631103515625 ETA:0:10:47 num_alive_ray:22214 rendering_samples_actual:257272 num_rays:178966 PSNR:43.09735870361328 total_loss:0.0005588177591562271 
-2024-09-13 01:27:10.795 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:24000 iter_time:0.02361917495727539 ETA:0:10:14 num_alive_ray:23145 rendering_samples_actual:259642 num_rays:174523 PSNR:42.86722946166992 total_loss:0.0005387762794271111 
-2024-09-13 01:27:37.320 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:25000 iter_time:0.0248720645904541 ETA:0:10:21 num_alive_ray:21791 rendering_samples_actual:259684 num_rays:187638 PSNR:43.13274383544922 total_loss:0.0005928902537561953 
-2024-09-13 01:28:04.682 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:26000 iter_time:0.024626731872558594 ETA:0:09:51 num_alive_ray:20664 rendering_samples_actual:261045 num_rays:194525 PSNR:44.0244255065918 total_loss:0.0005360818468034267 
-2024-09-13 01:28:32.395 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:27000 iter_time:0.0258939266204834 ETA:0:09:55 num_alive_ray:20685 rendering_samples_actual:259855 num_rays:193635 PSNR:44.10268783569336 total_loss:0.0005318557377904654 
-2024-09-13 01:29:00.148 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:28000 iter_time:0.024895906448364258 ETA:0:09:07 num_alive_ray:21513 rendering_samples_actual:261911 num_rays:195401 PSNR:43.777809143066406 total_loss:0.0005339453346095979 
-2024-09-13 01:29:27.781 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:29000 iter_time:0.023870229721069336 ETA:0:08:21 num_alive_ray:21153 rendering_samples_actual:261501 num_rays:195916 PSNR:44.089881896972656 total_loss:0.0005357292830012739 
-2024-09-13 01:29:55.416 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:30000 iter_time:0.025305747985839844 ETA:0:08:26 num_alive_ray:21662 rendering_samples_actual:263390 num_rays:198334 PSNR:44.0412483215332 total_loss:0.0005072759231552482 
-2024-09-13 01:30:22.942 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:31000 iter_time:0.028657913208007812 ETA:0:09:04 num_alive_ray:21377 rendering_samples_actual:268441 num_rays:193626 PSNR:43.925498962402344 total_loss:0.0005146254552528262 
-2024-09-13 01:30:50.637 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:32000 iter_time:0.02507185935974121 ETA:0:07:31 num_alive_ray:21870 rendering_samples_actual:262913 num_rays:190325 PSNR:43.9825325012207 total_loss:0.0004968087887391448 
-2024-09-13 01:31:18.110 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:33000 iter_time:0.024843692779541016 ETA:0:07:02 num_alive_ray:21549 rendering_samples_actual:263047 num_rays:195851 PSNR:44.16996765136719 total_loss:0.0005086369346827269 
-2024-09-13 01:31:45.760 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:34000 iter_time:0.02518320083618164 ETA:0:06:42 num_alive_ray:21163 rendering_samples_actual:263675 num_rays:199757 PSNR:44.09891891479492 total_loss:0.0005317315808497369 
-2024-09-13 01:32:13.687 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:35000 iter_time:0.02719283103942871 ETA:0:06:47 num_alive_ray:21386 rendering_samples_actual:259620 num_rays:195256 PSNR:44.00092697143555 total_loss:0.0005263144848868251 
-2024-09-13 01:32:41.498 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:36000 iter_time:0.025198698043823242 ETA:0:05:52 num_alive_ray:21162 rendering_samples_actual:263190 num_rays:195513 PSNR:44.04576873779297 total_loss:0.000536050705704838 
-2024-09-13 01:33:09.257 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.012 step:37000 iter_time:0.024870872497558594 ETA:0:05:23 num_alive_ray:21406 rendering_samples_actual:259436 num_rays:197683 PSNR:44.012699127197266 total_loss:0.0005318046314641833 
-2024-09-13 01:33:37.136 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:38000 iter_time:0.025346040725708008 ETA:0:05:04 num_alive_ray:20792 rendering_samples_actual:259048 num_rays:201786 PSNR:44.92588806152344 total_loss:0.0004412634007167071 
-2024-09-13 01:34:05.297 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:39000 iter_time:0.026505231857299805 ETA:0:04:51 num_alive_ray:20889 rendering_samples_actual:265046 num_rays:205164 PSNR:44.81422424316406 total_loss:0.0004700651625171304 
-2024-09-13 01:34:33.661 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:40000 iter_time:0.02602219581604004 ETA:0:04:20 num_alive_ray:20518 rendering_samples_actual:260053 num_rays:203315 PSNR:44.54776382446289 total_loss:0.0004965571570210159 
-2024-09-13 01:35:01.906 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.0072 step:41000 iter_time:0.027608156204223633 ETA:0:04:08 num_alive_ray:21072 rendering_samples_actual:266180 num_rays:205743 PSNR:44.57606506347656 total_loss:0.00048497135867364705 
-2024-09-13 01:35:30.253 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:42000 iter_time:0.025986194610595703 ETA:0:03:27 num_alive_ray:20869 rendering_samples_actual:266561 num_rays:209428 PSNR:45.258243560791016 total_loss:0.0004432100977282971 
-2024-09-13 01:35:58.661 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:43000 iter_time:0.027692317962646484 ETA:0:03:13 num_alive_ray:20525 rendering_samples_actual:259614 num_rays:207290 PSNR:45.00629425048828 total_loss:0.00045478352694772184 
-2024-09-13 01:36:27.102 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.00432 step:44000 iter_time:0.026134252548217773 ETA:0:02:36 num_alive_ray:20496 rendering_samples_actual:267302 num_rays:209390 PSNR:45.066856384277344 total_loss:0.00045735033927485347 
-2024-09-13 01:36:55.666 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:45000 iter_time:0.027087688446044922 ETA:0:02:15 num_alive_ray:20467 rendering_samples_actual:260378 num_rays:206159 PSNR:44.8582878112793 total_loss:0.0004654194344766438 
-2024-09-13 01:37:24.298 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:46000 iter_time:0.02731633186340332 ETA:0:01:49 num_alive_ray:20460 rendering_samples_actual:266099 num_rays:211252 PSNR:45.26453399658203 total_loss:0.00043477656436152756 
-2024-09-13 01:37:53.031 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:47000 iter_time:0.026963472366333008 ETA:0:01:20 num_alive_ray:20471 rendering_samples_actual:263755 num_rays:209954 PSNR:45.0892219543457 total_loss:0.00044938200153410435 
-2024-09-13 01:38:21.671 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:48000 iter_time:0.02628779411315918 ETA:0:00:52 num_alive_ray:20476 rendering_samples_actual:262493 num_rays:209789 PSNR:45.10954666137695 total_loss:0.0004470796848181635 
-2024-09-13 01:38:50.406 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:49000 iter_time:0.025744915008544922 ETA:0:00:25 num_alive_ray:20169 rendering_samples_actual:260834 num_rays:209457 PSNR:45.322574615478516 total_loss:0.0004453376750461757 
-2024-09-13 01:39:19.146 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.002592 step:50000 iter_time:0.025813817977905273 ETA:0:00:00 num_alive_ray:20384 rendering_samples_actual:265829 num_rays:211113 PSNR:45.32148361206055 total_loss:0.00044404607615433633 
-2024-09-13 01:39:19.442 | INFO     | utils.writer:write_scalar_dicts:79 - num_alive_ray:61722 rendering_samples_actual:0 num_rays:800 PSNR:45.320350646972656 
-2024-09-13 01:39:19.594 | INFO     | trainer.trainer:fit:161 - ==> Training done!
-2024-09-13 01:39:19.595 | INFO     | trainer.trainer:save_ckpt:244 - ==> Saving checkpoints to log_amily/fd1/nerf_synthetic/amily_f14/Tri-MipRF/2024-09-13_01-17-08/model.ckpt
-2024-09-13 01:39:19.631 | INFO     | trainer.trainer:eval:191 - ==> Start evaluation on testset ...
-  0%|          | 0/20 [00:00<?, ?it/s]Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f167ad2c310>
-Traceback (most recent call last):
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1466, in __del__
-    self._shutdown_workers()
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1449, in _shutdown_workers
-    if w.is_alive():
-  File "/opt/sw/spack/apps/linux-rhel8-x86_64_v2/gcc-10.3.0/python-3.9.9-jh/lib/python3.9/multiprocessing/process.py", line 160, in is_alive
-    assert self._parent_pid == os.getpid(), 'can only test a child process'
-AssertionError: can only test a child process
-Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f167ad2c310>
-Traceback (most recent call last):
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1466, in __del__
-    self._shutdown_workers()
-  File "/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1449, in _shutdown_workers
-    if w.is_alive():
-  File "/opt/sw/spack/apps/linux-rhel8-x86_64_v2/gcc-10.3.0/python-3.9.9-jh/lib/python3.9/multiprocessing/process.py", line 160, in is_alive
-    assert self._parent_pid == os.getpid(), 'can only test a child process'
-AssertionError: can only test a child process
-  5%|▌         | 1/20 [00:00<00:09,  2.07it/s] 10%|█         | 2/20 [00:00<00:06,  2.71it/s] 15%|█▌        | 3/20 [00:01<00:05,  2.89it/s] 20%|██        | 4/20 [00:01<00:05,  3.01it/s] 25%|██▌       | 5/20 [00:01<00:04,  3.08it/s] 30%|███       | 6/20 [00:01<00:04,  3.24it/s] 35%|███▌      | 7/20 [00:02<00:04,  3.14it/s] 40%|████      | 8/20 [00:02<00:03,  3.19it/s] 45%|████▌     | 9/20 [00:02<00:03,  3.23it/s] 50%|█████     | 10/20 [00:03<00:03,  3.24it/s] 55%|█████▌    | 11/20 [00:03<00:02,  3.20it/s] 60%|██████    | 12/20 [00:03<00:02,  3.31it/s] 65%|██████▌   | 13/20 [00:04<00:02,  3.27it/s] 70%|███████   | 14/20 [00:04<00:01,  3.29it/s] 75%|███████▌  | 15/20 [00:04<00:01,  3.26it/s] 80%|████████  | 16/20 [00:05<00:01,  3.24it/s] 85%|████████▌ | 17/20 [00:05<00:00,  3.23it/s] 90%|█████████ | 18/20 [00:05<00:00,  3.23it/s] 95%|█████████▌| 19/20 [00:05<00:00,  3.37it/s]100%|██████████| 20/20 [00:06<00:00,  3.40it/s]100%|██████████| 20/20 [00:06<00:00,  3.16it/s]
-  0%|          | 0/20 [00:00<?, ?it/s] 25%|██▌       | 5/20 [00:00<00:00, 42.16it/s] 50%|█████     | 10/20 [00:00<00:00, 46.27it/s] 80%|████████  | 16/20 [00:00<00:00, 48.07it/s]100%|██████████| 20/20 [00:00<00:00, 47.80it/s]
-2024-09-13 01:39:26.379 | INFO     | trainer.trainer:eval:224 - ==> Evaluation done
-2024-09-13 01:39:26.380 | INFO     | utils.writer:write_scalar_dicts:79 - num_alive_ray:63257.8 rendering_samples_actual:8.95 num_rays:800.0 PSNR:45.140884208679196 
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-WARNING:
-
-You should always run with libnvidia-ml.so that is installed with your
-NVIDIA Display Driver. By default it's installed in /usr/lib and /usr/lib64.
-libnvidia-ml.so in GDK package is a stub library that is attached only for
-build purposes (e.g. machine that you build your application doesn't have
-to have Display Driver installed).
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-/home/jzhou23/tricp/lib/python3.9/site-packages/torch/cuda/__init__.py:497: UserWarning: Can't initialize NVML
-  warnings.warn("Can't initialize NVML")
-/home/jzhou23/tricp/lib/python3.9/site-packages/tinycudann/modules.py:57: UserWarning: tinycudann was built for lower compute capability (75) than the system's (80). Performance may be suboptimal.
-  warnings.warn(f"tinycudann was built for lower compute capability ({cc}) than the system's ({system_compute_capability}). Performance may be suboptimal.")
-2024-09-13 01:39:32.548 | INFO     | __main__:main:25 - ==> Init dataloader ...
-2024-09-13 01:39:32.850 | INFO     | dataset.ray_dataset:__init__:42 - ==> Find 1 cameras
-  0%|          | 0/100 [00:00<?, ?it/s] 37%|███▋      | 37/100 [00:00<00:00, 323.84it/s]100%|██████████| 100/100 [00:00<00:00, 530.17it/s]
-/home/jzhou23/tricp/lib/python3.9/site-packages/torch/utils/data/dataloader.py:554: UserWarning: This DataLoader will create 16 worker processes in total. Our suggested max number of worker in current system is 12, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(_create_warning_msg(
-2024-09-13 01:39:33.294 | INFO     | dataset.ray_dataset:__init__:42 - ==> Find 1 cameras
-  0%|          | 0/20 [00:00<?, ?it/s]100%|██████████| 20/20 [00:00<00:00, 253.67it/s]
-2024-09-13 01:39:33.819 | INFO     | __main__:main:49 - ==> Init model ...
-2024-09-13 01:39:35.252 | INFO     | __main__:main:51 - TriMipRFModel(
-  (field): TriMipRF(
-    (encoding): TriMipEncoding()
-    (direction_encoding): Encoding(n_input_dims=3, n_output_dims=16, seed=1337, dtype=torch.float16, hyperparams={'degree': 4, 'otype': 'SphericalHarmonics'})
-    (mlp_base): Network(n_input_dims=64, n_output_dims=16, seed=1337, dtype=torch.float16, hyperparams={'encoding': {'offset': 0.0, 'otype': 'Identity', 'scale': 1.0}, 'network': {'activation': 'ReLU', 'n_hidden_layers': 2, 'n_neurons': 128, 'otype': 'FullyFusedMLP', 'output_activation': 'None'}, 'otype': 'NetworkWithInputEncoding'})
-    (mlp_head): Network(n_input_dims=31, n_output_dims=3, seed=1337, dtype=torch.float16, hyperparams={'encoding': {'offset': 0.0, 'otype': 'Identity', 'scale': 1.0}, 'network': {'activation': 'ReLU', 'n_hidden_layers': 4, 'n_neurons': 128, 'otype': 'FullyFusedMLP', 'output_activation': 'Sigmoid'}, 'otype': 'NetworkWithInputEncoding'})
-  )
-  (ray_sampler): OccupancyGrid()
-)
-2024-09-13 01:39:35.254 | INFO     | __main__:main:53 - ==> Init trainer ...
-2024-09-13 01:39:35.275 | INFO     | trainer.trainer:__init__:64 - # Parameters for trimipRF.get_optimizer:
-# ==============================================================================
-trimipRF.get_optimizer.feature_lr_scale = 10.0
-trimipRF.get_optimizer.lr = 0.002
-trimipRF.get_optimizer.weight_decay = 1e-05
-
-# Parameters for get_scheduler:
-# ==============================================================================
-get_scheduler.gamma = 0.6
-
-# Parameters for main:
-# ==============================================================================
-main.batch_size = 28
-main.model_name = 'Tri-MipRF'
-main.num_workers = 16
-main.seed = 42
-main.stages = 'train_eval'
-main.train_split = 'trainval'
-
-# Parameters for RayDataset:
-# ==============================================================================
-RayDataset.base_path = './amily'
-RayDataset.num_rays = 8192
-RayDataset.render_bkgd = 'white'
-RayDataset.scene = 'amily_f15'
-RayDataset.scene_type = 'nerf_synthetic'
-RayDataset.to_world = True
-
-# Parameters for Trainer:
-# ==============================================================================
-Trainer.base_exp_dir = './log_amily/fd1'
-Trainer.dynamic_batch_size = True
-Trainer.eval_step = 50000
-Trainer.exp_name = 'nerf_synthetic/amily_f15/Tri-MipRF/2024-09-13_01-39-32'
-Trainer.is_first_frame = False
-Trainer.log_step = 1000
-Trainer.max_steps = 50001
-Trainer.num_rays = 8192
-Trainer.target_sample_batch_size = 262144
-Trainer.test_chunk_size = 8192
-Trainer.varied_eval_img = True
-
-# Parameters for TriMipEncoding:
-# ==============================================================================
-TriMipEncoding.comb = 5
-TriMipEncoding.feature_dim_factor = 1
-TriMipEncoding.include_cp = True
-TriMipEncoding.include_xyz = False
-
-# Parameters for TriMipRF:
-# ==============================================================================
-TriMipRF.feature_dim = 16
-TriMipRF.geo_feat_dim = 15
-TriMipRF.n_levels = 8
-TriMipRF.net_depth_base = 2
-TriMipRF.net_depth_color = 4
-TriMipRF.net_width = 128
-TriMipRF.plane_size = 512
-
-# Parameters for TriMipRFModel:
-# ==============================================================================
-TriMipRFModel.occ_grid_resolution = 128
-TriMipRFModel.samples_per_ray = 1024
-
-2024-09-13 01:39:35.280 | INFO     | trainer.trainer:fit:111 - ==> Start training ...
-2024-09-13 01:39:39.755 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:100 iter_time:0.012794017791748047 ETA:0:10:38 num_alive_ray:3425 rendering_samples_actual:256641 num_rays:3962 PSNR:23.83716583251953 total_loss:0.0064779347740113735 
-2024-09-13 01:39:56.107 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:1000 iter_time:0.019577503204345703 ETA:0:15:59 num_alive_ray:15673 rendering_samples_actual:261163 num_rays:106738 PSNR:35.199928283691406 total_loss:0.0028129308484494686 
-2024-09-13 01:40:18.454 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:2000 iter_time:0.021889686584472656 ETA:0:17:30 num_alive_ray:19881 rendering_samples_actual:260831 num_rays:130738 PSNR:37.904197692871094 total_loss:0.0014967607567086816 
-2024-09-13 01:40:41.791 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:3000 iter_time:0.021806955337524414 ETA:0:17:04 num_alive_ray:20793 rendering_samples_actual:261144 num_rays:146934 PSNR:38.687469482421875 total_loss:0.001422164961695671 
-2024-09-13 01:41:05.817 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:4000 iter_time:0.022221803665161133 ETA:0:17:02 num_alive_ray:21475 rendering_samples_actual:256379 num_rays:147266 PSNR:39.55867385864258 total_loss:0.0010897106258198619 
-2024-09-13 01:41:30.156 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:5000 iter_time:0.0229339599609375 ETA:0:17:12 num_alive_ray:25314 rendering_samples_actual:265972 num_rays:143395 PSNR:40.534828186035156 total_loss:0.0007198534440249205 
-2024-09-13 01:41:54.556 | INFO     | utils.writer:write_scalar_dicts:79 - lr:0.02 step:6000 iter_time:0.02224111557006836 ETA:0:16:18 num_alive_ray:26753 rendering_samples_actual:264631 num_rays:142539 PSNR:40.77037811279297 total_loss:0.0006438714335672557 
