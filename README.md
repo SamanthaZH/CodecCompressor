@@ -189,6 +189,7 @@ original: 37.1210 0.9806
 feature_only  37.0107 0.9803  36.3265 0.9785   33.5415  0.9709  31.2803  0.9615   29.2577  0.9513
 feature&mlp   35.5508  0.9768  35.0217  0.9750  32.6938  0.9670 30.8145  0.9580   28.8450  0.9476
 ```
+lego-sample saved model: https://drive.google.com/file/d/11bnT7vnWhjMctTSlWVZXnrXaDpp2opsV/view?usp=drive_link
 
 
 
