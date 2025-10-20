@@ -64,34 +64,36 @@ def recover_original_data(grey, normal, fd):
         # Ensure the recovered data retains the original shape
         recovered_data[field_name] = original_data
         print(f"Recovered shape for {field_name}: {original_data.shape}")
-
     return recovered_data
 
-def backtomlp(root_path,qp,s, dataset,fd):
-     #grey = toMLP(root_path,qp,str(s-2))
+def backtomlp(root_path,qp,s, dataset,fd,scene):
+     #grey = toMLP(root_path,qp,str(s-3),fd)
      grey = toMLP(root_path,qp,str(s),fd)
+     print(root_path+'/yuv_mlp/mlp.pkl')
      with open(root_path+'/yuv_mlp/mlp.pkl', 'rb') as file:
           data = pickle.load(file)
      print(data)
      min_max = data[dataset+'_'+str(s)]
-     print(min_max)
-     print('mlp_f'+str(s-2), dataset+'_f'+str(s))
+     #print(scene, s)
+     #if scene == s:
+     #     min_max = data[dataset+'_'+str(s)]
+     print(dataset+'_'+str(s))
      recovered = recover_original_data(grey,min_max,fd)
 
      return recovered
 
      
-def replace(root_path, root,scene, qp,dataset,fd):
-     for idx in range(2,scene+1):
+def replace(root_path, root,scene, qp,dataset,fd,start,idx):
+     #for idx in range(start,scene+1):
           root_pth = root + str(idx) +'/Tri-MipRF/'
           for file in os.listdir(root_pth):
                print(root_pth+file+'/')
                ph = root_pth+file+'/'
                #ckpt = torch.load(ph+'model.ckpt',map_location=torch.device('cpu'))
                ckpt = torch.load(ph+'ckpt'+str(qp)+'.ckpt',map_location=torch.device('cpu'))
-               
                #planes = backtomlp(root+str(idx),qp,idx,dataset)
-               mlp = backtomlp(root+str(idx),qp,idx,dataset,fd)
+               print("==============>backtomlp:" + root+str(idx))
+               mlp = backtomlp(root+str(idx),qp,idx,dataset,fd,scene)
 
                arr = ['field.mlp_base.params','field.mlp_head.params']
                ckpt['model'][arr[0]] = torch.from_numpy(mlp['base'])

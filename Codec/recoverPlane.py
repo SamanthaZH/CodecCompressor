@@ -66,29 +66,28 @@ def recover_original_data(grey, normal):
 
     return recovered_data
 
-def backtoplane(root,root_path,qp,s, dataset,fd):
-     #grey = toPlanes(root_path,qp,str(s-1),fd)
-     print(root_path)
-     grey = toPlanes(root_path,qp,0,fd) # for test one scene
+def backtoplane(root,root_path,qp,s, dataset,start,fd):
+     grey = toPlanes(root_path,qp,str(s-start),fd) # for multiple scene
+     #grey = toPlanes(root_path,qp,0,fd) # for test one scene
      with open(root_path+'/yuv_frames/min_max.pkl', 'rb') as file:
           data = pickle.load(file)
      #print(data)
      min_max = data[dataset+'_f'+str(s)]
      #print(min_max)
-     print('yuv_f'+str(s-2), dataset+'_f'+str(s))
+     print('yuv_f'+str(s-start), dataset+'_f'+str(s))
      recovered = recover_original_data(grey,min_max)
 
      return recovered
    
-def repalce(root_path, root,scene, qp,dataset,fd,start):
-     for idx in range(start,scene+1):
+def repalce(root_path, root,scene, qp,dataset,fd,start,idx):
+     #for idx in range(start,scene+1):
           root_pth = root + str(idx) +'/Tri-MipRF/'
           for file in os.listdir(root_pth):
                print(root_pth+file+'/')
                ph = root_pth+file+'/'
                ckpt = torch.load(ph+'model.ckpt',map_location=torch.device('cpu'))
                
-               planes = backtoplane(root+str(idx),root_path,qp,idx,dataset,fd)
+               planes = backtoplane(root+str(idx),root_path,qp,idx,dataset,start,fd)
 
                arr = ['field.encoding.x','field.encoding.y','field.encoding.z']
                ckpt['model'][arr[0]] = torch.from_numpy(planes[arr[0]])

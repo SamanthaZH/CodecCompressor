@@ -13,7 +13,7 @@ def nomalization(matrix):
      return data_grey, data_min, data_max
 
 def compress_mlp(mlp_base, mlp_head,fd):
-     print(mlp_base.shape, mlp_head.shape)
+     #print(mlp_base.shape, mlp_head.shape)
      mlp_minmax = {}
      grey_base, min_base, maxi_base = nomalization(mlp_base)
      grey_head, min_head, maxi_head = nomalization(mlp_head)
@@ -23,7 +23,7 @@ def compress_mlp(mlp_base, mlp_head,fd):
      if fd == 1:
           grey_base = np.pad(grey_base, (0, 216*256 - 26624), constant_values=0)
      if fd == 3:
-          print(grey_base.shape, grey_head.shape)
+          #print(grey_base.shape, grey_head.shape)
           grey_base = np.pad(grey_base, (0, 216*256 - 30720), constant_values=0)
      base_2d = grey_base.reshape(216,256)
      head_2d = grey_head.reshape(216,256)
@@ -51,7 +51,7 @@ def yuv(base,head, root,idx,dataset,fd):
 
      dst = root + str(idx) + '/yuv_mlp/'
      os.makedirs(dst,exist_ok=True)
-     print(dst)
+     #print("yuv func:",dst)
      y = base
      u = head
      v = np.zeros((216,256), dtype = np.uint8)
@@ -83,17 +83,18 @@ def concat_yuv_to_video(yuv_files, output_video,fd, frame_rate=30, pixel_format=
         output_video  # Output video file
      ]
 
+     #print(f"===============================>Video saved as {output_video}")
      # Run the FFmpeg command
      subprocess.run(ffmpeg_command, check=True)
-     print(f"Video saved as {output_video}")
+     
 
 
-def batch_mlp(root, scene, root_path, qp,dataset,fd):
+def batch_mlp(root, scene, root_path, qp,dataset,fd, start):
      dic_mlp =  collections.defaultdict(list)
-     for idx in range(2,scene+1):
+     for idx in range(start,scene+1):
           root_pth = root + str(idx) +'/Tri-MipRF/'
           for file in os.listdir(root_pth):
-               print(root_pth+file+'/')
+               #print(root_pth+file+'/')
                ph = root_pth+file+'/'
                checkpoint=  torch.load(ph+'ckpt'+str(qp)+'.ckpt',map_location=torch.device('cpu'))
                #for name, tensor in checkpoint['model'].items():
@@ -113,7 +114,8 @@ def batch_mlp(root, scene, root_path, qp,dataset,fd):
                checkpoint['model']['field.mlp_head.params'] = torch.from_numpy(mlp_back_head)
                torch.save(checkpoint,ph+'new_mlp.ckpt')
                '''
-     #print(dic_mlp)   
+          #print(dic_mlp)   
      
-     with open(root + str(idx) +"/yuv_mlp/mlp.pkl","wb") as f:
-          pickle.dump(dic_mlp, f)
+          with open(root + str(idx) +"/yuv_mlp/mlp.pkl","wb") as f:
+               pickle.dump(dic_mlp, f)
+          
