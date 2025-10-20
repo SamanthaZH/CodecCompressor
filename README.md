@@ -175,7 +175,7 @@ compresed feature plane + normpare_fp + compressed mlp + normpare_mlp =  55.47KB
                                                                          14.19KB                                24.62KB 
                                                                          6.16KB                                 9.35KB
 
-Approximate 2.43KB if not include occ(8 MB), binary, feature_planes and mlp
+Approximate 1990Byte if not include occ(8MB), binary(2MB), feature_planes(0.09MB) and mlp
 ```                                                                         
 Note: Shared occupancy for all scenes, binary removed(does not affect result)
 Note: compressed result difference, but noT too much like cut_steak is 20.06, sear is 19.09, coffee is 19.47
