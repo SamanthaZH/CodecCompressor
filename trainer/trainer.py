@@ -251,14 +251,33 @@ class Trainer:
         # comment this when train other frames
         if self.is_first_frame:
             torch.save(self.model.state_dict()['field.encoding.fm'], fm_dest)
-
-    def load_ckpt(self):
-        dest = self.exp_dir / 'model.ckpt'
-        #dest = self.exp_dir / 'occ.ckpt'
+    
+    def load_ckpt_test(self, ckpt):
+        dest = self.exp_dir / ckpt
+        #dest = self.exp_dir / 'ckpt0.ckpt'
+        #dest = self.exp_dir / 'model.ckpt'
+        
         loaded_state = torch.load(dest, map_location="cpu")
+        #print(load_state['model'])
         logger.info('==> Loading checkpoints from ' + str(dest))
-        #for param_tensor in loaded_state['model']:
-        #    print(param_tensor, "\t", loaded_state['model'][param_tensor].size())
+        for param_tensor in loaded_state['model']:
+            print(param_tensor, "\t", loaded_state['model'][param_tensor].size())
+            if param_tensor == 'ray_sampler.occs':
+                print(loaded_state['model'][param_tensor])
+        self.model.load_state_dict(loaded_state['model'])
+    
+    def load_ckpt(self):
+        #dest = self.exp_dir / 'mlp40.ckpt'
+        #dest = self.exp_dir / 'ckpt0.ckpt'
+        dest = self.exp_dir / 'model.ckpt'
+        
+        loaded_state = torch.load(dest, map_location="cpu")
+        #print(load_state['model'])
+        logger.info('==> Loading checkpoints from ' + str(dest))
+        for param_tensor in loaded_state['model']:
+            print(param_tensor, "\t", loaded_state['model'][param_tensor].size())
+            if param_tensor == 'ray_sampler.occs':
+                print(loaded_state['model'][param_tensor])
         self.model.load_state_dict(loaded_state['model'])
 
     @gin.configurable()
