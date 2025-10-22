@@ -83,7 +83,7 @@ def backtomlp(root_path,qp,s, dataset,fd,scene):
      return recovered
 
      
-def replace(root_path, root,scene, qp,dataset,fd,start,idx):
+def replace(root_path, root,scene, qp,dataset,fd,start,idx,max_occ):
      #for idx in range(start,scene+1):
           root_pth = root + str(idx) +'/Tri-MipRF/'
           for file in os.listdir(root_pth):
@@ -98,6 +98,7 @@ def replace(root_path, root,scene, qp,dataset,fd,start,idx):
                arr = ['field.mlp_base.params','field.mlp_head.params']
                ckpt['model'][arr[0]] = torch.from_numpy(mlp['base'])
                ckpt['model'][arr[1]] = torch.from_numpy(mlp['head'])
-               
+
+               ckpt['model']['ray_sampler.occs'] = max_occ
                print(ph+'mlp'+str(qp)+'.ckpt')
                torch.save(ckpt,ph+'mlp'+str(qp)+'.ckpt')
