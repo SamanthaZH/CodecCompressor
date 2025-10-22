@@ -3,24 +3,12 @@ import Codec.recoverPlane as recover
 import Codec.mlpsaver as savemlp
 import Codec.mlprecover as mlprecover
 import os,pickle
-
+import Occgrid
 
 ## normalized planes to yuv444 frames and to video via ffmpeg
 
-'''
-# for synthetic scene
-dataset = 'lego'
-fd = 1
-#root_path = './'+dataset+'/fd'+ str(fd)+'/'
-root_path = './log_sample/fd'+ str(fd)+'/'
-root = root_path + 'nerf_synthetic/'+dataset+'_f'
-scene, qp = 2, 0
-start = 2
-'''
-
-#for dynerf
-dataset = 'sear'
-fd = 1
+dataset = 'cut'
+fd = 3
 root_path = './'+dataset+'/fd'+ str(fd)+'/'
 #root_path = './log_sample/fd'+ str(fd)+'/'
 root = root_path + 'nerf_synthetic/'+dataset+'_f'
@@ -28,6 +16,7 @@ scene, qp = 3, 0
 start = 2
 
 # concat and recover planes
+'''
 merge.batch_process(root, scene,root_path,dataset,start)
 for qp in [0,10,20,30,40]:
           # Feature vector compression
@@ -44,8 +33,13 @@ for idx in range(start,scene+1):
           recover.toframes(root_path+'/yuv_frames/yuv_video_output'+str(qp)+'.mp4',root_path+'/yuv_frames/frames_'+str(qp),fd)
           print("-----start replace-----")
           recover.repalce(root_path,root,scene,qp,dataset,fd,start,idx)
-         
-          # compress and replace mlp
+'''
+
+#replace mac_occ
+max_occ = Occgrid.max_occ(root_path)
+
+
+         # compress and replace mlp
 for idx in range(start,scene+1):
      for qp in [0,10,20,30,40]:          
           print("==> start mlp compression",idx, qp)
@@ -57,8 +51,8 @@ for idx in range(start,scene+1):
                print("=====================>",mlp_yuv, mlp_video)
                savemlp.concat_yuv_to_video(mlp_yuv, mlp_video,fd)
                print(f"===============================>Video saved as {mlp_video}")
-          mlprecover.replace(root_path,root,scene,qp,dataset,fd,start,idx)
-          
+          mlprecover.replace(root_path,root,scene,qp,dataset,fd,start,idx,max_occ)
+         
 print('---Finished Compression---')
 #recover.backtoplane(root_path,qp,scene,'worker') # for verify recovered greyscale
 
