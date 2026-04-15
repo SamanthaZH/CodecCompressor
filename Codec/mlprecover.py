@@ -98,7 +98,7 @@ def replace(root_path, root,scene, qp,dataset,fd,start,idx,max_occ):
                arr = ['field.mlp_base.params','field.mlp_head.params']
                ckpt['model'][arr[0]] = torch.from_numpy(mlp['base'])
                ckpt['model'][arr[1]] = torch.from_numpy(mlp['head'])
-
+               
                ckpt['model']['ray_sampler.occs'] = max_occ
                print(ph+'mlp'+str(qp)+'.ckpt')
                torch.save(ckpt,ph+'mlp'+str(qp)+'.ckpt')

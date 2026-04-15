@@ -93,6 +93,7 @@ def repalce(root_path, root,scene, qp,dataset,fd,start,idx):
                ckpt['model'][arr[0]] = torch.from_numpy(planes[arr[0]])
                ckpt['model'][arr[1]] = torch.from_numpy(planes[arr[1]])
                ckpt['model'][arr[2]] = torch.from_numpy(planes[arr[2]])
+               #ckpt['model']['ray_sampler.occs'] = occ
 
                torch.save(ckpt,ph+'ckpt'+str(qp)+'.ckpt')
                print("----------update ckpt saved to " +ph+'ckpt'+str(qp)+'.ckpt' )
