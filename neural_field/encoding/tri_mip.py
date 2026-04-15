@@ -40,7 +40,14 @@ class TriMipEncoding(nn.Module):
             self.f_l = 3
         else:
             # load from cpk
-            self.fm = torch.load("./cut/fd1/nerf_synthetic/cut_f1/Tri-MipRF/model_w_ds/fm.ckpt")
+            #self.fm = torch.load("./salmon/fd1/nerf_synthetic/salmon_f1/Tri-MipRF/model_w_ds/fm.ckpt")
+            #self.fm = torch.load("./log_sample/fd1/nerf_synthetic/coffee_f1/Tri-MipRF/model_w_ds/fm.ckpt")
+            self.fm = torch.load("./test/nerf_synthetic/coffee_f1/Tri-MipRF/model_w_ds/fm.ckpt")
+
+            #checkpoint = torch.load("./test/nerf_synthetic/coffee_f1/Tri-MipRF/model_w_ds/fm.ckpt", map_location='cpu')
+            #checkpoint = checkpoint.contiguous()  # Make contiguous!
+            #self.register_buffer("fm", checkpoint.clone())
+            #print(f"Checkpoint registered: shape={self.fm.shape}, "f"contiguous={self.fm.is_contiguous()}, dtype={self.fm.dtype}")
 
             self.register_parameter(
                 "x",
@@ -54,6 +61,8 @@ class TriMipEncoding(nn.Module):
                 "z",
                 nn.Parameter(scale * torch.randn((1, self.feature_dim * self.feature_dim_factor, self.plane_size, 1)))
                 )
+            
+            #print("=====> loading self.fm, x: ", self.x.shape) #[1, 16,512,1]
 
             if self.comb == 1 or self.comb == 2:
                 self.f_l = 3
@@ -77,6 +86,7 @@ class TriMipEncoding(nn.Module):
     def forward(self, x, level):
         # x in [0,1], level in [0,max_level]
         # x is Nx3, level is Nx1
+        #print("===> shape", x.shape, level.shape)
         if 0 == x.shape[0]:
             return torch.zeros([x.shape[0], self.feature_dim * self.f_l]).to(x)
         decomposed_x = torch.stack(
@@ -98,13 +108,20 @@ class TriMipEncoding(nn.Module):
             ).contiguous()
 
         def extract_plane_features():
+            
+            fm_to_use = self.fm
+            if not fm_to_use.is_contiguous():
+                print("WARNING: fm not contiguous, fixing...")
+                fm_to_use = fm_to_use.contiguous()
+
             enc = nvdiffrast.torch.texture(
-                self.fm,
+                fm_to_use,
                 decomposed_x,
-                mip_level_bias=level,
+                #mip_level_bias=level,
                 boundary_mode="clamp",
-                max_mip_level=self.n_levels - 1,
+                max_mip_level= 0, #self.n_levels - 1,
             )  # 3xNx1xC
+            
             return enc
 
         if not self.include_cp:
@@ -121,6 +138,7 @@ class TriMipEncoding(nn.Module):
 
         else:
             # extract triplane features
+            #print("extract plane here", x.shape)
             with torch.no_grad():
                 enc = extract_plane_features()
             # for extracting cp vector features
@@ -132,7 +150,7 @@ class TriMipEncoding(nn.Module):
                 ],
                 dim=0,
             )  # 3xNx1x1
-
+            #print(decomposed_x_.shape)
             x_input = decomposed_x_[0].unsqueeze(0)
             x_cp_enc = F.grid_sample(self.x, x_input, align_corners=True).view(-1, x_input.shape[1])
             y_input = decomposed_x_[1].unsqueeze(0)
@@ -175,6 +193,7 @@ class TriMipEncoding(nn.Module):
             elif self.comb == 5:
                 cp = x_cp_enc * y_cp_enc * z_cp_enc
                 enc = torch.cat((yz_enc,xz_enc,xy_enc, cp), dim = -1)
+                #print(cp.shape, enc.shape)
 
             elif self.comb == 6:
                 plane_enc = torch.sum(enc, dim=0).squeeze(1).contiguous().view(x.shape[0], self.feature_dim)

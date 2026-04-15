@@ -43,9 +43,10 @@ class TriMipRFModel(RFModel):
             occ_eval_fn=lambda x: self.field.query_density(
                 x=self.contraction(x),
                 level_vol=torch.empty_like(x[..., 0]).fill_(self.occ_level_vol),
-            )['density']
-            * self.render_step_size,
-            occ_thre=5e-3,
+            )['density'],
+            #* self.render_step_size,
+            occ_thre=1e-4,
+            #occ_thre=5e-3,
         )
 
     @staticmethod
@@ -66,6 +67,7 @@ class TriMipRFModel(RFModel):
         with torch.no_grad():
 
             def sigma_fn(t_starts, t_ends, ray_indices):
+                #print("--------")
                 ray_indices = ray_indices.long()
                 t_origins = rays.origins[ray_indices]
                 t_dirs = rays.directions[ray_indices]
@@ -79,8 +81,15 @@ class TriMipRFModel(RFModel):
                 )
                 level_vol = torch.log2(
                     sample_ball_radii / self.feature_vol_radii
-                )  # real level should + log2(feature_resolution)
+                ) +1.0 # real level should + log2(feature_resolution)
+                
+                #print("sigma_fn: ",positions.shape, level_vol.shape)
+
                 return self.field.query_density(positions, level_vol)['density']
+            
+            step = getattr(self, "global_step", 0)
+            use_grid = not (self.training and step < 100)
+            grid = self.ray_sampler if use_grid else None
             ray_indices, t_starts, t_ends = nerfacc.ray_marching(
                 rays.origins,
                 rays.directions,
@@ -91,7 +100,7 @@ class TriMipRFModel(RFModel):
                 stratified=self.training,
                 early_stop_eps=1e-4,
             )
-
+            
         # Ray rendering
         def rgb_sigma_fn(t_starts, t_ends, ray_indices):
             t_origins = rays.origins[ray_indices]
@@ -104,7 +113,7 @@ class TriMipRFModel(RFModel):
             sample_ball_radii = self.compute_ball_radii(distance, radiis, cos)
             level_vol = torch.log2(
                 sample_ball_radii / self.feature_vol_radii
-            )  # real level should + log2(feature_resolution)
+            )  + 1.0 # real level should + log2(feature_resolution)
             res = self.field.query_density(
                 x=positions,
                 level_vol=level_vol,

@@ -63,10 +63,20 @@ class TriMipRF(nn.Module):
     def query_density(
         self, x: Tensor, level_vol: Tensor, return_feat: bool = False
     ):
+        if x.shape[-1] != 3:
+            raise ValueError(f"Expected x with shape [..., 3], got {x.shape}")
+        
+        if level_vol is not None and level_vol.shape[0] != x.shape[0]:
+            raise ValueError(
+            f"Shape mismatch: x has {x.shape[0]} samples, "
+            f"level_vol has {level_vol.shape[0]}"
+        )
+          
         level = (
             level_vol if level_vol is None else level_vol + self.log2_plane_size
         )
         selector = ((x > 0.0) & (x < 1.0)).all(dim=-1)
+        #print("Encoding : ",x.shape, x.view(-1, 3).shape)
         enc = self.encoding(
             x.view(-1, 3),
             level=level.view(-1, 1),
@@ -90,6 +100,7 @@ class TriMipRF(nn.Module):
 
     def query_rgb(self, dir, embedding):
         # dir in [-1,1]
+        #print(dir)
         dir = (dir + 1.0) / 2.0  # SH encoding must be in the range [0, 1]
         d = self.direction_encoding(dir.view(-1, dir.shape[-1]))
         h = torch.cat([d, embedding.view(-1, self.geo_feat_dim)], dim=-1)
