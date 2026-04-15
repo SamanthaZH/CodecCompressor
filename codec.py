@@ -7,8 +7,8 @@ import Occgrid
 
 ## normalized planes to yuv444 frames and to video via ffmpeg
 
-dataset = 'cut'
-fd = 3
+dataset = 'salmon'
+fd = 1
 root_path = './'+dataset+'/fd'+ str(fd)+'/'
 #root_path = './log_sample/fd'+ str(fd)+'/'
 root = root_path + 'nerf_synthetic/'+dataset+'_f'
@@ -16,7 +16,7 @@ scene, qp = 3, 0
 start = 2
 
 # concat and recover planes
-'''
+
 merge.batch_process(root, scene,root_path,dataset,start)
 for qp in [0,10,20,30,40]:
           # Feature vector compression
@@ -33,7 +33,7 @@ for idx in range(start,scene+1):
           recover.toframes(root_path+'/yuv_frames/yuv_video_output'+str(qp)+'.mp4',root_path+'/yuv_frames/frames_'+str(qp),fd)
           print("-----start replace-----")
           recover.repalce(root_path,root,scene,qp,dataset,fd,start,idx)
-'''
+
 
 #replace mac_occ
 max_occ = Occgrid.max_occ(root_path)

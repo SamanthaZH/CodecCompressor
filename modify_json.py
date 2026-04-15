@@ -4,7 +4,7 @@ import json
 ### for lego 
 
 
-test_set = ['train','test','val']
+test_set = ['train','val']#'test',
 for test in test_set:
 	split = test.split("_")[0]
 	file = 'transforms_'+split+'.json'

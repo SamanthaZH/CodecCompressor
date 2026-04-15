@@ -81,11 +81,11 @@ if __name__ == "__main__":
 
     exp_name = gin.query_parameter("Trainer.exp_name")
     exp_name = (
-        "%s/%s/%s/%s"
+        "%s/%s/%s/%s"     #"%s/%s/%s/%s"
         % (
             gin.query_parameter("RayDataset.scene_type"),
             gin.query_parameter("RayDataset.scene"),
-            gin.query_parameter("main.model_name"),
+            gin.query_parameter("main.model_name") ,
             datetime.now().strftime("%Y-%m-%d_%H-%M-%S"),
         )
         if exp_name is None
