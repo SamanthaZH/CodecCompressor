@@ -2,6 +2,8 @@ import time
 
 import gin
 import numpy as np
+
+import torchvision
 import torch
 from pathlib import Path
 from loguru import logger
@@ -31,7 +33,7 @@ class Trainer:
         target_sample_batch_size: int = 65536,
         test_chunk_size: int = 8192,
         dynamic_batch_size: bool = True,
-        num_rays: int = 8192,
+        num_rays: int =  8192,
         varied_eval_img: bool = True,
 
         is_first_frame: bool = True,
@@ -66,16 +68,35 @@ class Trainer:
 
     def train_iter(self, step: int, data: Dict, logging=False):
         tic = time.time()
+        
         cam_rays = data['cam_rays']
-        num_rays = min(self.num_rays, len(cam_rays))
-        cam_rays = cam_rays[:num_rays].cuda(non_blocking=True)
-        target = data['target'][:num_rays].cuda(non_blocking=True)
+        #num_rays = min(self.num_rays, len(cam_rays))
+        #cam_rays = cam_rays[:num_rays].cuda(non_blocking=True)
+        #target = data['target'][:num_rays].cuda(non_blocking=True)
+        
+        MAX_RAYS = 715  # constant batch of rays, in case error
+        cam_rays_all = data["cam_rays"]
+        target_all = data["target"]
 
+        R_total = len(cam_rays_all)
+        num_rays = min(MAX_RAYS, R_total)
 
+        idx = torch.randint(0, R_total, (num_rays,), device="cpu")
+
+        cam_rays = cam_rays_all[idx].cuda(non_blocking=True)
+        target   = target_all[idx].cuda(non_blocking=True)
+        
+
+        print(f"R_total: {R_total} num_rays: {num_rays}")
+        
+        #print(dir(cam_rays))
+        #print("cam_rays:", cam_rays.shape)
         rb = self.model(cam_rays, target.render_bkgd)
+        
 
         # compute loss
         loss_dict = self.model.compute_loss(cam_rays, rb, target)
+        #print(k for k, v in loss_dict.items())
         metrics = self.model.compute_metrics(cam_rays, rb, target)
         if 0 == metrics.get("rendering_samples_actual", -1):
             return metrics
@@ -115,6 +136,8 @@ class Trainer:
         eval_0 = next(iter_eval_loader)
         self.model.train()
         for step in range(self.max_steps):
+            if step == 1000:
+                print('step:', step)
             self.model.before_iter(step)
             metrics = self.train_iter(
                 step,
@@ -123,10 +146,13 @@ class Trainer:
                 or (step == 100),
             )
             if 0 == metrics.get("rendering_samples_actual", -1):
+                #print('yes',metrics.get("rendering_samples_actual", -1))
                 continue
+            #print('haha',metrics.get("rendering_samples_actual", -1))
 
             self.scheduler.step()
             if self.dynamic_batch_size:
+                
                 rendering_samples_actual = metrics.get(
                     "rendering_samples_actual",
                     self.target_sample_batch_size,
@@ -137,7 +163,6 @@ class Trainer:
                     // rendering_samples_actual
                     + 1
                 )
-
             self.model.after_iter(step)
 
             if step > 0 and step % self.eval_step == 0:
